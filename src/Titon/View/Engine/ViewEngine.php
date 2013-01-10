@@ -25,7 +25,7 @@ class ViewEngine extends AbstractEngine {
 	 * @return string
 	 */
 	public function open($path, array $variables = []) {
-		return $this->render($this->buildPath(self::ELEMENT, $path), $variables + $this->get());
+		return $this->render($this->buildPath(self::PARTIAL, $path), $variables + $this->get());
 	}
 
 	/**

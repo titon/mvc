@@ -49,6 +49,7 @@ abstract class AbstractEngine extends Base implements Engine {
 	 *	render 		- Toggle the rendering process
 	 *	layout 		- The layout template to use
 	 *	wrapper 	- The wrapper template to use
+	 *	custom		- Custom folder name for private templates
 	 * 	ext			- The view template file extension
 	 *
 	 * @access protected
@@ -65,6 +66,7 @@ abstract class AbstractEngine extends Base implements Engine {
 		'render' => true,
 		'layout' => 'default',
 		'wrapper' => null,
+		'custom' => null,
 		'ext' => 'tpl'
 	];
 
@@ -176,13 +178,13 @@ abstract class AbstractEngine extends Base implements Engine {
 				$view = sprintf('/private/includes/%s', $this->_preparePath($path));
 			break;
 
-			case self::CUSTOM:
-				$view = sprintf('/private/%s/%s', $path, $this->_preparePath($template['action']));
+			case self::VIEW:
+				$view = sprintf('/public/%s/%s', $template['controller'], $this->_preparePath($template['action'], $template['ext']));
 			break;
 
-			case self::VIEW:
+			case self::CUSTOM:
 			default:
-				$view = sprintf('/public/%s/%s', $template['controller'], $this->_preparePath($template['action'], $template['ext']));
+				$view = sprintf('/private/%s/%s', $path ?: $config['custom'], $this->_preparePath($template['action']));
 			break;
 		}
 
