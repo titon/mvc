@@ -60,23 +60,29 @@ class ViewEngine extends AbstractEngine {
 	 */
 	public function run($cache = true) {
 		$config = $this->config->get();
+		$data = $this->get();
 
 		if (!$config['render'] || ($cache && $this->_rendered)) {
 			return $this->_content;
 		}
 
-		// Render the template, layout and wrappers
-		$data = $this->get();
-		$renders = [
-			self::VIEW => 'template',
-			self::WRAPPER => 'wrapper',
-			self::LAYOUT => 'layout'
-		];
-
 		$this->notifyObjects('preRender');
 
-		foreach ($renders as $type => $render) {
-			if (empty($config[$render])) {
+		// Determine whether to render a custom or regular template
+		$renderLoop = [];
+
+		if ($config['custom']) {
+			$renderLoop[self::CUSTOM] = 'custom';
+		} else {
+			$renderLoop[self::VIEW] = 'template';
+		}
+
+		// Render the layout and wrappers
+		$renderLoop[self::WRAPPER] = 'wrapper';
+		$renderLoop[self::LAYOUT] = 'layout';
+
+		foreach ($renderLoop as $type => $template) {
+			if (empty($config[$template])) {
 				continue;
 			}
 
