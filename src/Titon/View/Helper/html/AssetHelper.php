@@ -9,6 +9,7 @@
 
 namespace Titon\View\Helper\Html;
 
+use Titon\Common\Registry;
 use Titon\View\Helper\AbstractHelper;
 
 /**
@@ -122,21 +123,20 @@ class AssetHelper extends AbstractHelper {
 	 *
 	 * @access public
 	 * @param string $location
+	 * @param string $env
 	 * @return string
 	 */
-	public function scripts($location = self::FOOTER) {
+	public function scripts($location = self::FOOTER, $env = null) {
 		$output = null;
 
 		if (!empty($this->_scripts[$location])) {
-			//$env = Titon::env()->current('type');
-
 			$scripts = $this->_scripts[$location];
 			ksort($scripts);
 
 			foreach ($scripts as $script) {
-				//if ($script['env'] === null || $script['env'] === $env) {
+				if ($script['env'] === null || $script['env'] === $env) {
 					$output .= $this->html->script($script['path']);
-				//}
+				}
 			}
 		}
 
@@ -147,21 +147,20 @@ class AssetHelper extends AbstractHelper {
 	 * Return all the attached stylesheets. Uses the HTML helper to build the HTML tags.
 	 *
 	 * @access public
+	 * @param string $env
 	 * @return string
 	 */
-	public function stylesheets() {
+	public function stylesheets($env = null) {
 		$output = null;
 
 		if ($this->_stylesheets) {
-			//$env = Titon::env()->current('type');
-
 			$stylesheets = $this->_stylesheets;
 			ksort($stylesheets);
 
 			foreach ($stylesheets as $sheet) {
-				//if ($sheet['env'] === null || $sheet['env'] === $env) {
+				if ($sheet['env'] === null || $sheet['env'] === $env) {
 					$output .= $this->html->link($sheet['path'], ['media' => $sheet['media']]);
-				//}
+				}
 			}
 		}
 

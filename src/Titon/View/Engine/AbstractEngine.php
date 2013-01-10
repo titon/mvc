@@ -9,13 +9,15 @@
 
 namespace Titon\View\Engine;
 
-use Titon\View\Engine;
-use Titon\View\Exception;
 use Titon\Common\Base;
 use Titon\Common\Traits\Attachable;
 use Titon\Common\Traits\Cacheable;
 use Titon\Utility\Inflector;
+use Titon\Utility\Loader;
 use Titon\Utility\Hash;
+use Titon\View\Engine;
+use Titon\View\Helper;
+use Titon\View\Exception;
 use \Closure;
 
 /**
@@ -47,25 +49,23 @@ abstract class AbstractEngine extends Base implements Engine {
 	 *	render 		- Toggle the rendering process
 	 *	layout 		- The layout template to use
 	 *	wrapper 	- The wrapper template to use
-	 *	folder 		- The folder name to user when templates are overridden (emails, errors, etc)
 	 * 	ext			- The view template file extension
 	 *
 	 * @access protected
 	 * @var array
 	 */
 	protected $_config = [
-		'type'		=> 'html',
-		'template'	=> [
+		'type' => 'html',
+		'template' => [
 			'module' => null,
 			'controller' => null,
 			'action' => null,
 			'ext' => null
 		],
-		'render'	=> true,
-		'layout'	=> 'default',
-		'wrapper'	=> null,
-		'folder'	=> null,
-		'ext'		=> 'tpl'
+		'render' => true,
+		'layout' => 'default',
+		'wrapper' => null,
+		'ext' => 'tpl'
 	];
 
 	/**
@@ -77,7 +77,7 @@ abstract class AbstractEngine extends Base implements Engine {
 	protected $_content = null;
 
 	/**
-	 * Dynamic data set from the controller.
+	 * Data to pass as variables to each template.
 	 *
 	 * @access protected
 	 * @var array
@@ -88,9 +88,17 @@ abstract class AbstractEngine extends Base implements Engine {
 	 * List of added helpers.
 	 *
 	 * @access protected
-	 * @var array
+	 * @var \Titon\View\Helper[]
 	 */
 	protected $_helpers = [];
+
+	/**
+	 * Template lookup paths.
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $_paths = [];
 
 	/**
 	 * Has the view been rendered.
@@ -105,17 +113,26 @@ abstract class AbstractEngine extends Base implements Engine {
 	 *
 	 * @access public
 	 * @param string $alias
-	 * @param Closure $helper
-	 * @return void
-	 * @final
+	 * @param \Titon\View\Helper $helper
+	 * @return \Titon\View\Engine
 	 */
-	final public function addHelper($alias, Closure $helper) {
-		$this->_helpers[] = $alias;
+	public function addHelper($alias, Helper $helper) {
+		$this->_helpers[$alias] = $helper;
 
-		$this->attachObject([
-			'alias' => $alias,
-			'interface' => 'Titon\View\Helper'
-		], $helper);
+		return $this;
+	}
+
+	/**
+	 * Add a template lookup path.
+	 *
+	 * @access public
+	 * @param string|array $paths
+	 * @return \Titon\View\Engine
+	 */
+	public function addPath($paths) {
+		$this->_paths = (array) $paths + $this->_paths;
+
+		return $this;
 	}
 
 	/**
@@ -132,52 +149,36 @@ abstract class AbstractEngine extends Base implements Engine {
 		$config = $this->config->get();
 		$template = $config['template'];
 		$folder = null;
-		$view = null;
+		$views = [];
 
 		switch ($type) {
 			case self::LAYOUT:
 				if ($config['layout']) {
-					$view = $this->_preparePath($config['layout']);
+					$views[] = $this->_preparePath($config['layout'], true);
 					$folder = 'layouts';
-
-					if ($template['ext']) {
-						$view .= '.' . $template['ext'];
-					}
 				}
 			break;
 
 			case self::WRAPPER:
 				if ($config['wrapper']) {
-					$view = $this->_preparePath($config['wrapper']);
+					$views[] = $this->_preparePath($config['wrapper']);
 					$folder = 'wrappers';
 				}
 			break;
 
 			case self::ELEMENT:
-				$view = $this->_preparePath($path);
+				$views[] = $this->_preparePath($path);
 				$folder = 'includes';
 			break;
 
 			case self::VIEW:
 			default:
-				// If overridden use the folder path
-				if ($config['folder']) {
-					$view = $this->_preparePath($template['action']);
-					$folder = $config['folder'];
-
-				// Else determine full path based off module, controller, action
-				} else {
-					$view = $this->_preparePath($template['action']);
-				}
-
-				if ($template['ext']) {
-					$view .= '.' . $template['ext'];
-				}
+				$views[] = $this->_preparePath($template['action'], true);
 			break;
 		}
 
 		// Build array of paths
-		if ($view) {
+		/*if ($view) {
 			if ($folder) {
 				if ($template['module']) {
 					$paths[] = APP_MODULES . sprintf('%s/views/private/%s/%s.%s', $template['module'], $folder, $view, $this->config->ext);
@@ -188,7 +189,7 @@ abstract class AbstractEngine extends Base implements Engine {
 			} else {
 				$paths[] = APP_MODULES . sprintf('%s/views/public/%s/%s.%s', $template['module'], $template['controller'], $view, $this->config->ext);
 			}
-		}
+		}*/
 
 		if ($paths) {
 			foreach ($paths as $path) {
@@ -197,10 +198,10 @@ abstract class AbstractEngine extends Base implements Engine {
 				}
 			}
 		} else {
-			return null;
+			throw new Exception('No template lookup paths have been defined');
 		}
 
-		throw new Exception(sprintf('View template %s does not exist.', str_replace([APP_VIEWS, APP_MODULES], '', $paths[0])));
+		throw new Exception(sprintf('View template %s does not exist', basename($paths[0])));
 	}
 
 	/**
@@ -225,49 +226,23 @@ abstract class AbstractEngine extends Base implements Engine {
 	}
 
 	/**
-	 * Return the aliased helper names.
+	 * Return all the helpers.
 	 *
 	 * @access public
-	 * @return array
+	 * @return \Titon\View\Helper[]
 	 */
 	public function getHelpers() {
 		return $this->_helpers;
 	}
 
 	/**
-	 * Add rendering events.
+	 * Return all the template lookup paths.
 	 *
 	 * @access public
-	 * @return void
+	 * @return array
 	 */
-	public function initialize() {
-		$self = $this;
-
-		/*Titon::event()->addCallback(function() use ($self) {
-			$self->notifyObjects('preRender');
-		}, 'view.preRender');
-
-		Titon::event()->addCallback(function() use ($self) {
-			$self->notifyObjects('postRender');
-		}, 'view.postRender');*/
-	}
-
-	/**
-	 * Override the template locations by providing a folder and view name.
-	 *
-	 * @access public
-	 * @param string $folder
-	 * @param string $view
-	 * @param string $layout
-	 * @return \Titon\View\Engine
-	 * @chainable
-	 */
-	public function override($folder, $view, $layout = null) {
-		return $this->setup([
-			'folder' => $folder,
-			'template' => $view,
-			'layout' => $layout
-		]);
+	public function getPaths() {
+		return $this->_paths;
 	}
 
 	/**
@@ -277,7 +252,7 @@ abstract class AbstractEngine extends Base implements Engine {
 	 * @return void
 	 */
 	public function preRender() {
-		return;
+		$this->notifyObjects('preRender');
 	}
 
 	/**
@@ -287,7 +262,7 @@ abstract class AbstractEngine extends Base implements Engine {
 	 * @return void
 	 */
 	public function postRender() {
-		return;
+		$this->notifyObjects('postRender');
 	}
 
 	/**
@@ -297,7 +272,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	 * @param string|array $key
 	 * @param mixed $value
 	 * @return \Titon\View\Engine
-	 * @chainable
 	 */
 	public function set($key, $value = null) {
 		if (is_array($key)) {
@@ -317,7 +291,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	 * @access public
 	 * @param mixed $options
 	 * @return \Titon\View\Engine
-	 * @chainable
 	 */
 	public function setup($options) {
 		if ($options === false || $options === true || $options === null) {
@@ -347,15 +320,20 @@ abstract class AbstractEngine extends Base implements Engine {
 	 * Prepare a path by converting slashes and removing .tpl.
 	 *
 	 * @access protected
-	 * @param $path
+	 * @param string $path
+	 * @param boolean $useExt
 	 * @return string
 	 */
-	protected function _preparePath($path) {
-		return $this->cache([__METHOD__, $path], function() use ($path) {
-			$path = Titon::loader()->ds($path);
+	protected function _preparePath($path, $useExt = false) {
+		return $this->cache([__METHOD__, $path], function() use ($path, $useExt) {
+			$path = Loader::ds($path);
 
 			if (mb_substr($path, -4) === '.' . $this->config->ext) {
 				$path = mb_substr($path, 0, (mb_strlen($path) - 4));
+			}
+
+			if (($ext = $this->config->get('template.ext')) && $useExt) {
+				$path .= '.' . $ext;
 			}
 
 			return $path;

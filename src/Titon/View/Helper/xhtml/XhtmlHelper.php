@@ -13,7 +13,7 @@ use Titon\View\Helper\Html\HtmlHelper;
 use Titon\Utility\Sanitize;
 
 /**
- * The HtmlHelper is primarily used for dynamic HTML tag creation within templates.
+ * The XhtmlHelper is primarily used for dynamic HTML tag creation within templates.
  */
 class XhtmlHelper extends HtmlHelper {
 
@@ -21,7 +21,7 @@ class XhtmlHelper extends HtmlHelper {
 	 * Mapping of XHTML tags for this helper.
 	 *
 	 * @access protected
-	 * @var string
+	 * @var array
 	 */
 	protected $_tags = [
 		'anchor'	=> '<a{attr}>{body}</a>',
@@ -70,7 +70,7 @@ class XhtmlHelper extends HtmlHelper {
 	 */
 	public function escape($value, $escape = null) {
 		if ($escape === null) {
-			$escape = $this->config->escape;
+			$escape = $this->config->get('escape') ?: true;
 		}
 
 		if ($escape) {

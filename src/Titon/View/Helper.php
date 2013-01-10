@@ -7,7 +7,7 @@
  * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
  */
 
-namespace Titon\View\Helper;
+namespace Titon\View;
 
 use Titon\View\Engine;
 

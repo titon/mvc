@@ -9,10 +9,31 @@
 
 namespace Titon\View;
 
+use Titon\View\Helper;
+
 /**
  * Interface for the engines library.
  */
 interface Engine {
+
+	/**
+	 * Add a helper to the view rendering engine.
+	 *
+	 * @access public
+	 * @param string $alias
+	 * @param \Titon\View\Helper $helper
+	 * @return \Titon\View\Engine
+	 */
+	public function addHelper($alias, Helper $helper);
+
+	/**
+	 * Add a template lookup path.
+	 *
+	 * @access public
+	 * @param string|array $paths
+	 * @return \Titon\View\Engine
+	 */
+	public function addPath($paths);
 
 	/**
 	 * The current output within the rendering process. The output changes depending on the current rendering stage.
@@ -30,6 +51,22 @@ interface Engine {
 	 * @return string
 	 */
 	public function get($key = null);
+
+	/**
+	 * Return all the helpers.
+	 *
+	 * @access public
+	 * @return \Titon\View\Helper[]
+	 */
+	public function getHelpers();
+
+	/**
+	 * Return all the template lookup paths.
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getPaths();
 
 	/**
 	 * Opens and renders a partial view element within the current document.

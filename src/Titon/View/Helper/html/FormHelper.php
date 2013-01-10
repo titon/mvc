@@ -9,9 +9,9 @@
 
 namespace Titon\View\Helper\Html;
 
-use Titon\View\Helper\AbstractHelper;
 use Titon\Utility\Inflector;
 use Titon\Utility\Hash;
+use Titon\View\Helper\AbstractHelper;
 
 /**
  * The FormHelper is used for HTML form creation. Data is passed to the associated input fields
@@ -360,14 +360,6 @@ class FormHelper extends AbstractHelper {
 	public function initialize() {
 		parent::initialize();
 
-		$this->attachObject('request', function() {
-			return Registry::factory('Titon\Http\Request');
-		});
-
-		$this->attachObject('session', function() {
-			return Registry::factory('Titon\Http\Session');
-		});
-
 		$this->config->set(array_diff_key([
 			'day' => date('j'),
 			'dayFormat' => 'j',
@@ -507,7 +499,8 @@ class FormHelper extends AbstractHelper {
 		];
 
 		if (!empty($attributes['action'])) {
-			$attributes['action'] = Router::detect($attributes['action']);
+			// @TODO
+			//$attributes['action'] = Router::detect($attributes['action']);
 		}
 
 		$output = $this->tag('form_open', [
@@ -528,7 +521,7 @@ class FormHelper extends AbstractHelper {
 		$this->_forms[$this->_model] = $attributes;
 
 		// If CSRF protection is enabled, include a hidden field
-		$csrf = $this->session->get('Security.csrf');
+		$csrf = isset($_SESSION['Security']['csrf']) ? $_SESSION['Security']['csrf'] : false;
 
 		if ($csrf && !empty($csrf['token'])) {
 			$output .= $this->hidden($csrf['field'], ['value' => $csrf['token']]);
@@ -747,7 +740,7 @@ class FormHelper extends AbstractHelper {
 	 * @return string
 	 */
 	public function value($key) {
-		return Hash::extract($this->request->data, $key);
+		return Hash::extract($_REQUEST, $key);
 	}
 
 	/**

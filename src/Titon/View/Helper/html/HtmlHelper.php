@@ -10,8 +10,8 @@
 namespace Titon\View\Helper\Html;
 
 use Titon\Common\Config;
-use Titon\View\Helper\AbstractHelper;
 use Titon\Utility\Crypt;
+use Titon\View\Helper\AbstractHelper;
 
 /**
  * The HtmlHelper is primarily used for dynamic HTML tag creation within templates.

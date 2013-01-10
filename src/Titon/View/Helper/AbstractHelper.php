@@ -9,13 +9,12 @@
 
 namespace Titon\View\Helper;
 
-use Titon\View\Engine;
-use Titon\View\Helper;
 use Titon\Common\Base;
 use Titon\Common\Traits\Attachable;
-use Titon\Route\Router;
 use Titon\Utility\Sanitize;
 use Titon\Utility\String;
+use Titon\View\Engine;
+use Titon\View\Helper;
 
 /**
  * The Helper class acts as the base for all children helpers to extend.
@@ -87,7 +86,7 @@ abstract class AbstractHelper extends Base implements Helper {
 	 */
 	public function escape($value, $escape = null) {
 		if ($escape === null) {
-			$escape = $this->config->escape;
+			$escape = $this->config->get('escape') ?: true;
 		}
 
 		if ($escape) {
@@ -95,18 +94,6 @@ abstract class AbstractHelper extends Base implements Helper {
 		}
 
 		return $value;
-	}
-
-	/**
-	 * Enable escaping if the config doesn't exist.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function initialize() {
-		if (!$this->config->has('escape')) {
-			$this->config->escape = true;
-		}
 	}
 
 	/**
@@ -151,7 +138,8 @@ abstract class AbstractHelper extends Base implements Helper {
 	 * @return string
 	 */
 	public function url($url = '/') {
-		return Router::detect($url);
+		// @TODO
+		//return Router::detect($url);
 	}
 
 }

@@ -32,7 +32,7 @@ class BreadcrumbHelper extends AbstractHelper {
 	 * @param string $title
 	 * @param string|array $url
 	 * @param array $attributes
-	 * @return BreadcrumbHelper
+	 * @return \Titon\View\Helper\Html\BreadcrumbHelper
 	 */
 	public function add($title, $url, array $attributes = []) {
 		$this->_breadcrumbs[] = [$title, $url, $attributes];

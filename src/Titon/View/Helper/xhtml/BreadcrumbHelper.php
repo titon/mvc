@@ -14,8 +14,6 @@ use Titon\View\Helper\Html\BreadcrumbHelper as HtmlBreadcrumbHelper;
 
 /**
  * The BreadcrumbHelper is primarily used for adding and generating breadcrumb lists.
- *
- * @package	titon.libs.helpers.xhtml
  */
 class BreadcrumbHelper extends HtmlBreadcrumbHelper {
 
