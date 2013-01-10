@@ -1,0 +1,22 @@
+{
+	"name": "titon/view",
+	"type": "library",
+	"description": "The Titon view package adds support for template rendering and view helpers.",
+	"keywords": ["titon", "view", "engine", "helper", "mvc", "template"],
+	"homepage": "https://github.com/titon/Titon.View",
+	"license": "BSD-2-Clause",
+	"authors": [
+		{
+			"name": "Miles Johnson",
+			"homepage": "http://milesj.me"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"titon/common": "*",
+		"titon/utility": "*"
+	},
+	"autoload": {
+		"psr-0": { "Titon\\View": "src/" }
+	}
+}
