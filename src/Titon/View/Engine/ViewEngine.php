@@ -73,6 +73,8 @@ class ViewEngine extends AbstractEngine {
 			self::LAYOUT => 'layout'
 		];
 
+		$this->notifyObjects('preRender');
+
 		foreach ($renders as $type => $render) {
 			if (empty($config[$render])) {
 				continue;
@@ -83,6 +85,8 @@ class ViewEngine extends AbstractEngine {
 				$this->_content = $this->render($path, $data);
 			}
 		}
+
+		$this->notifyObjects('postRender');
 
 		$this->_rendered = true;
 

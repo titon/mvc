@@ -18,7 +18,6 @@ use Titon\Utility\Hash;
 use Titon\View\Engine;
 use Titon\View\Helper;
 use Titon\View\Exception;
-use \Closure;
 
 /**
  * The Engine acts as a base for all child Engines to inherit. The view engine acts as the renderer of data
@@ -39,7 +38,8 @@ abstract class AbstractEngine extends Base implements Engine {
 	const VIEW = 1;
 	const LAYOUT = 2;
 	const WRAPPER = 3;
-	const ELEMENT = 4;
+	const PARTIAL = 4;
+	const CUSTOM = 5;
 
 	/**
 	 * Configuration. Can be overwritten in the Controller.
@@ -112,12 +112,15 @@ abstract class AbstractEngine extends Base implements Engine {
 	 * Add a helper to the view rendering engine.
 	 *
 	 * @access public
-	 * @param string $alias
+	 * @param string $key
 	 * @param \Titon\View\Helper $helper
 	 * @return \Titon\View\Engine
 	 */
-	public function addHelper($alias, Helper $helper) {
-		$this->_helpers[$alias] = $helper;
+	public function addHelper($key, Helper $helper) {
+		$this->_helpers[$key] = $helper;
+
+		// Add to Attachable also
+		$this->_attached[$key] = $helper;
 
 		return $this;
 	}
@@ -130,78 +133,66 @@ abstract class AbstractEngine extends Base implements Engine {
 	 * @return \Titon\View\Engine
 	 */
 	public function addPath($paths) {
-		$this->_paths = (array) $paths + $this->_paths;
+		foreach ((array) $paths as $path) {
+			$this->_paths[] = $path;
+		}
 
 		return $this;
 	}
 
 	/**
-	 * Get the file path for a type of template: layout, wrapper, view, error, include
+	 * Get the file path for a type of template: layout, wrapper, view, partial.
 	 *
 	 * @access public
 	 * @param int $type
-	 * @param string|null $path
-	 * @return string|null
+	 * @param string $path
+	 * @return string
 	 * @throws \Titon\View\Exception
 	 */
 	public function buildPath($type = self::VIEW, $path = null) {
-		$paths = [];
+		$paths = $this->getPaths();
 		$config = $this->config->get();
 		$template = $config['template'];
-		$folder = null;
-		$views = [];
+		$view = null;
+
+		if (!$paths) {
+			throw new Exception('No template lookup paths have been defined');
+		}
 
 		switch ($type) {
 			case self::LAYOUT:
 				if ($config['layout']) {
-					$views[] = $this->_preparePath($config['layout'], true);
-					$folder = 'layouts';
+					$view = sprintf('/private/layouts/%s', $this->_preparePath($config['layout'], true));
 				}
 			break;
 
 			case self::WRAPPER:
 				if ($config['wrapper']) {
-					$views[] = $this->_preparePath($config['wrapper']);
-					$folder = 'wrappers';
+					$view = sprintf('/private/wrappers/%s', $this->_preparePath($config['wrapper']));
 				}
 			break;
 
-			case self::ELEMENT:
-				$views[] = $this->_preparePath($path);
-				$folder = 'includes';
+			case self::PARTIAL:
+				$view = sprintf('/private/includes/%s', $this->_preparePath($path));
+			break;
+
+			case self::CUSTOM:
+				$view = sprintf('/private/%s/%s', $path, $this->_preparePath($template['action']));
 			break;
 
 			case self::VIEW:
 			default:
-				$views[] = $this->_preparePath($template['action'], true);
+				$view = sprintf('/public/%s/%s', $template['controller'], $this->_preparePath($template['action'], true));
 			break;
 		}
 
-		// Build array of paths
-		/*if ($view) {
-			if ($folder) {
-				if ($template['module']) {
-					$paths[] = APP_MODULES . sprintf('%s/views/private/%s/%s.%s', $template['module'], $folder, $view, $this->config->ext);
-				}
-
-				$paths[] = APP_VIEWS . sprintf('%s/%s.%s', $folder, $view, $this->config->ext);
-
-			} else {
-				$paths[] = APP_MODULES . sprintf('%s/views/public/%s/%s.%s', $template['module'], $template['controller'], $view, $this->config->ext);
+		foreach ($paths as $path) {
+			if (file_exists($path . $view)) {
+				return $path . $view;
 			}
-		}*/
-
-		if ($paths) {
-			foreach ($paths as $path) {
-				if (file_exists($path)) {
-					return $path;
-				}
-			}
-		} else {
-			throw new Exception('No template lookup paths have been defined');
 		}
 
-		throw new Exception(sprintf('View template %s does not exist', basename($paths[0])));
+		throw new Exception(sprintf('View template %s does not exist', $view));
 	}
 
 	/**
@@ -226,6 +217,17 @@ abstract class AbstractEngine extends Base implements Engine {
 	}
 
 	/**
+	 * Return a single helper by key.
+	 *
+	 * @access public
+	 * @param string $key
+	 * @return \Titon\View\Helper
+	 */
+	public function getHelper($key) {
+		return $this->getObject($key);
+	}
+
+	/**
 	 * Return all the helpers.
 	 *
 	 * @access public
@@ -243,26 +245,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	 */
 	public function getPaths() {
 		return $this->_paths;
-	}
-
-	/**
-	 * Triggered before a template is rendered by the engine.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function preRender() {
-		$this->notifyObjects('preRender');
-	}
-
-	/**
-	 * Triggered after a template is rendered by the engine.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function postRender() {
-		$this->notifyObjects('postRender');
 	}
 
 	/**
@@ -327,14 +309,24 @@ abstract class AbstractEngine extends Base implements Engine {
 	protected function _preparePath($path, $useExt = false) {
 		return $this->cache([__METHOD__, $path], function() use ($path, $useExt) {
 			$path = Loader::ds($path);
+			$tplExt = $this->config->ext;
+			$extLen = strlen($tplExt) + 1;
 
-			if (mb_substr($path, -4) === '.' . $this->config->ext) {
-				$path = mb_substr($path, 0, (mb_strlen($path) - 4));
+			if (mb_substr($path, -$extLen) === '.' . $tplExt) {
+				$path = mb_substr($path, 0, (mb_strlen($path) - $extLen));
 			}
 
-			if (($ext = $this->config->get('template.ext')) && $useExt) {
-				$path .= '.' . $ext;
+			if ($useExt) {
+				try {
+					if ($ext = $this->config->get('template.ext')) {
+						$path .= '.' . $ext;
+					}
+				} catch (\Exception $e) {
+					// Nothing
+				}
 			}
+
+			$path .= '.' . $tplExt;
 
 			return $path;
 		});

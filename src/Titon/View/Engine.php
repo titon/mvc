@@ -20,11 +20,11 @@ interface Engine {
 	 * Add a helper to the view rendering engine.
 	 *
 	 * @access public
-	 * @param string $alias
+	 * @param string $key
 	 * @param \Titon\View\Helper $helper
 	 * @return \Titon\View\Engine
 	 */
-	public function addHelper($alias, Helper $helper);
+	public function addHelper($key, Helper $helper);
 
 	/**
 	 * Add a template lookup path.
@@ -53,6 +53,15 @@ interface Engine {
 	public function get($key = null);
 
 	/**
+	 * Return a single helper by key.
+	 *
+	 * @access public
+	 * @param string $key
+	 * @return \Titon\View\Helper
+	 */
+	public function getHelper($key);
+
+	/**
 	 * Return all the helpers.
 	 *
 	 * @access public
@@ -77,22 +86,6 @@ interface Engine {
 	 * @return string
 	 */
 	public function open($path, array $variables = []);
-
-	/**
-	 * Triggered before a template is rendered by the engine.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function preRender();
-
-	/**
-	 * Triggered after a template is rendered by the engine.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function postRender();
 
 	/**
 	 * Primary method to render a single view template.

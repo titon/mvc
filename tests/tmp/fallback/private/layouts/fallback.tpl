@@ -1,0 +1,1 @@
+<fallbackLayout><?php echo $this->content(); ?></fallbackLayout>

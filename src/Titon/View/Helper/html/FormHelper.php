@@ -9,6 +9,7 @@
 
 namespace Titon\View\Helper\Html;
 
+use Titon\Route\Router;
 use Titon\Utility\Inflector;
 use Titon\Utility\Hash;
 use Titon\View\Helper\AbstractHelper;
@@ -499,7 +500,7 @@ class FormHelper extends AbstractHelper {
 		];
 
 		if (!empty($attributes['action'])) {
-			$attributes['action'] = (string) $attributes['action']; // Router::detect($attributes['action']);
+			$attributes['action'] = Router::detect($attributes['action']);
 		}
 
 		$output = $this->tag('form_open', [
@@ -520,7 +521,7 @@ class FormHelper extends AbstractHelper {
 		$this->_forms[$this->_model] = $attributes;
 
 		// If CSRF protection is enabled, include a hidden field
-		$csrf = isset($_SESSION['Security']['csrf']) ? $_SESSION['Security']['csrf'] : false;
+		$csrf = isset($_SESSION['Security']['csrf']) ? $_SESSION['Security']['csrf'] : null;
 
 		if ($csrf && !empty($csrf['token'])) {
 			$output .= $this->hidden($csrf['field'], ['value' => $csrf['token']]);

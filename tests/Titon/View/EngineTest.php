@@ -14,7 +14,7 @@ use Titon\View\Helper\Html\HtmlHelper;
 use \Exception;
 
 /**
- * Test class for titon\libs\engines\Engine.
+ * Test class for Titon\View\Engine.
  */
 class EngineTest extends \PHPUnit_Framework_TestCase {
 
@@ -26,15 +26,15 @@ class EngineTest extends \PHPUnit_Framework_TestCase {
 		$engine = new EngineFixture();
 		$engine->addHelper('html', new HtmlHelper());
 
-		//$this->assertInstanceOf('Titon\View\Helper', $engine->html);
-		//$this->assertInstanceOf('Titon\View\Helper', $engine->getHelper('html'));
+		$this->assertInstanceOf('Titon\View\Helper', $engine->html);
+		$this->assertInstanceOf('Titon\View\Helper', $engine->getHelper('html'));
 	}
 
 	/**
 	 * Test that buildPath() generates correct file system paths, or throws exceptions.
 	 */
 	public function testBuildPath() {
-		/*// views
+		// views
 		$engine = new EngineFixture([
 			'template' => [
 				'module' => 'pages',
@@ -43,20 +43,22 @@ class EngineTest extends \PHPUnit_Framework_TestCase {
 				'ext' => null
 			]
 		]);
+		$engine->addPath(TEMP_DIR);
 
-		$this->assertEquals(APP_MODULES . 'pages/views/public/index/index.tpl', $engine->buildPath(EngineFixture::VIEW));
+		$this->assertEquals(TEMP_DIR . '/public/index/index.tpl', $engine->buildPath(EngineFixture::VIEW));
 
 		$engine->config->set('template.action', 'add');
-		$this->assertEquals(APP_MODULES . 'pages/views/public/index/add.tpl', $engine->buildPath(EngineFixture::VIEW));
+		$this->assertEquals(TEMP_DIR . '/public/index/add.tpl', $engine->buildPath(EngineFixture::VIEW));
 
 		$engine->config->set('template.action', 'view');
 		$engine->config->set('template.ext', 'xml');
-		$this->assertEquals(APP_MODULES . 'pages/views/public/index/view.xml.tpl', $engine->buildPath(EngineFixture::VIEW));
+		$this->assertEquals(TEMP_DIR . '/public/index/view.xml.tpl', $engine->buildPath(EngineFixture::VIEW));
 
 		try {
 			$engine->config->set('template.controller', 'invalidFile');
 			$engine->buildPath(EngineFixture::VIEW); // file doesn't exist
 			$this->assertTrue(false);
+
 		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
@@ -70,16 +72,19 @@ class EngineTest extends \PHPUnit_Framework_TestCase {
 				'ext' => null
 			]
 		]);
+		$engine->addPath(TEMP_DIR);
+		$engine->addPath(TEMP_DIR . '/fallback');
 
-		$this->assertEquals(APP_MODULES . 'pages/views/private/layouts/default.tpl', $engine->buildPath(EngineFixture::LAYOUT));
+		$this->assertEquals(TEMP_DIR . '/private/layouts/default.tpl', $engine->buildPath(EngineFixture::LAYOUT));
 
 		$engine->config->layout = 'fallback';
-		$this->assertEquals(APP_VIEWS . 'layouts/fallback.tpl', $engine->buildPath(EngineFixture::LAYOUT));
+		$this->assertEquals(TEMP_DIR . '/fallback/private/layouts/fallback.tpl', $engine->buildPath(EngineFixture::LAYOUT));
 
 		try {
 			$engine->config->layout = 'invalidFile';
 			$engine->buildPath(EngineFixture::LAYOUT); // file doesn't exist
 			$this->assertTrue(false);
+
 		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
@@ -88,6 +93,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase {
 			$engine->config->layout = null;
 			$engine->buildPath(EngineFixture::LAYOUT); // file doesn't exist
 			$this->assertTrue(false);
+
 		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
@@ -102,19 +108,13 @@ class EngineTest extends \PHPUnit_Framework_TestCase {
 			],
 			'folder' => 'errors'
 		]);
+		$engine->addPath(TEMP_DIR);
+		$engine->addPath(TEMP_DIR . '/fallback');
 
-		$this->assertEquals(APP_MODULES . 'pages/views/private/errors/error.tpl', $engine->buildPath(EngineFixture::VIEW));
+		$this->assertEquals(TEMP_DIR . '/private/errors/error.tpl', $engine->buildPath(EngineFixture::CUSTOM, 'errors'));
 
-		$engine->override('errors', 404);
-		$this->assertEquals(APP_MODULES . 'pages/views/private/errors/404.tpl', $engine->buildPath(EngineFixture::VIEW));
-
-		try {
-			$engine->config->set('template.action', 'invalidFile');
-			$engine->buildPath(EngineFixture::VIEW); // file doesn't exist
-			$this->assertTrue(false);
-		} catch (Exception $e) {
-			$this->assertTrue(true);
-		}
+		$engine->config->set('template.action', 404);
+		$this->assertEquals(TEMP_DIR . '/private/errors/404.tpl', $engine->buildPath(EngineFixture::CUSTOM, 'errors'));
 
 		// wrappers
 		$engine = new EngineFixture([
@@ -126,16 +126,19 @@ class EngineTest extends \PHPUnit_Framework_TestCase {
 			],
 			'wrapper' => 'wrapper'
 		]);
+		$engine->addPath(TEMP_DIR);
+		$engine->addPath(TEMP_DIR . '/fallback');
 
-		$this->assertEquals(APP_MODULES . 'pages/views/private/wrappers/wrapper.tpl', $engine->buildPath(EngineFixture::WRAPPER));
+		$this->assertEquals(TEMP_DIR . '/private/wrappers/wrapper.tpl', $engine->buildPath(EngineFixture::WRAPPER));
 
 		$engine->config->wrapper = 'fallback';
-		$this->assertEquals(APP_VIEWS . 'wrappers/fallback.tpl', $engine->buildPath(EngineFixture::WRAPPER));
+		$this->assertEquals(TEMP_DIR . '/fallback/private/wrappers/fallback.tpl', $engine->buildPath(EngineFixture::WRAPPER));
 
 		try {
 			$engine->config->wrapper = 'invalidFile';
 			$engine->buildPath(EngineFixture::WRAPPER); // file doesn't exist
 			$this->assertTrue(false);
+
 		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
@@ -144,6 +147,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase {
 			$engine->config->wrapper = null;
 			$engine->buildPath(EngineFixture::WRAPPER); // file doesn't exist
 			$this->assertTrue(false);
+
 		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
@@ -158,18 +162,20 @@ class EngineTest extends \PHPUnit_Framework_TestCase {
 			],
 			'wrapper' => 'wrapper'
 		]);
+		$engine->addPath(TEMP_DIR);
 
-		$this->assertEquals(APP_MODULES . 'pages/views/private/includes/include.tpl', $engine->buildPath(EngineFixture::ELEMENT, 'include'));
-		$this->assertEquals(APP_MODULES . 'pages/views/private/includes/nested/include.tpl', $engine->buildPath(EngineFixture::ELEMENT, 'nested/include'));
-		$this->assertEquals(APP_MODULES . 'pages/views/private/includes/nested/include.tpl', $engine->buildPath(EngineFixture::ELEMENT, 'nested\include'));
-		$this->assertEquals(APP_MODULES . 'pages/views/private/includes/nested/include.tpl', $engine->buildPath(EngineFixture::ELEMENT, 'nested/include.tpl'));
+		$this->assertEquals(TEMP_DIR . '/private/includes/include.tpl', $engine->buildPath(EngineFixture::PARTIAL, 'include'));
+		$this->assertEquals(TEMP_DIR . '/private/includes/nested/include.tpl', $engine->buildPath(EngineFixture::PARTIAL, 'nested/include'));
+		$this->assertEquals(TEMP_DIR . '/private/includes/nested/include.tpl', $engine->buildPath(EngineFixture::PARTIAL, 'nested\include'));
+		$this->assertEquals(TEMP_DIR . '/private/includes/nested/include.tpl', $engine->buildPath(EngineFixture::PARTIAL, 'nested/include.tpl'));
 
 		try {
-			$engine->buildPath(EngineFixture::ELEMENT, 'invalidFile');
+			$engine->buildPath(EngineFixture::PARTIAL, 'invalidFile');
 			$this->assertTrue(false);
+
 		} catch (Exception $e) {
 			$this->assertTrue(true);
-		}*/
+		}
 	}
 
 	/**

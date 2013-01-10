@@ -11,6 +11,7 @@ namespace Titon\View\Helper;
 
 use Titon\Common\Base;
 use Titon\Common\Traits\Attachable;
+use Titon\Route\Router;
 use Titon\Utility\Sanitize;
 use Titon\Utility\String;
 use Titon\View\Engine;
@@ -142,8 +143,7 @@ abstract class AbstractHelper extends Base implements Helper {
 	 * @return string
 	 */
 	public function url($url = '/') {
-		// @TODO
-		//return Router::detect($url);
+		return Router::detect($url);
 	}
 
 }
