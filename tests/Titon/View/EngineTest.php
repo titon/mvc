@@ -166,7 +166,7 @@ class EngineTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(TEMP_DIR . '/private/includes/include.tpl', $engine->buildPath(EngineFixture::PARTIAL, 'include'));
 		$this->assertEquals(TEMP_DIR . '/private/includes/nested/include.tpl', $engine->buildPath(EngineFixture::PARTIAL, 'nested/include'));
-		$this->assertEquals(TEMP_DIR . '/private/includes/nested/include.tpl', $engine->buildPath(EngineFixture::PARTIAL, 'nested\include'));
+		$this->assertEquals(TEMP_DIR . '/private/includes/nested\include.tpl', $engine->buildPath(EngineFixture::PARTIAL, 'nested\include'));
 		$this->assertEquals(TEMP_DIR . '/private/includes/nested/include.tpl', $engine->buildPath(EngineFixture::PARTIAL, 'nested/include.tpl'));
 
 		try {

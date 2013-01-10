@@ -36,6 +36,16 @@ interface Engine {
 	public function addPath($paths);
 
 	/**
+	 * Get the file path for a type of template: layout, wrapper, view, partial and custom.
+	 *
+	 * @access public
+	 * @param int $type
+	 * @param string $path
+	 * @return string
+	 */
+	public function buildPath($type, $path = null);
+
+	/**
 	 * The current output within the rendering process. The output changes depending on the current rendering stage.
 	 *
 	 * @access public

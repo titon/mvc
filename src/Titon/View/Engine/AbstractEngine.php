@@ -149,7 +149,7 @@ abstract class AbstractEngine extends Base implements Engine {
 	 * @return string
 	 * @throws \Titon\View\Exception
 	 */
-	public function buildPath($type = self::VIEW, $path = null) {
+	public function buildPath($type, $path = null) {
 		$paths = $this->getPaths();
 		$config = $this->config->get();
 		$template = $config['template'];
@@ -162,7 +162,7 @@ abstract class AbstractEngine extends Base implements Engine {
 		switch ($type) {
 			case self::LAYOUT:
 				if ($config['layout']) {
-					$view = sprintf('/private/layouts/%s', $this->_preparePath($config['layout'], true));
+					$view = sprintf('/private/layouts/%s', $this->_preparePath($config['layout'], $template['ext']));
 				}
 			break;
 
@@ -182,7 +182,7 @@ abstract class AbstractEngine extends Base implements Engine {
 
 			case self::VIEW:
 			default:
-				$view = sprintf('/public/%s/%s', $template['controller'], $this->_preparePath($template['action'], true));
+				$view = sprintf('/public/%s/%s', $template['controller'], $this->_preparePath($template['action'], $template['ext']));
 			break;
 		}
 
@@ -303,29 +303,25 @@ abstract class AbstractEngine extends Base implements Engine {
 	 *
 	 * @access protected
 	 * @param string $path
-	 * @param boolean $useExt
+	 * @param string $ext
 	 * @return string
 	 */
-	protected function _preparePath($path, $useExt = false) {
-		return $this->cache([__METHOD__, $path], function() use ($path, $useExt) {
-			$path = Loader::ds($path);
+	protected function _preparePath($path, $ext = null) {
+		return $this->cache([__METHOD__, $path], function() use ($path, $ext) {
 			$tplExt = $this->config->ext;
 			$extLen = strlen($tplExt) + 1;
 
+			// Remove template extension
 			if (mb_substr($path, -$extLen) === '.' . $tplExt) {
 				$path = mb_substr($path, 0, (mb_strlen($path) - $extLen));
 			}
 
-			if ($useExt) {
-				try {
-					if ($ext = $this->config->get('template.ext')) {
-						$path .= '.' . $ext;
-					}
-				} catch (\Exception $e) {
-					// Nothing
-				}
+			// Type extension like html
+			if ($ext) {
+				$path .= '.' . $ext;
 			}
 
+			// Template extension like tpl
 			$path .= '.' . $tplExt;
 
 			return $path;
