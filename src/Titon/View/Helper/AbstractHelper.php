@@ -86,7 +86,11 @@ abstract class AbstractHelper extends Base implements Helper {
 	 */
 	public function escape($value, $escape = null) {
 		if ($escape === null) {
-			$escape = $this->config->get('escape') ?: true;
+			try {
+				$escape = $this->config->get('escape');
+			} catch (\Exception $e) {
+				$escape = true;
+			}
 		}
 
 		if ($escape) {
@@ -127,7 +131,7 @@ abstract class AbstractHelper extends Base implements Helper {
 	 * @return string
 	 */
 	public function tag($tag, array $params = []) {
-		return String::insert($this->_tags[$tag], $params, ['escape' => false]) . "\n";
+		return String::insert($this->_tags[$tag], $params, ['escape' => false]) . PHP_EOL;
 	}
 
 	/**

@@ -499,8 +499,7 @@ class FormHelper extends AbstractHelper {
 		];
 
 		if (!empty($attributes['action'])) {
-			// @TODO
-			//$attributes['action'] = Router::detect($attributes['action']);
+			$attributes['action'] = (string) $attributes['action']; // Router::detect($attributes['action']);
 		}
 
 		$output = $this->tag('form_open', [
@@ -740,7 +739,7 @@ class FormHelper extends AbstractHelper {
 	 * @return string
 	 */
 	public function value($key) {
-		return Hash::extract($_REQUEST, $key);
+		return Hash::extract($_POST ?: $_GET, $key);
 	}
 
 	/**
@@ -814,7 +813,7 @@ class FormHelper extends AbstractHelper {
 	 * @return string
 	 */
 	protected function _options(array $options = [], $selected = null, $empty = null) {
-		$output = "\n";
+		$output = PHP_EOL;
 
 		if ($empty) {
 			$output .= $this->tag('option', [

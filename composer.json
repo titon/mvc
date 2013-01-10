@@ -14,7 +14,8 @@
 	"require": {
 		"php": ">=5.4.0",
 		"titon/common": "*",
-		"titon/utility": "*"
+		"titon/utility": "*",
+		"titon/route": "*"
 	},
 	"autoload": {
 		"psr-0": { "Titon\\View": "src/" }

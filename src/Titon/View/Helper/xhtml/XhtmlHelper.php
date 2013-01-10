@@ -57,7 +57,7 @@ class XhtmlHelper extends HtmlHelper {
 			$type = 'default';
 		}
 
-		return $docTypes[$type] . "\n";
+		return $docTypes[$type] . PHP_EOL;
 	}
 
 	/**
@@ -70,7 +70,11 @@ class XhtmlHelper extends HtmlHelper {
 	 */
 	public function escape($value, $escape = null) {
 		if ($escape === null) {
-			$escape = $this->config->get('escape') ?: true;
+			try {
+				$escape = $this->config->get('escape');
+			} catch (\Exception $e) {
+				$escape = true;
+			}
 		}
 
 		if ($escape) {

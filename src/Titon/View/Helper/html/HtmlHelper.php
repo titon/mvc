@@ -58,7 +58,7 @@ class HtmlHelper extends AbstractHelper {
 	 * @return string
 	 */
 	public function doctype() {
-		return "<!DOCTYPE html>\n";
+		return '<!DOCTYPE html>' . PHP_EOL;
 	}
 
 	/**
