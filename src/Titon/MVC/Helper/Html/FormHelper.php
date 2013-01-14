@@ -246,7 +246,7 @@ class FormHelper extends AbstractHelper {
 		$attributes = $this->_prepare(['name' => $input], $attributes);
 		$format = $this->config('dayFormat', $attributes, 'j');
 		$options = [];
-		$config = $this->config->get();
+		$config = $this->config->all();
 
 		for ($i = 1; $i <= 31; ++$i) {
 			$options[$i] = date($format, mktime(0, 0, 0, $config['month'], $i, $config['year']));
@@ -361,7 +361,7 @@ class FormHelper extends AbstractHelper {
 	public function initialize() {
 		parent::initialize();
 
-		$this->config->set(array_diff_key([
+		$this->config->add(array_diff_key([
 			'day' => date('j'),
 			'dayFormat' => 'j',
 			'month' => date('n'),
@@ -373,7 +373,7 @@ class FormHelper extends AbstractHelper {
 			'minute' => date('i'),
 			'second' => date('s'),
 			'meridiem' => date('a')
-		], $this->config->get()));
+		], $this->config->all()));
 	}
 
 	/**
@@ -759,7 +759,7 @@ class FormHelper extends AbstractHelper {
 	public function year($input, array $attributes = []) {
 		$attributes = $this->_prepare(['name' => $input], $attributes);
 		$options = [];
-		$config = $this->config->get();
+		$config = $this->config->all();
 
 		$reverse = $this->config('reverseYear', $attributes, false);
 		$format	= $this->config('yearFormat', $attributes, 'Y');

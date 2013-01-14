@@ -856,7 +856,7 @@ class FormHelperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('<form action="" enctype="multipart/form-data" id="model-form" method="post">' . PHP_EOL, $helper->open('Model', ['type' => 'file']));
 
 		// action
-		$this->assertEquals('<form action="/pages/search" enctype="application/x-www-form-urlencoded" id="model-form" method="get">' . PHP_EOL, $helper->open('model', ['method' => 'get', 'action' => ['controller' => 'search']]));
+		$this->assertEquals('<form action="/common/search" enctype="application/x-www-form-urlencoded" id="model-form" method="get">' . PHP_EOL, $helper->open('model', ['method' => 'get', 'action' => ['controller' => 'search']]));
 
 		// legend
 		$this->assertEquals(

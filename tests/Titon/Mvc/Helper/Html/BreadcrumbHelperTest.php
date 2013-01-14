@@ -41,7 +41,7 @@ class BreadcrumbHelperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals([
 			'<a href="/">Title</a>' . PHP_EOL,
 			'<a class="tier2" href="/static/url">Title 2</a>' . PHP_EOL,
-			'<a class="tier3" href="/pages/index/view/123">Title 3</a>' . PHP_EOL
+			'<a class="tier3" href="/common/index/view/123">Title 3</a>' . PHP_EOL
 		], $helper->generate());
 	}
 

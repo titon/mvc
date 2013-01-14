@@ -88,8 +88,8 @@ class HelperTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('/', $this->object->url());
 		$this->assertEquals('/', $this->object->url('/'));
 		$this->assertEquals('/static/url', $this->object->url('/static/url'));
-		$this->assertEquals('/pages/index/action', $this->object->url(['action' => 'action']));
-		$this->assertEquals('/pages/index/index/123/abc', $this->object->url([123, 'abc']));
+		$this->assertEquals('/common/index/action', $this->object->url(['action' => 'action']));
+		$this->assertEquals('/common/index/index/123/abc', $this->object->url([123, 'abc']));
 	}
 
 }
