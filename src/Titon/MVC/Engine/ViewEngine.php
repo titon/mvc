@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright	Copyright 2010-2013, The Titon Project
+ * @license		http://opensource.org/licenses/bsd-license.php
+ * @link		http://titon.io
  */
 
 namespace Titon\Mvc\Engine;
@@ -19,7 +17,6 @@ class ViewEngine extends AbstractEngine {
 	/**
 	 * Opens and renders a partial view element within the current document.
 	 *
-	 * @access public
 	 * @param string $path
 	 * @param array $variables
 	 * @return string
@@ -31,7 +28,6 @@ class ViewEngine extends AbstractEngine {
 	/**
 	 * Primary method to render a single view template.
 	 *
-	 * @access public
 	 * @param string $path
 	 * @param array $variables
 	 * @return string
@@ -53,7 +49,6 @@ class ViewEngine extends AbstractEngine {
 	 * controller and action path. Second stage, wrap the first template in any wrappers. Third stage,
 	 * wrap the current template output with the layout. Return the final result.
 	 *
-	 * @access public
 	 * @param boolean $cache
 	 * @return string
 	 * @throws \Titon\Mvc\Exception

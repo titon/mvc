@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright	Copyright 2010-2013, The Titon Project
+ * @license		http://opensource.org/licenses/bsd-license.php
+ * @link		http://titon.io
  */
 
 namespace Titon\Mvc\Helper\Html;
@@ -20,7 +18,6 @@ class BreadcrumbHelper extends AbstractHelper {
 	/**
 	 * A list of all breadcrumbs in the trail, with the title, url and attributes.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_breadcrumbs = [];
@@ -28,7 +25,6 @@ class BreadcrumbHelper extends AbstractHelper {
 	/**
 	 * Add a link to the breadcrumbs.
 	 *
-	 * @access public
 	 * @param string $title
 	 * @param string|array $url
 	 * @param array $attributes
@@ -43,7 +39,6 @@ class BreadcrumbHelper extends AbstractHelper {
 	/**
 	 * Return an array of breadcrumbs formatted as anchor links.
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function generate() {
@@ -61,7 +56,6 @@ class BreadcrumbHelper extends AbstractHelper {
 	/**
 	 * Attach the HtmlHelper.
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function initialize() {

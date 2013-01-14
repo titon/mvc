@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright	Copyright 2010-2013, The Titon Project
+ * @license		http://opensource.org/licenses/bsd-license.php
+ * @link		http://titon.io
  */
 
 namespace Titon\Mvc\Helper\Html;
@@ -23,7 +21,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Forms generated for the current request.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_forms = [];
@@ -31,7 +28,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Fields that have failed validation.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_invalid = [];
@@ -39,7 +35,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * The model currently being used to generate a form.
 	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_model = 'Form';
@@ -47,7 +42,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * A list of all HTML tags used within the current helper.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = [
@@ -68,7 +62,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Parses an array of attributes to the HTML equivalent.
 	 *
-	 * @access public
 	 * @param array $attributes
 	 * @param array $remove
 	 * @return string
@@ -86,7 +79,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a single checkbox element.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param mixed $label
 	 * @param array $attributes
@@ -133,7 +125,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create multiple checkboxes.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $options
 	 * @param array $attributes
@@ -156,7 +147,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Close a form by outputting the form close tag. If the submit button text or legend is present, append those elements.
 	 *
-	 * @access public
 	 * @param mixed $submit
 	 * @return string
 	 */
@@ -179,7 +169,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Get a value from the attributes if it exists, else check the Helper config, and lastly return the default if nothing was found.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @param array $attributes
 	 * @param mixed $default
@@ -199,7 +188,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a select dropdown for a calendar date: month, day, year.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 * @return string
@@ -223,7 +211,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Combine both date() and time() to output all datetime related dropdowns.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 * @return string
@@ -235,7 +222,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a select dropdown for calendar days, with a range of 1-31.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 *		dayFormat: How the day should be formatted
@@ -261,7 +247,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a file upload and browse input field.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 * @return string
@@ -277,7 +262,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a hidden input field.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 * @return string
@@ -298,7 +282,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a select dropdown for hours, with a range of 0-23, or 1-12.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 *		24hour: Should the times be 0-23 or 1-12
@@ -339,7 +322,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a image submit input field.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 * @return string
@@ -355,7 +337,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Configure the class with the current date settings, instead of calling them multiple times.
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function initialize() {
@@ -379,7 +360,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a label form for an input field.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param string $title
 	 * @param array $attributes
@@ -399,7 +379,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a select dropdown for a time meridiem.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 *		defaultMeridiem: The default selected meridiem
@@ -418,7 +397,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a select dropdown for minutes, with a range of 1-60.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 *		defaultMinute: The default selected minute
@@ -441,7 +419,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a select dropdown for calendar months, with a range of 1-12.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 *		monthFormat: Format the month names in the dropdown
@@ -466,7 +443,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Open a form by outputting the form open tag.
 	 *
-	 * @access public
 	 * @param string $model
 	 * @param array $attributes
 	 * @return string
@@ -533,7 +509,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a multiple radio buttons based on the passed options.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $options
 	 * @param array $attributes
@@ -580,7 +555,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a form reset button.
 	 *
-	 * @access public
 	 * @param string $title
 	 * @param array $attributes
 	 * @return string
@@ -600,7 +574,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a select dropdown for seconds, with a range of 1-60.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 *		defaultSecond: The default selected second
@@ -623,7 +596,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a select list with values based off an options array.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $options
 	 * @param array $attributes
@@ -650,7 +622,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a form submit button.
 	 *
-	 * @access public
 	 * @param string $title
 	 * @param array $attributes
 	 * @return string
@@ -670,7 +641,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a basic input text field.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 * @return string
@@ -686,7 +656,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a textarea field and determine the correct value content.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 * @return string
@@ -703,7 +672,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create multiple select dropdowns for hours, minutes, seconds and the meridiem.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 * @return string
@@ -735,7 +703,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Check to see if a value exists in the request data, if so return.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @return string
 	 */
@@ -746,7 +713,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a select dropdown for calendar years, with a user defined range.
 	 *
-	 * @access public
 	 * @param string $input
 	 * @param array $attributes
 	 *		startYear: The year to start the range
@@ -783,7 +749,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Generate a CSS ID name.
 	 *
-	 * @access public
 	 * @param string $name
 	 * @return string
 	 */
@@ -807,7 +772,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Create a list of options for a select dropdown. Can create an optgroup if a multi-dimensional array is used.
 	 *
-	 * @access protected
 	 * @param array $options
 	 * @param mixed $selected
 	 * @param mixed $empty
@@ -856,7 +820,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Parse all the default and required attributes that are used within the input field.
 	 *
-	 * @access protected
 	 * @param array $defaults
 	 * @param array $attributes
 	 * @return array
@@ -893,7 +856,6 @@ class FormHelper extends AbstractHelper {
 	/**
 	 * Return the currently selected value, or return a default value.
 	 *
-	 * @access protected
 	 * @param array $attributes
 	 * @param string $key
 	 * @param mixed $default

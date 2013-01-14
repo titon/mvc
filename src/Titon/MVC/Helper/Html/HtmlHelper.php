@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright	Copyright 2010-2013, The Titon Project
+ * @license		http://opensource.org/licenses/bsd-license.php
+ * @link		http://titon.io
  */
 
 namespace Titon\Mvc\Helper\Html;
@@ -21,7 +19,6 @@ class HtmlHelper extends AbstractHelper {
 	/**
 	 * Mapping of HTML tags for this helper.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = [
@@ -36,7 +33,6 @@ class HtmlHelper extends AbstractHelper {
 	/**
 	 * Create an HTML anchor link.
 	 *
-	 * @access public
 	 * @param string $title
 	 * @param string|array $url
 	 * @param array $attributes
@@ -54,7 +50,6 @@ class HtmlHelper extends AbstractHelper {
 	/**
 	 * Return the HTML5 doctype.
 	 *
-	 * @access public
 	 * @return string
 	 */
 	public function doctype() {
@@ -64,7 +59,6 @@ class HtmlHelper extends AbstractHelper {
 	/**
 	 * Create an image element.
 	 *
-	 * @access public
 	 * @param string $path
 	 * @param array $attributes
 	 * @param mixed $url
@@ -94,7 +88,6 @@ class HtmlHelper extends AbstractHelper {
 	/**
 	 * Create a link element.
 	 *
-	 * @access public
 	 * @param string $path
 	 * @param array $attributes
 	 * @return string
@@ -116,7 +109,6 @@ class HtmlHelper extends AbstractHelper {
 	/**
 	 * Creates a mailto hyperlink. Emails will be obfuscated to hide against spambots and harvesters.
 	 *
-	 * @access public
 	 * @param string $email
 	 * @param array $attributes
 	 * @return string
@@ -140,7 +132,6 @@ class HtmlHelper extends AbstractHelper {
 	/**
 	 * Create a meta element. Has predefined values for common meta tags.
 	 *
-	 * @access public
 	 * @param string $type
 	 * @param string $content
 	 * @param array $attributes
@@ -198,7 +189,6 @@ class HtmlHelper extends AbstractHelper {
 	/**
 	 * Create a script element to include a JS file or to encompass JS code.
 	 *
-	 * @access public
 	 * @param string $source
 	 * @param boolean $isBlock
 	 * @return string
@@ -222,7 +212,6 @@ class HtmlHelper extends AbstractHelper {
 	/**
 	 * Create a style element to encompass CSS.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -236,7 +225,6 @@ class HtmlHelper extends AbstractHelper {
 	/**
 	 * Grab the page title if it has been set.
 	 *
-	 * @access public
 	 * @param string|array $separator
 	 * @return string
 	 */

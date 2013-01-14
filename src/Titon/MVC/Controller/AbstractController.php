@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright	Copyright 2010-2013, The Titon Project
+ * @license		http://opensource.org/licenses/bsd-license.php
+ * @link		http://titon.io
  */
 
 namespace Titon\Mvc\Controller;
@@ -39,7 +37,6 @@ abstract class AbstractController extends Base implements Controller {
 	 *	ext 			- The extension within the address bar, and what content-type to render the page as
 	 *	args 			- Action arguments
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_config = [
@@ -53,7 +50,6 @@ abstract class AbstractController extends Base implements Controller {
 	/**
 	 * Dispatch the request to the correct controller action. Checks to see if the action exists and is not protected.
 	 *
-	 * @access public
 	 * @param string $action
 	 * @param array $args
 	 * @return mixed
@@ -81,7 +77,6 @@ abstract class AbstractController extends Base implements Controller {
 	/**
 	 * Forward the current request to a new action, instead of doing an additional HTTP request.
 	 *
-	 * @access public
 	 * @param string $action
 	 * @param array $args
 	 * @return mixed
@@ -95,7 +90,6 @@ abstract class AbstractController extends Base implements Controller {
 	/**
 	 * Attach the request and response objects. Can overwrite or remove for high customization.
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function initialize() {
@@ -111,7 +105,6 @@ abstract class AbstractController extends Base implements Controller {
 	/**
 	 * Trigger a custom Action class.
 	 *
-	 * @access public
 	 * @param \Titon\Mvc\Action $action
 	 * @return mixed
 	 */
@@ -122,7 +115,6 @@ abstract class AbstractController extends Base implements Controller {
 	/**
 	 * Triggered before the controller processes the requested action.
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function preProcess() {
@@ -132,7 +124,6 @@ abstract class AbstractController extends Base implements Controller {
 	/**
 	 * Triggered after the action processes, but before the view renders.
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function postProcess() {

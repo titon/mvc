@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright	Copyright 2010-2013, The Titon Project
+ * @license		http://opensource.org/licenses/bsd-license.php
+ * @link		http://titon.io
  */
 
 namespace Titon\Mvc\Engine;
@@ -52,7 +50,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	 *	custom		- Custom folder name for private templates
 	 * 	ext			- The view template file extension
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_config = [
@@ -73,7 +70,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * The rendered content used within the wrapper or the layout.
 	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_content = null;
@@ -81,7 +77,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Data to pass as variables to each template.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_data = [];
@@ -89,7 +84,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * List of added helpers.
 	 *
-	 * @access protected
 	 * @var \Titon\Mvc\Helper[]
 	 */
 	protected $_helpers = [];
@@ -97,7 +91,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Template lookup paths.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_paths = [];
@@ -105,7 +98,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Has the view been rendered.
 	 *
-	 * @access protected
 	 * @var boolean
 	 */
 	protected $_rendered = false;
@@ -113,7 +105,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Add a helper to the view rendering engine.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @param \Titon\Mvc\Helper $helper
 	 * @return \Titon\Mvc\Engine
@@ -130,7 +121,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Add a template lookup path.
 	 *
-	 * @access public
 	 * @param string|array $paths
 	 * @return \Titon\Mvc\Engine
 	 */
@@ -145,7 +135,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Get the file path for a type of template: layout, wrapper, view, partial.
 	 *
-	 * @access public
 	 * @param int $type
 	 * @param string $path
 	 * @return string
@@ -200,7 +189,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * The output of the rendering process. The output changes depending on the current rendering stage.
 	 *
-	 * @access public
 	 * @return string
 	 */
 	public function content() {
@@ -210,7 +198,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Return the data based on the given key, or return all data.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @return string
 	 */
@@ -221,7 +208,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Return a single helper by key.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @return \Titon\Mvc\Helper
 	 */
@@ -232,7 +218,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Return all the helpers.
 	 *
-	 * @access public
 	 * @return \Titon\Mvc\Helper[]
 	 */
 	public function getHelpers() {
@@ -242,7 +227,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Return all the template lookup paths.
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getPaths() {
@@ -252,7 +236,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Set a variable to the view. The variable name will be inflected if it is invalid.
 	 *
-	 * @access public
 	 * @param string|array $key
 	 * @param mixed $value
 	 * @return \Titon\Mvc\Engine
@@ -272,7 +255,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Custom method to overwrite and configure the view engine manually.
 	 *
-	 * @access public
 	 * @param mixed $options
 	 * @return \Titon\Mvc\Engine
 	 */
@@ -303,7 +285,6 @@ abstract class AbstractEngine extends Base implements Engine {
 	/**
 	 * Prepare a path by converting slashes and removing .tpl.
 	 *
-	 * @access protected
 	 * @param string $path
 	 * @param string $ext
 	 * @return string

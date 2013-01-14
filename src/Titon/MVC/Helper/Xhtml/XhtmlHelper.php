@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright	Copyright 2010-2013, The Titon Project
+ * @license		http://opensource.org/licenses/bsd-license.php
+ * @link		http://titon.io
  */
 
 namespace Titon\Mvc\Helper\Xhtml;
@@ -20,7 +18,6 @@ class XhtmlHelper extends HtmlHelper {
 	/**
 	 * Mapping of XHTML tags for this helper.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = [
@@ -35,7 +32,6 @@ class XhtmlHelper extends HtmlHelper {
 	/**
 	 * Return the XHTML doctype.
 	 *
-	 * @access public
 	 * @param string $type
 	 * @return string
 	 */
@@ -63,7 +59,6 @@ class XhtmlHelper extends HtmlHelper {
 	/**
 	 * Escape a value.
 	 *
-	 * @access public
 	 * @param string $value
 	 * @param boolean|null $escape
 	 * @return string

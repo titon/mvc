@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright	Copyright 2010-2013, The Titon Project
+ * @license		http://opensource.org/licenses/bsd-license.php
+ * @link		http://titon.io
  */
 
 namespace Titon\Mvc\Helper\Xhtml;
@@ -20,7 +18,6 @@ class FormHelper extends HtmlFormHelper {
 	/**
 	 * A list of all XHTML tags used within the current helper.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = [

@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright	Copyright 2010-2013, The Titon Project
+ * @license		http://opensource.org/licenses/bsd-license.php
+ * @link		http://titon.io
  */
 
 namespace Titon\Mvc\Helper\Html;
@@ -26,7 +24,6 @@ class AssetHelper extends AbstractHelper {
 	/**
 	 * A list of JavaScript files to include in the current page.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_scripts = [];
@@ -34,7 +31,6 @@ class AssetHelper extends AbstractHelper {
 	/**
 	 * A list of CSS stylesheets to include in the current page.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_stylesheets = [];
@@ -42,7 +38,6 @@ class AssetHelper extends AbstractHelper {
 	/**
 	 * Add a JavaScript file to the current page request.
 	 *
-	 * @access public
 	 * @param string $script
 	 * @param string $location
 	 * @param int $order
@@ -77,7 +72,6 @@ class AssetHelper extends AbstractHelper {
 	/**
 	 * Add a CSS stylesheet to the current page request.
 	 *
-	 * @access public
 	 * @param string $sheet
 	 * @param string $media
 	 * @param int $order
@@ -109,7 +103,6 @@ class AssetHelper extends AbstractHelper {
 	/**
 	 * Attach the HtmlHelper.
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function initialize() {
@@ -121,7 +114,6 @@ class AssetHelper extends AbstractHelper {
 	/**
 	 * Return all the attached scripts. Uses the HTML helper to build the HTML tags.
 	 *
-	 * @access public
 	 * @param string $location
 	 * @param string $env
 	 * @return string
@@ -146,7 +138,6 @@ class AssetHelper extends AbstractHelper {
 	/**
 	 * Return all the attached stylesheets. Uses the HTML helper to build the HTML tags.
 	 *
-	 * @access public
 	 * @param string $env
 	 * @return string
 	 */

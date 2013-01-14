@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright	Copyright 2010-2013, The Titon Project
+ * @license		http://opensource.org/licenses/bsd-license.php
+ * @link		http://titon.io
  */
 
 namespace Titon\Mvc;
@@ -19,7 +17,6 @@ interface Engine {
 	/**
 	 * Add a helper to the view rendering engine.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @param \Titon\Mvc\Helper $helper
 	 * @return \Titon\Mvc\Engine
@@ -29,7 +26,6 @@ interface Engine {
 	/**
 	 * Add a template lookup path.
 	 *
-	 * @access public
 	 * @param string|array $paths
 	 * @return \Titon\Mvc\Engine
 	 */
@@ -38,7 +34,6 @@ interface Engine {
 	/**
 	 * Get the file path for a type of template: layout, wrapper, view, partial and custom.
 	 *
-	 * @access public
 	 * @param int $type
 	 * @param string $path
 	 * @return string
@@ -48,7 +43,6 @@ interface Engine {
 	/**
 	 * The current output within the rendering process. The output changes depending on the current rendering stage.
 	 *
-	 * @access public
 	 * @return string
 	 */
 	public function content();
@@ -56,7 +50,6 @@ interface Engine {
 	/**
 	 * Return the data based on the given key, or return all data.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @return string
 	 */
@@ -65,7 +58,6 @@ interface Engine {
 	/**
 	 * Return a single helper by key.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @return \Titon\Mvc\Helper
 	 */
@@ -74,7 +66,6 @@ interface Engine {
 	/**
 	 * Return all the helpers.
 	 *
-	 * @access public
 	 * @return \Titon\Mvc\Helper[]
 	 */
 	public function getHelpers();
@@ -82,7 +73,6 @@ interface Engine {
 	/**
 	 * Return all the template lookup paths.
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getPaths();
@@ -90,7 +80,6 @@ interface Engine {
 	/**
 	 * Opens and renders a partial view element within the current document.
 	 *
-	 * @access public
 	 * @param string $path
 	 * @param array $variables
 	 * @return string
@@ -100,7 +89,6 @@ interface Engine {
 	/**
 	 * Primary method to render a single view template.
 	 *
-	 * @access public
 	 * @param string $path
 	 * @param array $variables
 	 * @return string
@@ -114,7 +102,6 @@ interface Engine {
 	 * Third stage, wrap the current template output with the layout.
 	 * Return the final result.
 	 *
-	 * @access public
 	 * @param boolean $cache
 	 * @return string
 	 */
@@ -123,7 +110,6 @@ interface Engine {
 	/**
 	 * Set a variable to the view. The variable name will be inflected if it is invalid.
 	 *
-	 * @access public
 	 * @param string|array $key
 	 * @param mixed $value
 	 * @return \Titon\Mvc\Engine

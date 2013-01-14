@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright	Copyright 2010-2013, The Titon Project
+ * @license		http://opensource.org/licenses/bsd-license.php
+ * @link		http://titon.io
  */
 
 namespace Titon\Mvc\Helper;
@@ -27,7 +25,6 @@ abstract class AbstractHelper extends Base implements Helper {
 	/**
 	 * Mapping of HTML tags.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = [];
@@ -35,7 +32,6 @@ abstract class AbstractHelper extends Base implements Helper {
 	/**
 	 * Engine object.
 	 *
-	 * @access protected
 	 * @var \Titon\Mvc\Engine
 	 */
 	protected $_engine;
@@ -43,7 +39,6 @@ abstract class AbstractHelper extends Base implements Helper {
 	/**
 	 * Parses an array of attributes to the HTML equivalent.
 	 *
-	 * @access public
 	 * @param array $attributes
 	 * @param array $remove
 	 * @return string
@@ -80,7 +75,6 @@ abstract class AbstractHelper extends Base implements Helper {
 	/**
 	 * Escape a value.
 	 *
-	 * @access public
 	 * @param string $value
 	 * @param boolean|null $escape
 	 * @return string
@@ -104,7 +98,6 @@ abstract class AbstractHelper extends Base implements Helper {
 	/**
 	 * Triggered before a template is rendered by the engine.
 	 *
-	 * @access public
 	 * @param \Titon\Mvc\Engine $engine
 	 * @return void
 	 */
@@ -115,7 +108,6 @@ abstract class AbstractHelper extends Base implements Helper {
 	/**
 	 * Triggered after a template is rendered by the engine.
 	 *
-	 * @access public
 	 * @param \Titon\Mvc\Engine $engine
 	 * @return void
 	 */
@@ -126,7 +118,6 @@ abstract class AbstractHelper extends Base implements Helper {
 	/**
 	 * Generates an HTML tag if it exists.
 	 *
-	 * @access public
 	 * @param string $tag
 	 * @param array $params
 	 * @return string
@@ -138,7 +129,6 @@ abstract class AbstractHelper extends Base implements Helper {
 	/**
 	 * Return a router generated URL.
 	 *
-	 * @access public
 	 * @param mixed $url
 	 * @return string
 	 */
