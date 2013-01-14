@@ -16,5 +16,5 @@ if (!file_exists(VENDOR_DIR . '/autoload.php')) {
 }
 
 $loader = require VENDOR_DIR . '/autoload.php';
-$loader->add('Titon\\View', TEST_DIR);
+$loader->add('Titon\\Mvc', TEST_DIR);
 $loader->add('Titon\\Test', TEST_DIR);

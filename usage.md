@@ -29,8 +29,8 @@ views/
 You can also add helpers that can be accessed from within the views.
 
 ```php
-use Titon\View\Helper\Html\HtmlHelper;
-use Titon\View\Helper\Html\FormHelper;
+use Titon\Mvc\Helper\Html\HtmlHelper;
+use Titon\Mvc\Helper\Html\FormHelper;
 
 $engine->addHelper('html', new HtmlHelper());
 $engine->addHelper('form', new FormHelper());

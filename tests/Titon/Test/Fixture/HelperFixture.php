@@ -9,10 +9,10 @@
 
 namespace Titon\Test\Fixture;
 
-use Titon\View\Helper\AbstractHelper;
+use Titon\Mvc\Helper\AbstractHelper;
 
 /**
- * Fixture for Titon\View\Helper.
+ * Fixture for Titon\Mvc\Helper.
  */
 class HelperFixture extends AbstractHelper {
 

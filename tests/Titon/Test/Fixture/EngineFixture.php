@@ -9,10 +9,10 @@
 
 namespace Titon\Test\Fixture;
 
-use Titon\View\Engine\AbstractEngine;
+use Titon\Mvc\Engine\AbstractEngine;
 
 /**
- * Fixture for Titon\View\Engine.
+ * Fixture for Titon\Mvc\Engine.
  */
 class EngineFixture extends AbstractEngine {
 
