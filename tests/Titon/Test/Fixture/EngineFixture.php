@@ -16,8 +16,8 @@ use Titon\Mvc\Engine\AbstractEngine;
  */
 class EngineFixture extends AbstractEngine {
 
-	public function open($path, array $variables = []) {}
+	public function open($partial, array $variables = []) {}
 	public function render($path, array $variables = []) {}
-	public function run($cache = true) {}
+	public function getExtension() {}
 
 }

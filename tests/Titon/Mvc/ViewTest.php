@@ -23,7 +23,7 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
 	public $object;
 
 	/**
-	 * Initialize the view engine.
+	 * Initialize the view.
 	 */
 	protected function setUp() {
 		$this->object = new View([
