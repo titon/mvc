@@ -291,15 +291,17 @@ class View {
 				$loop[] = ['template' => $layout, 'type' => self::LAYOUT];
 			}
 
-			foreach ($loop as $temp) {
-				$this->notifyObjects('preRender');
+			foreach ($loop as $options) {
+				list($template, $type) = $options;
+
+				$this->notifyObjects('preRender', [$engine, $type]);
 
 				$output .= $this->render(
-					$this->locateTemplate($temp['template'], $temp['type']),
+					$this->locateTemplate($template, $type),
 					$this->getVariables()
 				);
 
-				$this->notifyObjects('postRender');
+				$this->notifyObjects('postRender', [$engine, $type]);
 			}
 
 			return $output;

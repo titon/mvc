@@ -14,6 +14,7 @@ use Titon\Utility\Sanitize;
 use Titon\Utility\String;
 use Titon\Mvc\Engine;
 use Titon\Mvc\Helper;
+use Titon\Mvc\View;
 
 /**
  * The Helper class acts as the base for all children helpers to extend.
@@ -35,6 +36,13 @@ abstract class AbstractHelper extends Base implements Helper {
 	 * @var \Titon\Mvc\Engine
 	 */
 	protected $_engine;
+
+	/**
+	 * View object.
+	 *
+	 * @var \Titon\Mvc\View
+	 */
+	protected $_view;
 
 	/**
 	 * Parses an array of attributes to the HTML equivalent.
@@ -98,20 +106,26 @@ abstract class AbstractHelper extends Base implements Helper {
 	/**
 	 * Triggered before a template is rendered by the engine.
 	 *
+	 * @param \Titon\Mvc\View $view
 	 * @param \Titon\Mvc\Engine $engine
+	 * @param int $type
 	 * @return void
 	 */
-	public function preRender(Engine $engine) {
+	public function preRender(View $view, Engine $engine, $type) {
+		$this->_view = $view;
 		$this->_engine = $engine;
 	}
 
 	/**
 	 * Triggered after a template is rendered by the engine.
 	 *
+	 * @param \Titon\Mvc\View $view
 	 * @param \Titon\Mvc\Engine $engine
+	 * @param int $type
 	 * @return void
 	 */
-	public function postRender(Engine $engine) {
+	public function postRender(View $view, Engine $engine, $type) {
+		$this->_view = $view;
 		$this->_engine = $engine;
 	}
 
