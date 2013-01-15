@@ -66,6 +66,17 @@ class View {
 	protected $_paths = [];
 
 	/**
+	 * Add paths through the constructor.
+	 *
+	 * @param array $paths
+	 */
+	public function __construct(array $paths = []) {
+		if ($paths) {
+			$this->addPaths($paths);
+		}
+	}
+
+	/**
 	 * Added a view helper.
 	 *
 	 * @param string $key
@@ -184,7 +195,7 @@ class View {
 	 * @return string
 	 * @throws \Titon\Mvc\Exception
 	 */
-	public function locateTemplate($template, $type, $folder = null) {
+	public function locateTemplate($template, $type = self::TEMPLATE, $folder = null) {
 		return $this->cache([__METHOD__, $template, $type], function() use ($template, $type, $folder) {
 			$paths = $this->getPaths();
 
@@ -276,7 +287,6 @@ class View {
 	public function run($template) {
 		return $this->cache([__METHOD__, $template], function() use ($template) {
 			$engine = $this->getEngine();
-			$output = '';
 			$loop = [
 				['template' => $template, 'type' => self::TEMPLATE]
 			];
@@ -292,19 +302,20 @@ class View {
 			}
 
 			foreach ($loop as $options) {
-				list($template, $type) = $options;
+				$template = $options['template'];
+				$type = $options['type'];
 
 				$this->notifyObjects('preRender', [$engine, $type]);
 
-				$output .= $this->render(
+				$engine->setContent($this->render(
 					$this->locateTemplate($template, $type),
 					$this->getVariables()
-				);
+				));
 
 				$this->notifyObjects('postRender', [$engine, $type]);
 			}
 
-			return $output;
+			return $engine->getContent();
 		});
 	}
 

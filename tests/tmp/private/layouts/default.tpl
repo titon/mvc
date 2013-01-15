@@ -1,1 +1,1 @@
-<layout><?php echo $this->content(); ?></layout>
+<layout><?php echo $this->getContent(); ?></layout>

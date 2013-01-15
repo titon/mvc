@@ -17,7 +17,7 @@ interface Engine {
 	 *
 	 * @return string
 	 */
-	public function content();
+	public function getContent();
 
 	/**
 	 * Return the template file extension.
@@ -41,6 +41,13 @@ interface Engine {
 	public function getWrapper();
 
 	/**
+	 * Return the view instance.
+	 *
+	 * @return \Titon\Mvc\View
+	 */
+	public function getView();
+
+	/**
 	 * Render a partial template at the defined path.
 	 * Optionally can pass an array of custom variables.
 	 *
@@ -59,6 +66,14 @@ interface Engine {
 	 * @return string
 	 */
 	public function render($path, array $variables = []);
+
+	/**
+	 * Set the content.
+	 *
+	 * @param string $content
+	 * @return \Titon\Mvc\Engine
+	 */
+	public function setContent($content);
 
 	/**
 	 * Set the parent view layer.

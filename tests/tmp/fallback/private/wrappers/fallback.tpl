@@ -1,1 +1,1 @@
-<fallbackWrapper><?php echo $this->content(); ?></fallbackWrapper>
+<fallbackWrapper><?php echo $this->getContent(); ?></fallbackWrapper>

@@ -1,1 +1,1 @@
-<error><?php echo $this->content(); ?></error>
+<error><?php echo $this->getContent(); ?></error>

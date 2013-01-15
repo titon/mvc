@@ -49,7 +49,7 @@ abstract class AbstractEngine extends Base implements Engine {
 	 *
 	 * @return string
 	 */
-	public function content() {
+	public function getContent() {
 		return $this->_content;
 	}
 
@@ -72,6 +72,15 @@ abstract class AbstractEngine extends Base implements Engine {
 	}
 
 	/**
+	 * Return the view instance.
+	 *
+	 * @return \Titon\Mvc\View
+	 */
+	public function getView() {
+		return $this->_view;
+	}
+
+	/**
 	 * Render a partial template at the defined path.
 	 * Optionally can pass an array of custom variables.
 	 *
@@ -81,9 +90,21 @@ abstract class AbstractEngine extends Base implements Engine {
 	 */
 	public function open($partial, array $variables = []) {
 		return $this->render(
-			$this->_view->locateTemplate($partial, View::PARTIAL),
-			$variables + $this->_view->getVariables()
+			$this->getView()->locateTemplate($partial, View::PARTIAL),
+			$variables + $this->getView()->getVariables()
 		);
+	}
+
+	/**
+	 * Set the content.
+	 *
+	 * @param string $content
+	 * @return \Titon\Mvc\Engine
+	 */
+	public function setContent($content) {
+		$this->_content = (string) $content;
+
+		return $this;
 	}
 
 	/**
@@ -117,7 +138,7 @@ abstract class AbstractEngine extends Base implements Engine {
 	 * @return \Titon\Mvc\Engine
 	 */
 	public function wrapWith($name) {
-		$this->_wrapper = (array) $name;
+		$this->_wrapper = $name ? (array) $name : [];
 
 		return $this;
 	}
