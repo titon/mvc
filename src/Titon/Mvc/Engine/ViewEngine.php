@@ -7,6 +7,7 @@
 
 namespace Titon\Mvc\Engine;
 
+use Titon\Mvc\View;
 use Titon\Mvc\Engine\AbstractEngine;
 
 /**
@@ -15,18 +16,17 @@ use Titon\Mvc\Engine\AbstractEngine;
 class ViewEngine extends AbstractEngine {
 
 	/**
-	 * Opens and renders a partial view element within the current document.
+	 * Return the template file extension.
 	 *
-	 * @param string $path
-	 * @param array $variables
 	 * @return string
 	 */
-	public function open($path, array $variables = []) {
-		return $this->render($this->buildPath(self::PARTIAL, $path), $variables + $this->get());
+	public function getExtension() {
+		return 'tpl';
 	}
 
 	/**
-	 * Primary method to render a single view template.
+	 * Render a template at the defined path.
+	 * Optionally can pass an array of custom variables.
 	 *
 	 * @param string $path
 	 * @param array $variables
@@ -42,56 +42,6 @@ class ViewEngine extends AbstractEngine {
 		include $path;
 
 		return ob_get_clean();
-	}
-
-	/**
-	 * Begins the staged rendering process. First stage, the system must render the template based on the module,
-	 * controller and action path. Second stage, wrap the first template in any wrappers. Third stage,
-	 * wrap the current template output with the layout. Return the final result.
-	 *
-	 * @param boolean $cache
-	 * @return string
-	 * @throws \Titon\Mvc\Exception
-	 */
-	public function run($cache = true) {
-		$config = $this->config->all();
-		$data = $this->get();
-
-		if (!$config['render'] || ($cache && $this->_rendered)) {
-			return $this->_content;
-		}
-
-		$this->notifyObjects('preRender');
-
-		// Determine whether to render a custom or regular template
-		$renderLoop = [];
-
-		if ($config['custom']) {
-			$renderLoop[self::CUSTOM] = 'custom';
-		} else {
-			$renderLoop[self::VIEW] = 'template';
-		}
-
-		// Render the layout and wrappers
-		$renderLoop[self::WRAPPER] = 'wrapper';
-		$renderLoop[self::LAYOUT] = 'layout';
-
-		foreach ($renderLoop as $type => $template) {
-			if (empty($config[$template])) {
-				continue;
-			}
-
-			// Only if the file exists, in case wrapper or layout isn't being used
-			if ($path = $this->buildPath($type)) {
-				$this->_content = $this->render($path, $data);
-			}
-		}
-
-		$this->notifyObjects('postRender');
-
-		$this->_rendered = true;
-
-		return $this->_content;
 	}
 
 }

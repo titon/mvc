@@ -8,7 +8,7 @@
 namespace Titon\Mvc;
 
 /**
- * Exception for the view package.
+ * Exception for the MVC package.
  */
 class Exception extends \Exception {
 
