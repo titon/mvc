@@ -1,16 +1,22 @@
-# Titon.View #
+# Titon.MVC #
 
-The Titon view package adds support for template rendering and view helpers.
+The Titon MVC package adds support for the Model-View-Controller paradigm.
 
 ### Features ###
 
-* Engine - Template rendering system
+* Action - Shared controller action logic
+* Controller - HTTP dispatch cycle handler
+* Engine - Template rendering engine
 * Helper - Template helper classes
+* Model - Database access object
+* View - Template management
 
 ### Dependencies ###
 
 * Titon.Common
 * Titon.Utility
+* Titon.Route
+* Titon.HTTP
 
 ### Requirements ###
 

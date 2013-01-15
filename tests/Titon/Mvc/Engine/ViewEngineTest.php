@@ -7,6 +7,7 @@
 
 namespace Titon\Mvc\Engine;
 
+use Titon\Mvc\View;
 use Titon\Mvc\Engine\ViewEngine;
 use \Exception;
 
@@ -16,136 +17,56 @@ use \Exception;
 class ViewEngineTest extends \PHPUnit_Framework_TestCase {
 
 	/**
-	 * Test that open() renders includes and it's variables.
+	 * @var \Titon\Mvc\View
 	 */
-	public function testOpen() {
-		$engine = new ViewEngine([
-			'template' => [
-				'module' => 'pages',
-				'controller' => 'index',
-				'action' => 'index',
-				'ext' => null
-			]
+	public $object;
+
+	/**
+	 * Instantiate the objects.
+	 */
+	protected function setUp() {
+		$this->object = new View([
+			TEMP_DIR,
+			TEMP_DIR . '/fallback'
 		]);
-		$engine->addPath(TEMP_DIR);
-
-		$engine->set('name', 'Titon');
-
-		$this->assertEquals('include.tpl', $engine->open('include'));
-		$this->assertEquals('include.tpl', $engine->open('include.tpl'));
-
-		$this->assertEquals('nested/include.tpl', $engine->open('nested/include'));
-		$this->assertEquals('nested/include.tpl', $engine->open('nested/include.tpl'));
-
-		$data = [
-			'filename' => 'variables.tpl',
-			'type' => 'include'
-		];
-
-		$this->assertEquals('Titon - include - variables.tpl', $engine->open('variables', $data));
-		$this->assertEquals('Titon - include - variables.tpl', $engine->open('variables.tpl', $data));
+		$this->object->setEngine(new ViewEngine());
 	}
 
 	/**
-	 * Test that run() renders the layout, wrapper, view and includes in the correct sequence.
+	 * Test that open() renders partials.
 	 */
-	public function testRun() {
-		$engine = new ViewEngine([
-			'template' => [
-				'module' => 'pages',
-				'controller' => 'index',
-				'action' => 'index',
-				'ext' => null
-			]
-		]);
-		$engine->addPath(TEMP_DIR);
+	public function testOpen() {
+		$this->assertEquals('nested/include.tpl', $this->object->getEngine()->open('nested/include'));
+		$this->assertEquals('nested/include.tpl', $this->object->getEngine()->open('nested/include.tpl'));
+		$this->assertEquals('Titon - partial - variables.tpl', $this->object->getEngine()->open('variables', [
+			'name' => 'Titon',
+			'type' => 'partial',
+			'filename' => 'variables.tpl'
+		]));
 
-		$this->assertEquals('<layout>index.tpl</layout>', $engine->run());
+		try {
+			$this->object->getEngine()->open('foobar');
+			$this->assertTrue(false);
 
-		// with wrapper
-		$engine = new ViewEngine([
-			'template' => [
-				'module' => 'pages',
-				'controller' => 'index',
-				'action' => 'add',
-				'ext' => null
-			],
-			'wrapper' => 'wrapper'
-		]);
-		$engine->addPath(TEMP_DIR);
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
+	}
 
-		$this->assertEquals('<layout><wrapper>add.tpl</wrapper></layout>', $engine->run());
+	/**
+	 * Test that render() parses and returns a template.
+	 */
+	public function testRender() {
+		$this->assertEquals('add.tpl', $this->object->render($this->object->locateTemplate(['index', 'add'])));
+		$this->assertEquals('test-include.tpl nested/include.tpl', $this->object->render($this->object->locateTemplate(['index', 'test-include'])));
 
-		// with fallback layout
-		$engine = new ViewEngine([
-			'template' => [
-				'module' => 'pages',
-				'controller' => 'index',
-				'action' => 'edit',
-				'ext' => null
-			],
-			'layout' => 'fallback'
-		]);
-		$engine->addPath(TEMP_DIR);
-		$engine->addPath(TEMP_DIR . '/fallback');
+		try {
+			$this->object->render($this->object->locateTemplate(['index', 'add']));
+			$this->assertTrue(false);
 
-		$this->assertEquals('<fallbackLayout>edit.tpl</fallbackLayout>', $engine->run());
-
-		// with fallback wrapper
-		$engine = new ViewEngine([
-			'template' => [
-				'module' => 'pages',
-				'controller' => 'index',
-				'action' => 'view',
-				'ext' => null
-			],
-			'wrapper' => 'fallback'
-		]);
-		$engine->addPath(TEMP_DIR);
-		$engine->addPath(TEMP_DIR . '/fallback');
-
-		$this->assertEquals('<layout><fallbackWrapper>view.tpl</fallbackWrapper></layout>', $engine->run());
-
-		// with include
-		$engine = new ViewEngine([
-			'template' => [
-				'module' => 'pages',
-				'controller' => 'index',
-				'action' => 'test-include',
-				'ext' => null
-			]
-		]);
-		$engine->addPath(TEMP_DIR);
-
-		$this->assertEquals('<layout>test-include.tpl nested/include.tpl</layout>', $engine->run());
-
-		// with ext and no layout
-		$engine = new ViewEngine([
-			'template' => [
-				'module' => 'pages',
-				'controller' => 'index',
-				'action' => 'view',
-				'ext' => 'xml'
-			],
-			'layout' => null
-		]);
-		$engine->addPath(TEMP_DIR);
-
-		$this->assertEquals('view.xml.tpl', $engine->run());
-
-		// with ext and blank layout
-		$engine = new ViewEngine([
-			'template' => [
-				'module' => 'pages',
-				'controller' => 'index',
-				'action' => 'view',
-				'ext' => 'xml'
-			],
-			'layout' => 'blank'
-		]);
-		$engine->addPath(TEMP_DIR);
-
-		$this->assertEquals('view.xml.tpl', $engine->run());
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
 	}
 
 }

@@ -16,7 +16,8 @@ use Titon\Mvc\Exception;
 use Titon\Utility\Inflector;
 
 /**
- * @todo
+ * The View acts as the hub between the templates and the rendering engine.
+ * It keeps a mapping of template locations, helpers, data variables and more.
  */
 class View {
 	use Attachable, Cacheable;
@@ -43,13 +44,6 @@ class View {
 	 * @var \Titon\Mvc\Engine
 	 */
 	protected $_engine;
-
-	/**
-	 * Template file extension.
-	 *
-	 * @var string
-	 */
-	protected $_extension = 'tpl';
 
 	/**
 	 * List of helpers.
@@ -240,10 +234,11 @@ class View {
 			}
 
 			// Add template extension
-			$ext = $this->_extension;
+			$ext = $this->getEngine()->getExtension();
+			$extLen = strlen($ext) + 1;
 
-			if (mb_substr($template, -strlen($ext)) === '.' . $ext) {
-				$template = mb_substr($template, 0, (mb_strlen($template) - strlen($ext)));
+			if (mb_substr($template, -$extLen) === '.' . $ext) {
+				$template = mb_substr($template, 0, (mb_strlen($template) - $extLen));
 			}
 
 			$template .= '.' . $ext;
@@ -356,7 +351,6 @@ class View {
 		$engine->setView($this);
 
 		$this->_engine = $engine;
-		$this->_extension = $engine->getExtension();
 
 		return $this;
 	}

@@ -8,8 +8,8 @@
 namespace Titon\Mvc\Helper\Html;
 
 use Titon\Common\Config;
-use Titon\Utility\Crypt;
 use Titon\Mvc\Helper\AbstractHelper;
+use Titon\Utility\Crypt;
 
 /**
  * The HtmlHelper is primarily used for dynamic HTML tag creation within templates.

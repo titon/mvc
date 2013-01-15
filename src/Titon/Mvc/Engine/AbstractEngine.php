@@ -13,6 +13,7 @@ use Titon\Mvc\View;
 
 /**
  * Defines shared functionality for view engines.
+ * Provides support for layouts, wrappers, data and rendering.
  */
 abstract class AbstractEngine extends Base implements Engine {
 
