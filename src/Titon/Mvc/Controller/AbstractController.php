@@ -41,7 +41,7 @@ abstract class AbstractController extends Base implements Controller {
 	 * @var array
 	 */
 	protected $_config = [
-		'module' => 'common',
+		'module' => '',
 		'controller' => '',
 		'action' => '',
 		'ext' => '',
