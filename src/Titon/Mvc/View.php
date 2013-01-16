@@ -185,12 +185,11 @@ class View {
 	 *
 	 * @param array|string $template
 	 * @param int $type
-	 * @param string $folder
 	 * @return string
 	 * @throws \Titon\Mvc\Exception
 	 */
-	public function locateTemplate($template, $type = self::TEMPLATE, $folder = null) {
-		return $this->cache([__METHOD__, $template, $type], function() use ($template, $type, $folder) {
+	public function locateTemplate($template, $type = self::TEMPLATE) {
+		return $this->cache([__METHOD__, $template, $type], function() use ($template, $type) {
 			$paths = $this->getPaths();
 
 			if (!$paths) {
@@ -229,7 +228,7 @@ class View {
 
 				case self::CUSTOM:
 				default:
-					$template = sprintf('/private/%s/%s', $folder, $template);
+					$template = sprintf('/private/%s', $template);
 				break;
 			}
 
@@ -276,15 +275,17 @@ class View {
 	/**
 	 * Render all templates in order: template -> wrapper(s) -> layout.
 	 *
-	 * @param string $template
+	 * @param string|array $template
 	 * @return string
 	 */
 	public function run($template) {
 		return $this->cache([__METHOD__, $template], function() use ($template) {
+			if (is_string($template) || empty($template['template'])) {
+				$template = ['template' => $template, 'type' => self::TEMPLATE];
+			}
+
 			$engine = $this->getEngine();
-			$loop = [
-				['template' => $template, 'type' => self::TEMPLATE]
-			];
+			$loop = [$template];
 
 			if ($wrappers = $engine->getWrapper()) {
 				foreach ($wrappers as $wrapper) {

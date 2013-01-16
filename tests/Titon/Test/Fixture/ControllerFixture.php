@@ -34,4 +34,6 @@ class ControllerFixture extends AbstractController {
 		return 'wontBeCalled';
 	}
 
+	public function renderView() { }
+
 }

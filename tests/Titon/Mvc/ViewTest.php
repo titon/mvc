@@ -128,8 +128,8 @@ class ViewTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(TEMP_DIR . '/fallback/private/layouts/fallback.tpl', $this->object->locateTemplate('fallback', View::LAYOUT));
 
 		// custom
-		$this->assertEquals(TEMP_DIR . '/private/errors/404.tpl', $this->object->locateTemplate('404', View::CUSTOM, 'errors'));
-		$this->assertEquals(TEMP_DIR . '/fallback/private/emails/example.html.tpl', $this->object->locateTemplate(['example', 'ext' => 'html'], View::CUSTOM, 'emails'));
+		$this->assertEquals(TEMP_DIR . '/private/errors/404.tpl', $this->object->locateTemplate('errors/404', View::CUSTOM, 'errors'));
+		$this->assertEquals(TEMP_DIR . '/fallback/private/emails/example.html.tpl', $this->object->locateTemplate(['emails', 'example', 'ext' => 'html'], View::CUSTOM));
 
 		// missing
 		try {
