@@ -18,3 +18,11 @@ if (!file_exists(VENDOR_DIR . '/autoload.php')) {
 $loader = require VENDOR_DIR . '/autoload.php';
 $loader->add('Titon\\Mvc', TEST_DIR);
 $loader->add('Titon\\Test', TEST_DIR);
+
+// Defaults
+$_SERVER['HTTP_HOST'] = 'localhost';
+$_SERVER['PHP_SELF'] = '/index.php';
+$_SERVER['REQUEST_URI'] = '/';
+$_SERVER['SERVER_ADDR'] = '';
+
+\Titon\Route\Router::initialize();
