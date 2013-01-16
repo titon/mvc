@@ -12,6 +12,7 @@ use Titon\Common\Registry;
 use Titon\Common\Traits\Attachable;
 use Titon\Mvc\Action;
 use Titon\Mvc\Controller;
+use Titon\Mvc\View;
 use Titon\Mvc\Exception;
 
 /**
@@ -46,6 +47,13 @@ abstract class AbstractController extends Base implements Controller {
 		'ext' => '',
 		'args' => []
 	];
+
+	/**
+	 * View instance.
+	 *
+	 * @var \Titon\Mvc\View
+	 */
+	protected $_view;
 
 	/**
 	 * Dispatch the request to the correct controller action. Checks to see if the action exists and is not protected.
@@ -88,18 +96,30 @@ abstract class AbstractController extends Base implements Controller {
 	}
 
 	/**
-	 * Attach the request and response objects. Can overwrite or remove for high customization.
+	 * Return the request object.
 	 *
-	 * @return void
+	 * @return \Titon\Http\Request
 	 */
-	public function initialize() {
-		$this->attachObject('request', function() {
-			return Registry::factory('Titon\Http\Request');
-		});
+	public function getRequest() {
+		return Registry::factory('Titon\Http\Request');
+	}
 
-		$this->attachObject('response', function() {
-			return Registry::factory('Titon\Http\Response');
-		});
+	/**
+	 * Return the response object.
+	 *
+	 * @return \Titon\Http\Response
+	 */
+	public function getResponse() {
+		return Registry::factory('Titon\Http\Response');
+	}
+
+	/**
+	 * Return the view object.
+	 *
+	 * @return \Titon\Mvc\View
+	 */
+	public function getView() {
+		return $this->_view;
 	}
 
 	/**
@@ -128,6 +148,18 @@ abstract class AbstractController extends Base implements Controller {
 	 */
 	public function postProcess() {
 		$this->notifyObjects('postProcess');
+	}
+
+	/**
+	 * Set the view instance.
+	 *
+	 * @param \Titon\Mvc\View $view
+	 * @return \Titon\Mvc\View
+	 */
+	public function setView(View $view) {
+		$this->_view = $view;
+
+		return $view;
 	}
 
 }

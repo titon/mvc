@@ -33,6 +33,34 @@ interface Controller {
 	public function forwardAction($action, array $args = []);
 
 	/**
+	 * Return the request object.
+	 *
+	 * @return \Titon\Http\Request
+	 */
+	public function getRequest();
+
+	/**
+	 * Return the response object.
+	 *
+	 * @return \Titon\Http\Response
+	 */
+	public function getResponse();
+
+	/**
+	 * Return the view object.
+	 *
+	 * @return \Titon\Mvc\View
+	 */
+	public function getView();
+
+	/**
+	 * Render the view templates and return the output.
+	 *
+	 * @return string
+	 */
+	public function renderView();
+
+	/**
 	 * Trigger a custom Action class.
 	 *
 	 * @param \Titon\Mvc\Action $action
@@ -53,5 +81,13 @@ interface Controller {
 	 * @return void
 	 */
 	public function postProcess();
+
+	/**
+	 * Set the view instance.
+	 *
+	 * @param \Titon\Mvc\View $view
+	 * @return \Titon\Mvc\View
+	 */
+	public function setView(View $view);
 
 }
