@@ -13,6 +13,7 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
+		"ext-mbstring": "*",
 		"titon/common": "*",
 		"titon/utility": "*",
 		"titon/route": "*",
