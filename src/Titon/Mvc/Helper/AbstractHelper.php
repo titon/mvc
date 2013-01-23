@@ -24,6 +24,17 @@ abstract class AbstractHelper extends Base implements Helper {
 	use Attachable;
 
 	/**
+	 * Configuration.
+	 *
+	 * 	escape - Global escaping
+	 *
+	 * @var array
+	 */
+	protected $_config = [
+		'escape' => true
+	];
+
+	/**
 	 * Mapping of HTML tags.
 	 *
 	 * @var array
@@ -89,7 +100,11 @@ abstract class AbstractHelper extends Base implements Helper {
 	 */
 	public function escape($value, $escape = null) {
 		if ($escape === null) {
-			$escape = $this->config->get('escape') ?: true;
+			$escape = $this->config->get('escape');
+		}
+
+		if ($escape === null) {
+			$escape = true;
 		}
 
 		if ($escape) {

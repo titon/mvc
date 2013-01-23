@@ -65,7 +65,11 @@ class XhtmlHelper extends HtmlHelper {
 	 */
 	public function escape($value, $escape = null) {
 		if ($escape === null) {
-			$escape = $this->config->get('escape') ?: true;
+			$escape = $this->config->get('escape');
+		}
+
+		if ($escape === null) {
+			$escape = true;
 		}
 
 		if ($escape) {
