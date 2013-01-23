@@ -96,7 +96,7 @@ abstract class AbstractModel implements Model {
 	}
 
 	/**
-	 * Add support for getField(), setField() and hasField().
+	 * Add support for getField(), setField(), hasField() and removeField().
 	 *
 	 * @param string $method
 	 * @param array $args
@@ -114,9 +114,12 @@ abstract class AbstractModel implements Model {
 
 				return call_user_func_array([$this, $type], $args);
 			break;
+			case 'rem':
+				return $this->remove(lcfirst(substr($method, 6, strlen($method))));
+			break;
 		}
 
-		throw new Exception(sprintf('%s:%s() method does not exist'), get_class($this), $method);
+		throw new Exception(sprintf('%s:%s() method does not exist', get_class($this), $method));
 	}
 
 	/**
@@ -135,7 +138,9 @@ abstract class AbstractModel implements Model {
 	 * @return \Titon\Mvc\Model
 	 */
 	public function add(array $values) {
-		$this->_data->add($values);
+		foreach ($values as $key => $value) {
+			$this->set($key, $value);
+		}
 
 		return $this;
 	}
@@ -155,7 +160,7 @@ abstract class AbstractModel implements Model {
 		$value = $this->_data->get($key);
 
 		if (isset($this->_getters[$key])) {
-			$value = $this->_triggerCallback($this->_getters[$key], $value);
+			$value = call_user_func([$this, $this->_getters[$key]], $value);
 		}
 
 		return $value;
@@ -189,7 +194,7 @@ abstract class AbstractModel implements Model {
 	 */
 	public function set($key, $value) {
 		if (isset($this->_setters[$key])) {
-			$value = $this->_triggerCallback($this->_setters[$key], $value);
+			$value = call_user_func([$this, $this->_setters[$key]], $value);
 		}
 
 		$this->_data->set($key, $value);
@@ -207,23 +212,6 @@ abstract class AbstractModel implements Model {
 		$this->_data->remove($key);
 
 		return $this;
-	}
-
-	/**
-	 * Trigger a getter or setter callback.
-	 *
-	 * @param callable $callback
-	 * @param mixed $value
-	 * @return mixed
-	 */
-	protected function _triggerCallback($callback, $value) {
-		if ($callback instanceof Closure) {
-			$callback = Closure::bind($callback, $this, $this);
-		} else {
-			$callback = [$this, $callback];
-		}
-
-		return call_user_func($callback, $value);
 	}
 
 }
