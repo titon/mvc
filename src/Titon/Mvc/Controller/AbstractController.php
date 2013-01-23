@@ -96,13 +96,7 @@ abstract class AbstractController extends Base implements Controller {
 		}
 
 		// Trigger action and generate response from view templates
-		$response = call_user_func_array([$this, $action], $args);
-
-		if (!$response) {
-			$response = $this->renderView();
-		}
-
-		return $response;
+		return call_user_func_array([$this, $action], $args);
 	}
 
 	/**
