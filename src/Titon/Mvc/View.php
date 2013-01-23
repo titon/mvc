@@ -254,6 +254,28 @@ class View {
 	}
 
 	/**
+	 * Triggered before a template renders.
+	 *
+	 * @param \Titon\Mvc\Engine $engine
+	 * @param int $type
+	 * @return void
+	 */
+	public function preRender(Engine $engine, $type) {
+		$this->notifyObjects('preRender', [$engine, $type]);
+	}
+
+	/**
+	 * Triggered after a template renders.
+	 *
+	 * @param \Titon\Mvc\Engine $engine
+	 * @param int $type
+	 * @return void
+	 */
+	public function postRender(Engine $engine, $type) {
+		$this->notifyObjects('postRender', [$engine, $type]);
+	}
+
+	/**
 	 * Render a single template.
 	 *
 	 * @param string $path
@@ -301,14 +323,14 @@ class View {
 				$template = $options['template'];
 				$type = $options['type'];
 
-				$this->notifyObjects('preRender', [$engine, $type]);
+				$this->preRender($engine, $type);
 
 				$engine->setContent($this->render(
 					$this->locateTemplate($template, $type),
 					$this->getVariables()
 				));
 
-				$this->notifyObjects('postRender', [$engine, $type]);
+				$this->postRender($engine, $type);
 			}
 
 			return $engine->getContent();
