@@ -164,11 +164,7 @@ class View {
 	 * @throws \Titon\Mvc\Exception
 	 */
 	public function getVariable($key) {
-		if (isset($this->_data[$key])) {
-			return $this->_data[$key];
-		}
-
-		throw new Exception(sprintf('Variable %s does not exist', $key));
+		return isset($this->_data[$key]) ? $this->_data[$key] : null;
 	}
 
 	/**

@@ -89,11 +89,7 @@ abstract class AbstractHelper extends Base implements Helper {
 	 */
 	public function escape($value, $escape = null) {
 		if ($escape === null) {
-			try {
-				$escape = $this->config->get('escape');
-			} catch (\Exception $e) {
-				$escape = true;
-			}
+			$escape = $this->config->get('escape') ?: true;
 		}
 
 		if ($escape) {
@@ -101,6 +97,24 @@ abstract class AbstractHelper extends Base implements Helper {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Return the view manager.
+	 *
+	 * @return \Titon\Mvc\View
+	 */
+	public function getView() {
+		return $this->_view;
+	}
+
+	/**
+	 * Return the rendering engine.
+	 *
+	 * @return \Titon\Mvc\Engine
+	 */
+	public function getEngine() {
+		return $this->_engine;
 	}
 
 	/**
@@ -112,8 +126,7 @@ abstract class AbstractHelper extends Base implements Helper {
 	 * @return void
 	 */
 	public function preRender(View $view, Engine $engine, $type) {
-		$this->_view = $view;
-		$this->_engine = $engine;
+		$this->setView($view)->setEngine($engine);
 	}
 
 	/**
@@ -125,8 +138,31 @@ abstract class AbstractHelper extends Base implements Helper {
 	 * @return void
 	 */
 	public function postRender(View $view, Engine $engine, $type) {
+		$this->setView($view)->setEngine($engine);
+	}
+
+	/**
+	 * Set the view manager.
+	 *
+	 * @param \Titon\Mvc\View $view
+	 * @return \Titon\Mvc\Helper
+	 */
+	public function setView(View $view) {
 		$this->_view = $view;
+
+		return $this;
+	}
+
+	/**
+	 * Set the rendering engine.
+	 *
+	 * @param \Titon\Mvc\Engine $engine
+	 * @return \Titon\Mvc\Helper
+	 */
+	public function setEngine(Engine $engine) {
 		$this->_engine = $engine;
+
+		return $this;
 	}
 
 	/**

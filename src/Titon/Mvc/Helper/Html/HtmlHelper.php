@@ -229,7 +229,7 @@ class HtmlHelper extends AbstractHelper {
 	 * @return string
 	 */
 	public function title($separator = ' - ') {
-		$pageTitle = $this->_engine->get('pageTitle');
+		$pageTitle = $this->getView()->getVariable('pageTitle');
 
 		if (is_array($pageTitle)) {
 			return implode($separator, $pageTitle);

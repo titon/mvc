@@ -16,6 +16,20 @@ use Titon\Mvc\View;
 interface Helper {
 
 	/**
+	 * Return the view manager.
+	 *
+	 * @return \Titon\Mvc\View
+	 */
+	public function getView();
+
+	/**
+	 * Return the rendering engine.
+	 *
+	 * @return \Titon\Mvc\Engine
+	 */
+	public function getEngine();
+
+	/**
 	 * Triggered before a template is rendered by the engine.
 	 *
 	 * @param \Titon\Mvc\View $view
@@ -34,5 +48,21 @@ interface Helper {
 	 * @return void
 	 */
 	public function postRender(View $view, Engine $engine, $type);
+
+	/**
+	 * Set the view manager.
+	 *
+	 * @param \Titon\Mvc\View $view
+	 * @return \Titon\Mvc\Helper
+	 */
+	public function setView(View $view);
+
+	/**
+	 * Set the rendering engine.
+	 *
+	 * @param \Titon\Mvc\Engine $engine
+	 * @return \Titon\Mvc\Helper
+	 */
+	public function setEngine(Engine $engine);
 
 }
