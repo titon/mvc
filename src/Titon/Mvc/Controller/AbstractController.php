@@ -10,6 +10,8 @@ namespace Titon\Mvc\Controller;
 use Titon\Common\Base;
 use Titon\Common\Registry;
 use Titon\Common\Traits\Attachable;
+use Titon\Http\Request;
+use Titon\Http\Response;
 use Titon\Mvc\Action;
 use Titon\Mvc\Controller;
 use Titon\Mvc\View;
@@ -49,6 +51,20 @@ abstract class AbstractController extends Base implements Controller {
 	];
 
 	/**
+	 * Request instance.
+	 *
+	 * @var \Titon\Http\Request
+	 */
+	protected $_request;
+
+	/**
+	 * Response instance.
+	 *
+	 * @var \Titon\Http\Response
+	 */
+	protected $_response;
+
+	/**
 	 * View instance.
 	 *
 	 * @var \Titon\Mvc\View
@@ -60,7 +76,7 @@ abstract class AbstractController extends Base implements Controller {
 	 *
 	 * @param string $action
 	 * @param array $args
-	 * @return mixed
+	 * @return string
 	 * @throws \Titon\Mvc\Exception
 	 */
 	public function dispatchAction($action = null, array $args = []) {
@@ -79,7 +95,14 @@ abstract class AbstractController extends Base implements Controller {
 			throw new Exception('Your action does not exist, or is not public, or is found within the parent Controller');
 		}
 
-		return call_user_func_array([$this, $action], $args);
+		// Trigger action and generate response from view templates
+		$response = call_user_func_array([$this, $action], $args);
+
+		if (!$response) {
+			$response = $this->renderView();
+		}
+
+		return $response;
 	}
 
 	/**
@@ -87,7 +110,7 @@ abstract class AbstractController extends Base implements Controller {
 	 *
 	 * @param string $action
 	 * @param array $args
-	 * @return mixed
+	 * @return string
 	 */
 	public function forwardAction($action, array $args = []) {
 		$this->config->action = $action;
@@ -101,7 +124,7 @@ abstract class AbstractController extends Base implements Controller {
 	 * @return \Titon\Http\Request
 	 */
 	public function getRequest() {
-		return Registry::factory('Titon\Http\Request');
+		return $this->_request;
 	}
 
 	/**
@@ -110,7 +133,7 @@ abstract class AbstractController extends Base implements Controller {
 	 * @return \Titon\Http\Response
 	 */
 	public function getResponse() {
-		return Registry::factory('Titon\Http\Response');
+		return $this->_response;
 	}
 
 	/**
@@ -120,16 +143,6 @@ abstract class AbstractController extends Base implements Controller {
 	 */
 	public function getView() {
 		return $this->_view;
-	}
-
-	/**
-	 * Trigger a custom Action class.
-	 *
-	 * @param \Titon\Mvc\Action $action
-	 * @return mixed
-	 */
-	public function runAction(Action $action) {
-		return $action->setController($this)->run();
 	}
 
 	/**
@@ -148,6 +161,57 @@ abstract class AbstractController extends Base implements Controller {
 	 */
 	public function postProcess() {
 		$this->notifyObjects('postProcess');
+	}
+
+	/**
+	 * Render the view templates and return the output.
+	 *
+	 * @return string
+	 * @throws \Titon\Mvc\Exception
+	 */
+	public function renderView() {
+		if (!$this->getView()) {
+			throw new Exception('View has not been initialized');
+		}
+
+		$template = $this->config->all();
+		unset($template['args']);
+
+		return $this->getView()->run($template);
+	}
+
+	/**
+	 * Trigger a custom Action class.
+	 *
+	 * @param \Titon\Mvc\Action $action
+	 * @return string
+	 */
+	public function runAction(Action $action) {
+		return $action->setController($this)->run();
+	}
+
+	/**
+	 * Set the request object.
+	 *
+	 * @param \Titon\Http\Request $request
+	 * @return \Titon\Mvc\Controller
+	 */
+	public function setRequest(Request $request) {
+		$this->_request = $request;
+
+		return $this;
+	}
+
+	/**
+	 * Set the response object.
+	 *
+	 * @param \Titon\Http\Response $response
+	 * @return \Titon\Mvc\Controller
+	 */
+	public function setResponse(Response $response) {
+		$this->_response = $response;
+
+		return $this;
 	}
 
 	/**

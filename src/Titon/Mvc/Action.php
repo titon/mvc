@@ -17,7 +17,7 @@ interface Action {
 	/**
 	 * Method that is executed to trigger the actions logic.
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function run();
 

@@ -7,7 +7,10 @@
 
 namespace Titon\Mvc;
 
+use Titon\Http\Request;
+use Titon\Http\Response;
 use Titon\Mvc\Action;
+use Titon\Mvc\View;
 
 /**
  * Interface for the controllers library.
@@ -19,7 +22,7 @@ interface Controller {
 	 *
 	 * @param string $action
 	 * @param array $args
-	 * @return mixed
+	 * @return string
 	 */
 	public function dispatchAction($action = null, array $args = []);
 
@@ -28,7 +31,7 @@ interface Controller {
 	 *
 	 * @param string $action
 	 * @param array $args
-	 * @return mixed
+	 * @return string
 	 */
 	public function forwardAction($action, array $args = []);
 
@@ -54,21 +57,6 @@ interface Controller {
 	public function getView();
 
 	/**
-	 * Render the view templates and return the output.
-	 *
-	 * @return string
-	 */
-	public function renderView();
-
-	/**
-	 * Trigger a custom Action class.
-	 *
-	 * @param \Titon\Mvc\Action $action
-	 * @return mixed
-	 */
-	public function runAction(Action $action);
-
-	/**
 	 * Triggered before the controller processes the requested action.
 	 *
 	 * @return void
@@ -81,6 +69,37 @@ interface Controller {
 	 * @return void
 	 */
 	public function postProcess();
+
+	/**
+	 * Render the view templates and return the output.
+	 *
+	 * @return string
+	 */
+	public function renderView();
+
+	/**
+	 * Trigger a custom Action class.
+	 *
+	 * @param \Titon\Mvc\Action $action
+	 * @return string
+	 */
+	public function runAction(Action $action);
+
+	/**
+	 * Set the request object.
+	 *
+	 * @param \Titon\Http\Request $request
+	 * @return \Titon\Mvc\Controller
+	 */
+	public function setRequest(Request $request);
+
+	/**
+	 * Set the response object.
+	 *
+	 * @param \Titon\Http\Response $response
+	 * @return \Titon\Mvc\Controller
+	 */
+	public function setResponse(Response $response);
 
 	/**
 	 * Set the view instance.
