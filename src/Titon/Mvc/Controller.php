@@ -7,6 +7,7 @@
 
 namespace Titon\Mvc;
 
+use Titon\App\Module;
 use Titon\Http\Request;
 use Titon\Http\Response;
 use Titon\Mvc\Action;
@@ -34,6 +35,13 @@ interface Controller {
 	 * @return string
 	 */
 	public function forwardAction($action, array $args = []);
+
+	/**
+	 * Return the parent module.
+	 *
+	 * @return \Titon\App\Module
+	 */
+	public function getModule();
 
 	/**
 	 * Return the request object.
@@ -84,6 +92,14 @@ interface Controller {
 	 * @return string
 	 */
 	public function runAction(Action $action);
+
+	/**
+	 * Set the parent module.
+	 *
+	 * @param \Titon\App\Module $module
+	 * @return \Titon\Mvc\Controller
+	 */
+	public function setModule(Module $module);
 
 	/**
 	 * Set the request object.
