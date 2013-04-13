@@ -7,24 +7,22 @@
 
 namespace Titon\Mvc;
 
+use Titon\Test\TestCase;
 use Titon\Test\Fixture\HelperFixture;
 
 /**
  * Test class for Titon\Mvc\Helper.
+ *
+ * @property \Titon\Test\Fixture\HelperFixture $object
  */
-class HelperTest extends \PHPUnit_Framework_TestCase {
-
-	/**
-	 * Helper instance.
-	 *
-	 * @var \Titon\Test\Fixture\HelperFixture
-	 */
-	public $object;
+class HelperTest extends TestCase {
 
 	/**
 	 * Initialize helper.
 	 */
 	protected function setUp() {
+		parent::setUp();
+
 		$this->object = new HelperFixture();
 	}
 

@@ -7,22 +7,22 @@
 
 namespace Titon\Mvc;
 
+use Titon\Test\TestCase;
 use Titon\Test\Fixture\EngineFixture;
 
 /**
  * Test class for Titon\Mvc\Engine.
+ *
+ * @property \Titon\Mvc\Engine $object
  */
-class EngineTest extends \PHPUnit_Framework_TestCase {
-
-	/**
-	 * @var \Titon\Mvc\Engine
-	 */
-	public $object;
+class EngineTest extends TestCase {
 
 	/**
 	 * Initialize the engine.
 	 */
 	protected function setUp() {
+		parent::setUp();
+
 		$this->object = new EngineFixture();
 	}
 

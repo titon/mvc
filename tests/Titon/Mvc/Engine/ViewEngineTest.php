@@ -9,22 +9,22 @@ namespace Titon\Mvc\Engine;
 
 use Titon\Mvc\View;
 use Titon\Mvc\Engine\ViewEngine;
+use Titon\Test\TestCase;
 use \Exception;
 
 /**
  * Test class for Titon\Mvc\Engine\ViewEngine.
+ *
+ * @property \Titon\Mvc\View $object
  */
-class ViewEngineTest extends \PHPUnit_Framework_TestCase {
-
-	/**
-	 * @var \Titon\Mvc\View
-	 */
-	public $object;
+class ViewEngineTest extends TestCase {
 
 	/**
 	 * Instantiate the objects.
 	 */
 	protected function setUp() {
+		parent::setUp();
+
 		$this->object = new View([
 			TEMP_DIR,
 			TEMP_DIR . '/fallback'

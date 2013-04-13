@@ -8,11 +8,12 @@
 namespace Titon\Mvc\Helper\Html;
 
 use Titon\Mvc\Helper\Html\BreadcrumbHelper;
+use Titon\Test\TestCase;
 
 /**
  * Test class for Titon\Mvc\Helper\Html\BreadcrumbHelper.
  */
-class BreadcrumbHelperTest extends \PHPUnit_Framework_TestCase {
+class BreadcrumbHelperTest extends TestCase {
 
 	/**
 	 * Test with a single crumb.

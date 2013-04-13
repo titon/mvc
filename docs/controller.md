@@ -34,7 +34,7 @@ If a view and engine have been defined, one can generate an output using templat
 // In Controller::initialize()
 $view = new Titon\Mvc\View();
 $view->addPath('/views/');
-$view->setEngine(new ViewTiton\Mvc\Engine\ViewEngineEngine());
+$view->setEngine(new Titon\Mvc\Engine\ViewEngine());
 
 $this->setView($view);
 

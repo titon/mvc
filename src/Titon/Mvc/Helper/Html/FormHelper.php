@@ -235,7 +235,13 @@ class FormHelper extends AbstractHelper {
 		$config = $this->config->all();
 
 		for ($i = 1; $i <= 31; ++$i) {
-			$options[$i] = date($format, mktime(0, 0, 0, $config['month'], $i, $config['year']));
+			$v = $i;
+
+			if ($format === 'd') {
+				$v = str_pad($v, 2, '0', STR_PAD_LEFT);
+			}
+
+			$options[$i] = $v;
 		}
 
 		return $this->tag('select', [

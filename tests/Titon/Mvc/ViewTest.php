@@ -10,22 +10,22 @@ namespace Titon\Mvc;
 use Titon\Mvc\View;
 use Titon\Mvc\Helper\Html\HtmlHelper;
 use Titon\Mvc\Helper\Html\FormHelper;
+use Titon\Test\TestCase;
 use \Exception;
 
 /**
  * Test class for Titon\Mvc\View.
+ *
+ * @property \Titon\Mvc\View $object
  */
-class ViewTest extends \PHPUnit_Framework_TestCase {
-
-	/**
-	 * @var \Titon\Mvc\View
-	 */
-	public $object;
+class ViewTest extends TestCase {
 
 	/**
 	 * Initialize the view.
 	 */
 	protected function setUp() {
+		parent::setUp();
+
 		$this->object = new View([
 			TEMP_DIR,
 			TEMP_DIR . '/fallback'

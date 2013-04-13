@@ -3,8 +3,8 @@
 	"type": "library",
 	"description": "The Titon MVC package adds support for the Model-View-Controller paradigm.",
 	"keywords": ["titon", "model", "view", "controller", "action", "helper", "engine", "template"],
-	"homepage": "https://github.com/titon/Titon.MVC",
-	"license": "BSD-2-Clause",
+	"homepage": "https://github.com/titon/MVC",
+	"license": "BSD-2",
 	"authors": [
 		{
 			"name": "Miles Johnson",
@@ -13,11 +13,12 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
-		"ext-mbstring": "*",
 		"titon/common": "*",
-		"titon/utility": "*",
 		"titon/route": "*",
 		"titon/http": "*"
+	},
+	"require-dev": {
+		"titon/test": "*"
 	},
 	"autoload": {
 		"psr-0": { "Titon\\Mvc": "src/" }

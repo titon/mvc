@@ -7,13 +7,14 @@
 
 namespace Titon\Mvc;
 
+use Titon\Test\TestCase;
 use Titon\Test\Fixture\ActionFixture;
 use Titon\Test\Fixture\ControllerFixture;
 
 /**
  * Test class for Titon\Mvc\Action.
  */
-class ActionTest extends \PHPUnit_Framework_TestCase {
+class ActionTest extends TestCase {
 
 	/**
 	 * Test that run correctly executes and modifies the passed controller.

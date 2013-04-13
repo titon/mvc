@@ -8,11 +8,12 @@
 namespace Titon\Mvc\Helper\Html;
 
 use Titon\Mvc\Helper\Html\FormHelper;
+use Titon\Test\TestCase;
 
 /**
  * Test class for Titon\Mvc\Helper\Html\FormHelper.
  */
-class FormHelperTest extends \PHPUnit_Framework_TestCase {
+class FormHelperTest extends TestCase {
 
 	/**
 	 * Setup live post data.

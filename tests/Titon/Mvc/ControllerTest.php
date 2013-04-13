@@ -7,25 +7,23 @@
 
 namespace Titon\Mvc;
 
+use Titon\Test\TestCase;
 use Titon\Test\Fixture\ActionFixture;
 use Titon\Test\Fixture\ControllerFixture;
 
 /**
  * Test class for Titon\Mvc\Controller.
+ *
+ * @property \Titon\Mvc\Controller $object
  */
-class ControllerTest extends \PHPUnit_Framework_TestCase {
-
-	/**
-	 * Controller instance.
-	 *
-	 * @var \Titon\Mvc\Controller
-	 */
-	public $object;
+class ControllerTest extends TestCase {
 
 	/**
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() {
+		parent::setUp();
+
 		$this->object = new ControllerFixture([
 			'module' => 'module',
 			'controller' => 'controller',

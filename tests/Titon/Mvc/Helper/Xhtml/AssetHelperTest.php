@@ -8,11 +8,12 @@
 namespace Titon\Mvc\Helper\Xhtml;
 
 use Titon\Mvc\Helper\Xhtml\AssetHelper;
+use Titon\Test\TestCase;
 
 /**
  * Test class for Titon\Mvc\Helper\Xhtml\AssetHelper.
  */
-class AssetHelperTest extends \PHPUnit_Framework_TestCase {
+class AssetHelperTest extends TestCase {
 
 	/**
 	 * Test that scripts are added and retrieved by location.

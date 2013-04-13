@@ -7,7 +7,7 @@
 
 namespace Titon\Mvc\Controller;
 
-use Titon\App\Module;
+use Titon\Mvc\Module;
 use Titon\Common\Base;
 use Titon\Common\Registry;
 use Titon\Common\Traits\Attachable;
@@ -54,7 +54,7 @@ abstract class AbstractController extends Base implements Controller {
 	/**
 	 * Module instance.
 	 *
-	 * @var \Titon\App\Module
+	 * @var \Titon\Mvc\Module
 	 */
 	protected $_module;
 
@@ -123,7 +123,7 @@ abstract class AbstractController extends Base implements Controller {
 	/**
 	 * Return the parent module.
 	 *
-	 * @return \Titon\App\Module
+	 * @return \Titon\Mvc\Module
 	 */
 	public function getModule() {
 		return $this->_module;
@@ -204,7 +204,7 @@ abstract class AbstractController extends Base implements Controller {
 	/**
 	 * Set the parent module.
 	 *
-	 * @param \Titon\App\Module $module
+	 * @param \Titon\Mvc\Module $module
 	 * @return \Titon\Mvc\Controller
 	 */
 	public function setModule(Module $module) {

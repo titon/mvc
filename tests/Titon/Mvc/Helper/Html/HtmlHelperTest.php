@@ -8,19 +8,15 @@
 namespace Titon\Mvc\Helper\Html;
 
 use Titon\Mvc\Helper\Html\HtmlHelper;
+use Titon\Test\TestCase;
 use Titon\Utility\Crypt;
 
 /**
  * Test class for Titon\Mvc\Helper\Html\HtmlHelper.
+ *
+ * @property \Titon\Mvc\Helper\Html\HtmlHelper $object
  */
-class HtmlHelperTest extends \PHPUnit_Framework_TestCase {
-
-	/**
-	 * Helper instance.
-	 *
-	 * @var \Titon\Mvc\Helper\Html\HtmlHelper
-	 */
-	public $object;
+class HtmlHelperTest extends TestCase {
 
 	/**
 	 * Initialize helper.

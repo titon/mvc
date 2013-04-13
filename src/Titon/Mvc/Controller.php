@@ -7,7 +7,7 @@
 
 namespace Titon\Mvc;
 
-use Titon\App\Module;
+use Titon\Mvc\Module;
 use Titon\Http\Request;
 use Titon\Http\Response;
 use Titon\Mvc\Action;
@@ -39,7 +39,7 @@ interface Controller {
 	/**
 	 * Return the parent module.
 	 *
-	 * @return \Titon\App\Module
+	 * @return \Titon\Mvc\Module
 	 */
 	public function getModule();
 
@@ -96,7 +96,7 @@ interface Controller {
 	/**
 	 * Set the parent module.
 	 *
-	 * @param \Titon\App\Module $module
+	 * @param \Titon\Mvc\Module $module
 	 * @return \Titon\Mvc\Controller
 	 */
 	public function setModule(Module $module);

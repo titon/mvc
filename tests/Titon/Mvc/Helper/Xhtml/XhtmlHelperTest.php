@@ -8,24 +8,22 @@
 namespace Titon\Mvc\Helper\Xhtml;
 
 use Titon\Mvc\Helper\Xhtml\XhtmlHelper;
+use Titon\Test\TestCase;
 use Titon\Utility\Crypt;
 
 /**
  * Test class for Titon\Mvc\Helper\Xhtml\XhtmlHelper.
+ *
+ * @property \Titon\Mvc\Helper\Xhtml\XhtmlHelper $object
  */
-class XhtmlHelperTest extends \PHPUnit_Framework_TestCase {
-
-	/**
-	 * Helper instance.
-	 *
-	 * @var \Titon\Mvc\Helper\Xhtml\XhtmlHelper
-	 */
-	public $object;
+class XhtmlHelperTest extends TestCase {
 
 	/**
 	 * Initialize helper.
 	 */
 	protected function setUp() {
+		parent::setUp();
+
 		$this->object = new XhtmlHelper();
 	}
 
