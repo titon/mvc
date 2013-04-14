@@ -8,9 +8,7 @@
 namespace Titon\Mvc\Dispatcher;
 
 use Titon\Mvc\Dispatcher\AbstractDispatcher;
-use Titon\Http\Exception\HttpException;
-use Titon\Mvc\View;
-use Titon\Route\Router;
+use \Exception;
 
 /**
  * The FrontDispatcher triggers all the necessary methods and callbacks
@@ -28,29 +26,9 @@ class FrontDispatcher extends AbstractDispatcher {
 		$controller->preProcess();
 
 		try {
-			$output = $controller->dispatchAction(
-				$this->getParam('action'),
-				$this->getParam('args')
-			);
-
-			if ($output) {
-				return $output;
-			}
-
-		// Exit early for HTTP errors
-		} catch (HttpException $e) {
-
-			return $controller->getView()
-				->setVariables([
-					'error' => $e,
-					'code' => $e->getCode(),
-					'message' => $e->getMessage(),
-					'url' => Router::build($this->getParams())
-				])
-				->run([
-					'template' => ['errors', $e->getCode()],
-					'type' => View::CUSTOM
-				]);
+			$controller->dispatchAction($this->getParam('action'), $this->getParam('args'));
+		} catch (Exception $e) {
+			return $controller->renderError($e);
 		}
 
 		$controller->postProcess();

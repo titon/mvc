@@ -7,6 +7,7 @@
 
 namespace Titon\Mvc\Controller;
 
+use Titon\Http\Exception\HttpException;
 use Titon\Mvc\Module;
 use Titon\Common\Base;
 use Titon\Common\Registry;
@@ -17,6 +18,7 @@ use Titon\Mvc\Action;
 use Titon\Mvc\Controller;
 use Titon\Mvc\View;
 use Titon\Mvc\Exception;
+use Titon\Route\Router;
 
 /**
  * The Controller (MVC) acts as the median between the request and response within the dispatch cycle.
@@ -153,6 +155,10 @@ abstract class AbstractController extends Base implements Controller {
 	 * @return \Titon\Mvc\View
 	 */
 	public function getView() {
+		if (!$this->_view) {
+			$this->setView(new View());
+		}
+
 		return $this->_view;
 	}
 
@@ -175,16 +181,38 @@ abstract class AbstractController extends Base implements Controller {
 	}
 
 	/**
+	 * Render the view template for an error/exception.
+	 *
+	 * @param \Exception $e
+	 * @return string
+	 */
+	public function renderError(\Exception $e) {
+		$template = 'error';
+
+		if ($e instanceof HttpException) {
+			$template = $e->getCode();
+		}
+
+		return $this->getView()
+			->setVariables([
+				'error' => $e,
+				'code' => $e->getCode(),
+				'message' => $e->getMessage(),
+				'url' => Router::build($this->config->all())
+			])
+			->run([
+				'template' => ['errors', $template],
+				'type' => View::CUSTOM
+			]);
+	}
+
+	/**
 	 * Render the view templates and return the output.
 	 *
 	 * @return string
 	 * @throws \Titon\Mvc\Exception
 	 */
 	public function renderView() {
-		if (!$this->getView()) {
-			throw new Exception('View has not been initialized');
-		}
-
 		$template = $this->config->all();
 		unset($template['args']);
 

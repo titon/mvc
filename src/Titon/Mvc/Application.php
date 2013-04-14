@@ -7,12 +7,14 @@
 
 namespace Titon\Mvc;
 
+use Titon\Mvc\Controller\ErrorController;
 use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Dispatcher\FrontDispatcher;
 use Titon\Common\Registry;
 use Titon\Common\Traits\Instanceable;
 use Titon\Route\Router;
+use \Exception;
 
 /**
  * The Application object acts as the hub for the entire HTTP dispatch cycle and manages all available modules.
@@ -95,19 +97,24 @@ class Application {
 		$route = Registry::factory('Titon\Route\Router')->current();
 		$request = Registry::factory('Titon\Http\Request');
 		$response = Registry::factory('Titon\Http\Response');
+		$params = $route->getParams();
 		$output = null;
 
 		try {
 			$dispatcher = $this->getDispatcher();
 			$dispatcher->setApplication($this);
-			$dispatcher->setParams($route->getParams());
+			$dispatcher->setParams($params);
 			$dispatcher->setRequest($request);
 			$dispatcher->setResponse($response);
 
 			$output = $dispatcher->dispatch();
 
-		} catch (\Exception $e) {
-			// HANDLE ERRORS
+		} catch (Exception $e) {
+			$controller = new ErrorController($params);
+			$controller->setRequest($request);
+			$controller->setResponse($response);
+
+			$output = $controller->renderError($e);
 		}
 
 		$response->body($output)->respond();

@@ -12,6 +12,7 @@ use Titon\Http\Request;
 use Titon\Http\Response;
 use Titon\Mvc\Action;
 use Titon\Mvc\View;
+use \Exception;
 
 /**
  * Interface for the controllers library.
@@ -77,6 +78,14 @@ interface Controller {
 	 * @return void
 	 */
 	public function postProcess();
+
+	/**
+	 * Render the view template for an error/exception.
+	 *
+	 * @param \Exception $e
+	 * @return string
+	 */
+	public function renderError(Exception $e);
 
 	/**
 	 * Render the view templates and return the output.
