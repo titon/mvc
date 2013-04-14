@@ -22,13 +22,6 @@ class Application {
 	use Instanceable;
 
 	/**
-	 * Enforce singleton.
-	 *
-	 * @var bool
-	 */
-	public static $singleton = true;
-
-	/**
 	 * List of modules.
 	 *
 	 * @var \Titon\Mvc\Module[]
@@ -133,3 +126,6 @@ class Application {
 	}
 
 }
+
+// Define as singleton
+Application::$singleton = true;
