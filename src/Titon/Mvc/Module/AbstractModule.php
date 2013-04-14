@@ -46,7 +46,7 @@ abstract class AbstractModule extends Base implements Module {
 	 * @param string $key
 	 * @param string $path
 	 */
-	public function __construct($key, $path = __DIR__) {
+	public function __construct($key, $path) {
 		$this->_key = $key;
 		$this->_path = $path;
 	}

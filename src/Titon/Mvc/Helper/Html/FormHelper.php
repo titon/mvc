@@ -7,6 +7,7 @@
 
 namespace Titon\Mvc\Helper\Html;
 
+use Titon\Common\Registry;
 use Titon\Route\Router;
 use Titon\Utility\Inflector;
 use Titon\Utility\Hash;
@@ -482,7 +483,7 @@ class FormHelper extends AbstractHelper {
 		];
 
 		if (!empty($attributes['action'])) {
-			$attributes['action'] = Router::detect($attributes['action']);
+			$attributes['action'] = Registry::factory('Titon\Route\Router')->detect($attributes['action']);
 		}
 
 		$output = $this->tag('form_open', [

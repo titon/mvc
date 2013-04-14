@@ -99,7 +99,7 @@ class Application {
 	 * @todo
 	 */
 	public function run() {
-		$route = Router::current();
+		$route = Registry::factory('Titon\Route\Router')->current();
 		$request = Registry::factory('Titon\Http\Request');
 		$response = Registry::factory('Titon\Http\Response');
 		$output = null;

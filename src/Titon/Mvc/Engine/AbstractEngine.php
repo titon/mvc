@@ -18,6 +18,17 @@ use Titon\Mvc\View;
 abstract class AbstractEngine extends Base implements Engine {
 
 	/**
+	 * Configuration.
+	 *
+	 * 	extension - The extension used in templates.
+	 *
+	 * @var array
+	 */
+	protected $_config = [
+		'extension' => 'tpl'
+	];
+
+	/**
 	 * Current parsed template content.
 	 *
 	 * @var string
@@ -52,6 +63,15 @@ abstract class AbstractEngine extends Base implements Engine {
 	 */
 	public function getContent() {
 		return $this->_content;
+	}
+
+	/**
+	 * Return the template file extension.
+	 *
+	 * @return string
+	 */
+	public function getExtension() {
+		return $this->config->extension;
 	}
 
 	/**

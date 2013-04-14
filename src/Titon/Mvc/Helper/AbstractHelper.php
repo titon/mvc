@@ -8,6 +8,7 @@
 namespace Titon\Mvc\Helper;
 
 use Titon\Common\Base;
+use Titon\Common\Registry;
 use Titon\Common\Traits\Attachable;
 use Titon\Route\Router;
 use Titon\Utility\Sanitize;
@@ -198,7 +199,7 @@ abstract class AbstractHelper extends Base implements Helper {
 	 * @return string
 	 */
 	public function url($url = '/') {
-		return Router::detect($url);
+		return Registry::factory('Titon\Route\Router')->detect($url);
 	}
 
 }

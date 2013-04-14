@@ -16,15 +16,6 @@ use Titon\Mvc\Engine\AbstractEngine;
 class ViewEngine extends AbstractEngine {
 
 	/**
-	 * Return the template file extension.
-	 *
-	 * @return string
-	 */
-	public function getExtension() {
-		return 'tpl';
-	}
-
-	/**
 	 * Render a template at the defined path.
 	 * Optionally can pass an array of custom variables.
 	 *
