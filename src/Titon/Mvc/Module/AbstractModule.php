@@ -49,6 +49,8 @@ abstract class AbstractModule extends Base implements Module {
 	public function __construct($key, $path) {
 		$this->_key = $key;
 		$this->_path = $path;
+
+		parent::__construct();
 	}
 
 	/**

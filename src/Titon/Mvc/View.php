@@ -7,12 +7,14 @@
 
 namespace Titon\Mvc;
 
+use Titon\Common\Config;
 use Titon\Common\Traits\Attachable;
 use Titon\Common\Traits\Cacheable;
 use Titon\Mvc\Helper;
 use Titon\Mvc\Engine;
 use Titon\Mvc\Engine\ViewEngine;
 use Titon\Mvc\Exception;
+use Titon\Utility\Hash;
 use Titon\Utility\Inflector;
 
 /**
@@ -62,11 +64,11 @@ class View {
 	/**
 	 * Add paths through the constructor.
 	 *
-	 * @param array $paths
+	 * @param array|string $paths
 	 */
-	public function __construct(array $paths = []) {
+	public function __construct($paths = []) {
 		if ($paths) {
-			$this->addPaths($paths);
+			$this->addPaths((array) $paths);
 		}
 	}
 
@@ -78,6 +80,8 @@ class View {
 	 * @return \Titon\Mvc\View
 	 */
 	public function addHelper($key, Helper $helper) {
+		$helper->setView($this);
+
 		$this->_helpers[$key] = $helper;
 		$this->_attached[$key] = $helper;
 
@@ -108,6 +112,51 @@ class View {
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Format the current array of template parts. Any non-string values should be filtered.
+	 * Locales and extensions should be appended on the end of the path.
+	 *
+	 * @param string $template
+	 * @return string
+	 */
+	public function formatTemplate($template) {
+		if (is_string($template)) {
+			return $template;
+		}
+
+		$suffixes = [];
+		$template = Hash::filter($template, false, function($value) {
+			return (is_string($value) && $value);
+		});
+
+		foreach (['locale', 'ext'] as $key) {
+			if (!empty($template[$key])) {
+				$value = $template[$key];
+
+				// Fallback locale does not require the suffix
+				if ($key === 'locale') {
+					$locale = Config::get('Titon.locale');
+
+					if ($value !== $locale['fallback']) {
+						$suffixes[$key] = $locale['current'];
+					}
+				} else {
+					$suffixes[$key] = $value;
+				}
+			}
+
+			unset($template[$key]);
+		}
+
+		$template = implode('/', $template);
+
+		if ($suffixes) {
+			$template .= '.' . implode('.', $suffixes);
+		}
+
+		return $template;
 	}
 
 	/**
@@ -188,21 +237,16 @@ class View {
 		return $this->cache([__METHOD__, $template, $type], function() use ($template, $type) {
 			$paths = $this->getPaths();
 
+			if ($configPaths = Config::get('Titon.path.views')) {
+				$paths = array_merge($paths, $configPaths);
+			}
+
 			if (!$paths) {
 				throw new Exception('No template lookup paths have been defined');
 			}
 
 			// Combine path parts
-			if (is_array($template)) {
-				$ext = isset($template['ext']) ? $template['ext'] : null;
-				unset($template['ext']);
-
-				$template = implode('/', $template);
-
-				if ($ext) {
-					$template .= '.' . $ext;
-				}
-			}
+			$template = $this->formatTemplate($template);
 
 			// Determine parent path
 			switch ($type) {

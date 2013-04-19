@@ -41,6 +41,7 @@ abstract class AbstractController extends Base implements Controller {
 	 *	controller 		- Current controller within the module
 	 *	action 			- Current action within the controller
 	 *	ext 			- The extension within the address bar, and what content-type to render the page as
+	 * 	template		- The view template to render
 	 *	args 			- Action arguments
 	 *
 	 * @var array
@@ -50,7 +51,9 @@ abstract class AbstractController extends Base implements Controller {
 		'controller' => '',
 		'action' => '',
 		'ext' => '',
-		'args' => []
+		'args' => [],
+		'template' => '',
+		'initialize' => false
 	];
 
 	/**
@@ -193,7 +196,7 @@ abstract class AbstractController extends Base implements Controller {
 				'error' => $e,
 				'code' => $e->getCode(),
 				'message' => $e->getMessage(),
-				'url' => Router::build($this->config->all())
+				'url' => Router::url()
 			])
 			->run([
 				'template' => ['errors', $template],
@@ -209,7 +212,11 @@ abstract class AbstractController extends Base implements Controller {
 	 */
 	public function renderView() {
 		$template = $this->config->all();
-		unset($template['args']);
+		unset($template['args'], $template['module']);
+
+		if (!empty($template['template'])) {
+			$template = $template['template'];
+		}
 
 		return $this->getView()->run($template);
 	}

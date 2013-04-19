@@ -11,6 +11,7 @@ use Titon\Common\Registry;
 use Titon\Common\Traits\Instanceable;
 use Titon\Debug\Debugger;
 use Titon\Mvc\Controller\ErrorController;
+use Titon\Mvc\Helper\Html\HtmlHelper;
 use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Dispatcher\FrontDispatcher;
@@ -154,19 +155,30 @@ class Application {
 	 * Will fetch the current controller instance or instantiate an ErrorController.
 	 * The error view template will be rendered.
 	 *
-	 * @param \Exception $e
+	 * @param \Exception $exception
 	 */
-	public function handleError(\Exception $e) {
-		$controller = Registry::get('Titon.controller');
-
-		if (!$controller) {
-			$controller = new ErrorController($this->getRouter()->current()->getParams());
-			$controller->setRequest($this->getRequest());
-			$controller->setResponse($this->getResponse());
+	public function handleError(\Exception $exception) {
+		if (class_exists('Titon\Debug\Debugger')) {
+			Debugger::logException($exception);
 		}
 
+		try {
+			$controller = Registry::get('Titon.controller');
+
+		} catch (\Exception $e) {
+			$view = new View();
+			$view->addHelper('html', new HtmlHelper());
+
+			$controller = new ErrorController($this->getRouter()->current()->getParams());
+			$controller->setView($view);
+			$controller->initialize();
+		}
+
+		$controller->setRequest($this->getRequest());
+		$controller->setResponse($this->getResponse());
+
 		$this->getResponse()
-			->body($controller->renderError($e))
+			->body($controller->renderError($exception))
 			->respond();
 	}
 
