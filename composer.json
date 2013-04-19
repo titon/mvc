@@ -1,8 +1,11 @@
 {
 	"name": "titon/mvc",
 	"type": "library",
-	"description": "The Titon MVC package adds support for the Model-View-Controller paradigm.",
-	"keywords": ["titon", "model", "view", "controller", "action", "helper", "engine", "template"],
+	"description": "The Titon MVC package adds support for the Model-View-Controller paradigm and running a full application.",
+	"keywords": [
+		"titon", "model", "view", "controller", "action", "helper", "engine", "template",
+		"application", "app", "dispatcher", "module", "request", "response", "cycle"
+	],
 	"homepage": "https://github.com/titon/MVC",
 	"license": "BSD-2",
 	"authors": [
@@ -18,7 +21,11 @@
 		"titon/http": "*"
 	},
 	"require-dev": {
-		"titon/test": "*"
+		"titon/test": "*",
+		"titon/debug": "*"
+	},
+	"suggest": {
+		"titon/debug": "Enable the Debugger for error and exception handling"
 	},
 	"autoload": {
 		"psr-0": { "Titon\\Mvc": "src/" }

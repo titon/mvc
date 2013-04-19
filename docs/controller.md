@@ -19,15 +19,6 @@ $controller = new UsersController();
 $controller->dispatchAction($action, $arguments);
 ```
 
-To improve upon this process flow, callbacks can be triggered.
-
-```php
-$controller = new UsersController();
-$controller->preProcess();
-$controller->dispatchAction($action, $arguments);
-$controller->postProcess();
-```
-
 If a view and engine have been defined, one can generate an output using templates. The renderView() method will need to be defined.
 
 ```php
