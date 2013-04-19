@@ -77,10 +77,10 @@ interface Controller {
 	/**
 	 * Render the view template for an error/exception.
 	 *
-	 * @param \Exception $e
+	 * @param \Exception $exception
 	 * @return string
 	 */
-	public function renderError(\Exception $e);
+	public function renderError(\Exception $exception);
 
 	/**
 	 * Render the view templates and return the output.

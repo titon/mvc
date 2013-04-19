@@ -128,7 +128,7 @@ class View {
 
 		$suffixes = [];
 		$template = Hash::filter($template, false, function($value) {
-			return (is_string($value) && $value);
+			return ((is_string($value) || is_numeric($value)) && $value);
 		});
 
 		foreach (['locale', 'ext'] as $key) {

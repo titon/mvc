@@ -8,6 +8,7 @@
 namespace Titon\Mvc\Controller;
 
 use Titon\Http\Exception\HttpException;
+use Titon\Http\Http;
 use Titon\Mvc\Module;
 use Titon\Common\Base;
 use Titon\Common\Registry;
@@ -178,24 +179,29 @@ abstract class AbstractController extends Base implements Controller {
 	/**
 	 * Render the view template for an error/exception.
 	 *
-	 * @param \Exception $e
+	 * @param \Exception $exception
 	 * @return string
 	 */
-	public function renderError(\Exception $e) {
+	public function renderError(\Exception $exception) {
 		$template = 'error';
 		$status = 500;
 
-		if ($e instanceof HttpException) {
-			$status = $template = $e->getCode();
+		if ($exception instanceof HttpException) {
+			$status = $exception->getCode();
+		}
+
+		if (error_reporting() <= 0) {
+			$template = 'http';
 		}
 
 		$this->getResponse()->statusCode($status);
 
 		return $this->getView()
 			->setVariables([
-				'error' => $e,
-				'code' => $e->getCode(),
-				'message' => $e->getMessage(),
+				'pageTitle' => Http::getStatusCode($status),
+				'error' => $exception,
+				'code' => $status,
+				'message' => $exception->getMessage(),
 				'url' => Router::url()
 			])
 			->run([
