@@ -7,14 +7,14 @@
 
 namespace Titon\Mvc;
 
+use Titon\Common\Registry;
+use Titon\Common\Traits\Instanceable;
+use Titon\Debug\Debugger;
 use Titon\Mvc\Controller\ErrorController;
 use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Dispatcher\FrontDispatcher;
-use Titon\Common\Registry;
-use Titon\Common\Traits\Instanceable;
 use Titon\Route\Router;
-use \Exception;
 
 /**
  * The Application object acts as the hub for the entire HTTP dispatch cycle and manages all available modules.
@@ -24,6 +24,13 @@ class Application {
 	use Instanceable;
 
 	/**
+	 * Dispatcher instance.
+	 *
+	 * @var \Titon\Mvc\Dispatcher
+	 */
+	protected $_dispatcher;
+
+	/**
 	 * List of modules.
 	 *
 	 * @var \Titon\Mvc\Module[]
@@ -31,11 +38,38 @@ class Application {
 	protected $_modules = [];
 
 	/**
-	 * Dispatcher instance.
+	 * Request instance.
 	 *
-	 * @var \Titon\Mvc\Dispatcher
+	 * @var \Titon\Http\Request
 	 */
-	protected $_dispatcher;
+	protected $_request;
+
+	/**
+	 * Response instance.
+	 *
+	 * @var \Titon\Http\Response
+	 */
+	protected $_response;
+
+	/**
+	 * Router instance.
+	 *
+	 * @var \Titon\Route\Router
+	 */
+	protected $_router;
+
+	/**
+	 * Set the error handler if the debug package exists.
+	 */
+	public function __construct() {
+		$this->_router = Registry::factory('Titon\Route\Router');
+		$this->_request = Registry::factory('Titon\Http\Request');
+		$this->_response = Registry::factory('Titon\Http\Response');
+
+		if (class_exists('Titon\Debug\Debugger')) {
+			Debugger::setHandler([$this, 'handleError']);
+		}
+	}
 
 	/**
 	 * Add a module into the application.
@@ -91,33 +125,67 @@ class Application {
 	}
 
 	/**
-	 * @todo
+	 * Return the router object.
+	 *
+	 * @return \Titon\Route\Router
 	 */
-	public function run() {
-		$route = Registry::factory('Titon\Route\Router')->current();
-		$request = Registry::factory('Titon\Http\Request');
-		$response = Registry::factory('Titon\Http\Response');
-		$params = $route->getParams();
-		$output = null;
+	public function getRouter() {
+		return $this->_router;
+	}
 
-		try {
-			$dispatcher = $this->getDispatcher();
-			$dispatcher->setApplication($this);
-			$dispatcher->setParams($params);
-			$dispatcher->setRequest($request);
-			$dispatcher->setResponse($response);
+	/**
+	 * Return the request object.
+	 *
+	 * @return \Titon\Http\Request
+	 */
+	public function getRequest() {
+		return $this->_request;
+	}
 
-			$output = $dispatcher->dispatch();
+	/**
+	 * Return the response object.
+	 *
+	 * @return \Titon\Http\Response
+	 */
+	public function getResponse() {
+		return $this->_response;
+	}
 
-		} catch (Exception $e) {
-			$controller = new ErrorController($params);
-			$controller->setRequest($request);
-			$controller->setResponse($response);
+	/**
+	 * Default mechanism for handling uncaught exceptions.
+	 * Will fetch the current controller instance or instantiate an ErrorController.
+	 * The error view template will be rendered.
+	 *
+	 * @param \Exception $e
+	 */
+	public function handleError(\Exception $e) {
+		$controller = Registry::get('Titon.controller');
 
-			$output = $controller->renderError($e);
+		if (!$controller) {
+			$controller = new ErrorController($this->getRouter()->current()->getParams());
+			$controller->setRequest($this->getRequest());
+			$controller->setResponse($this->getResponse());
 		}
 
-		$response->body($output)->respond();
+		$this->getResponse()
+			->body($controller->renderError($e))
+			->respond();
+	}
+
+	/**
+	 * Run the application by fetching the dispatcher and dispatching the request
+	 * to the module and controller that matches the current URL.
+	 */
+	public function run() {
+		$dispatcher = $this->getDispatcher();
+		$dispatcher->setApplication($this);
+		$dispatcher->setParams($this->getRouter()->current()->getParams());
+		$dispatcher->setRequest($this->getRequest());
+		$dispatcher->setResponse($this->getResponse());
+
+		$this->getResponse()
+			->body($dispatcher->dispatch())
+			->respond();
 	}
 
 	/**

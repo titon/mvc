@@ -28,7 +28,16 @@ abstract class AbstractAction extends Base implements Action {
 	protected $_controller;
 
 	/**
-	 * Store the parent Controller.
+	 * Return the controller.
+	 *
+	 * @return \Titon\Mvc\Controller
+	 */
+	public function getController() {
+		return $this->_controller;
+	}
+
+	/**
+	 * Set the parent controller.
 	 *
 	 * @param \Titon\Mvc\Controller $controller
 	 * @return \Titon\Mvc\Action

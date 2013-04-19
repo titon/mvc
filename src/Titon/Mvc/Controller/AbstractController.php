@@ -155,10 +155,6 @@ abstract class AbstractController extends Base implements Controller {
 	 * @return \Titon\Mvc\View
 	 */
 	public function getView() {
-		if (!$this->_view) {
-			$this->setView(new View());
-		}
-
 		return $this->_view;
 	}
 
@@ -188,10 +184,13 @@ abstract class AbstractController extends Base implements Controller {
 	 */
 	public function renderError(\Exception $e) {
 		$template = 'error';
+		$status = 500;
 
 		if ($e instanceof HttpException) {
-			$template = $e->getCode();
+			$status = $template = $e->getCode();
 		}
+
+		$this->getResponse()->statusCode($status);
 
 		return $this->getView()
 			->setVariables([

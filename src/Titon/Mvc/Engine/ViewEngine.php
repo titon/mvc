@@ -25,7 +25,7 @@ class ViewEngine extends AbstractEngine {
 	 */
 	public function render($path, array $variables = []) {
 		if ($variables) {
-			extract($variables, EXTR_SKIP);
+			extract($variables, EXTR_OVERWRITE);
 		}
 
 		ob_start();

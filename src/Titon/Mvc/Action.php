@@ -15,6 +15,13 @@ use Titon\Mvc\Controller;
 interface Action {
 
 	/**
+	 * Return the controller.
+	 *
+	 * @return \Titon\Mvc\Controller
+	 */
+	public function getController();
+
+	/**
 	 * Method that is executed to trigger the actions logic.
 	 *
 	 * @return string
@@ -22,7 +29,7 @@ interface Action {
 	public function run();
 
 	/**
-	 * Store the parent Controller.
+	 * Set the parent controller.
 	 *
 	 * @param \Titon\Mvc\Controller $controller
 	 * @return \Titon\Mvc\Action
