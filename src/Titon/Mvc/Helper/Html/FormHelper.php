@@ -343,8 +343,6 @@ class FormHelper extends AbstractHelper {
 
 	/**
 	 * Configure the class with the current date settings, instead of calling them multiple times.
-	 *
-	 * @return void
 	 */
 	public function initialize() {
 		parent::initialize();

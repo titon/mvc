@@ -190,7 +190,7 @@ class HtmlHelper extends AbstractHelper {
 	 * Create a script element to include a JS file or to encompass JS code.
 	 *
 	 * @param string $source
-	 * @param boolean $isBlock
+	 * @param bool $isBlock
 	 * @return string
 	 */
 	public function script($source, $isBlock = false) {

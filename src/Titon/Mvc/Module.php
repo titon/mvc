@@ -14,8 +14,6 @@ interface Module {
 
 	/**
 	 * Bootstrap the module by triggering any routes or configuration.
-	 *
-	 * @return void
 	 */
 	public function bootstrap();
 

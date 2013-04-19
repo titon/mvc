@@ -17,8 +17,6 @@ class AssetHelper extends HtmlAssetHelper {
 
 	/**
 	 * Attach the XhtmlHelper.
-	 *
-	 * @return void
 	 */
 	public function initialize() {
 		$this->attachObject('html', function() {

@@ -35,7 +35,6 @@ interface Helper {
 	 * @param \Titon\Mvc\View $view
 	 * @param \Titon\Mvc\Engine $engine
 	 * @param int $type
-	 * @return void
 	 */
 	public function preRender(View $view, Engine $engine, $type);
 
@@ -45,7 +44,6 @@ interface Helper {
 	 * @param \Titon\Mvc\View $view
 	 * @param \Titon\Mvc\Engine $engine
 	 * @param int $type
-	 * @return void
 	 */
 	public function postRender(View $view, Engine $engine, $type);
 

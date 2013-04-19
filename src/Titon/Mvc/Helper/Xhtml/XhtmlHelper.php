@@ -60,7 +60,7 @@ class XhtmlHelper extends HtmlHelper {
 	 * Escape a value.
 	 *
 	 * @param string $value
-	 * @param boolean|null $escape
+	 * @param bool|null $escape
 	 * @return string
 	 */
 	public function escape($value, $escape = null) {

@@ -67,15 +67,11 @@ interface Controller {
 
 	/**
 	 * Triggered before the controller processes the requested action.
-	 *
-	 * @return void
 	 */
 	public function preProcess();
 
 	/**
 	 * Triggered after the action processes, but before the view renders.
-	 *
-	 * @return void
 	 */
 	public function postProcess();
 

@@ -96,7 +96,7 @@ abstract class AbstractHelper extends Base implements Helper {
 	 * Escape a value.
 	 *
 	 * @param string $value
-	 * @param boolean|null $escape
+	 * @param bool|null $escape
 	 * @return string
 	 */
 	public function escape($value, $escape = null) {
@@ -139,7 +139,6 @@ abstract class AbstractHelper extends Base implements Helper {
 	 * @param \Titon\Mvc\View $view
 	 * @param \Titon\Mvc\Engine $engine
 	 * @param int $type
-	 * @return void
 	 */
 	public function preRender(View $view, Engine $engine, $type) {
 		$this->setView($view)->setEngine($engine);
@@ -151,7 +150,6 @@ abstract class AbstractHelper extends Base implements Helper {
 	 * @param \Titon\Mvc\View $view
 	 * @param \Titon\Mvc\Engine $engine
 	 * @param int $type
-	 * @return void
 	 */
 	public function postRender(View $view, Engine $engine, $type) {
 		$this->setView($view)->setEngine($engine);

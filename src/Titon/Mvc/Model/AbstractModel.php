@@ -67,7 +67,6 @@ abstract class AbstractModel implements Model {
 	 *
 	 * @param string $key
 	 * @param mixed $value
-	 * @return void
 	 */
 	final public function __set($key, $value) {
 		$this->set($key, $value);
@@ -77,7 +76,7 @@ abstract class AbstractModel implements Model {
 	 * Magic method for Model::has().
 	 *
 	 * @param string $key
-	 * @return boolean
+	 * @return bool
 	 * @final
 	 */
 	final public function __isset($key) {
@@ -88,7 +87,6 @@ abstract class AbstractModel implements Model {
 	 * Magic method for Model::remove().
 	 *
 	 * @param $key
-	 * @return void
 	 * @final
 	 */
 	final public function __unset($key) {

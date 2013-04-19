@@ -55,8 +55,6 @@ class BreadcrumbHelper extends AbstractHelper {
 
 	/**
 	 * Attach the HtmlHelper.
-	 *
-	 * @return void
 	 */
 	public function initialize() {
 		$this->attachObject('html', function() {

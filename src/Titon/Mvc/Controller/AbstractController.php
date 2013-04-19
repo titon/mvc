@@ -160,8 +160,6 @@ abstract class AbstractController extends Base implements Controller {
 
 	/**
 	 * Triggered before the controller processes the requested action.
-	 *
-	 * @return void
 	 */
 	public function preProcess() {
 		$this->notifyObjects('preProcess');
@@ -169,8 +167,6 @@ abstract class AbstractController extends Base implements Controller {
 
 	/**
 	 * Triggered after the action processes, but before the view renders.
-	 *
-	 * @return void
 	 */
 	public function postProcess() {
 		$this->notifyObjects('postProcess');

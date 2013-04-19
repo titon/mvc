@@ -104,7 +104,6 @@ class Application {
 	 * @param string $key
 	 * @return \Titon\Mvc\Module
 	 * @throws \Titon\Mvc\Exception
-	 * @static
 	 */
 	public function getModule($key) {
 		if (isset($this->_modules[$key])) {
@@ -118,7 +117,6 @@ class Application {
 	 * Return all modules.
 	 *
 	 * @return \Titon\Mvc\Module[]
-	 * @static
 	 */
 	public function getModules() {
 		return $this->_modules;

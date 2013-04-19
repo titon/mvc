@@ -254,7 +254,6 @@ class View {
 	 *
 	 * @param \Titon\Mvc\Engine $engine
 	 * @param int $type
-	 * @return void
 	 */
 	public function preRender(Engine $engine, $type) {
 		$this->notifyObjects('preRender', [$engine, $type]);
@@ -265,7 +264,6 @@ class View {
 	 *
 	 * @param \Titon\Mvc\Engine $engine
 	 * @param int $type
-	 * @return void
 	 */
 	public function postRender(Engine $engine, $type) {
 		$this->notifyObjects('postRender', [$engine, $type]);

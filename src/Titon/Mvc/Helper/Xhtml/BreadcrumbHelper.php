@@ -17,8 +17,6 @@ class BreadcrumbHelper extends HtmlBreadcrumbHelper {
 
 	/**
 	 * Attach the XhtmlHelper.
-	 *
-	 * @return void
 	 */
 	public function initialize() {
 		$this->attachObject('html', function() {
