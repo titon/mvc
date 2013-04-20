@@ -11,6 +11,7 @@ use Titon\Common\Registry;
 use Titon\Common\Traits\Instanceable;
 use Titon\Debug\Debugger;
 use Titon\Mvc\Controller\ErrorController;
+use Titon\Mvc\Helper\Html\AssetHelper;
 use Titon\Mvc\Helper\Html\HtmlHelper;
 use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
@@ -168,6 +169,7 @@ class Application {
 		} catch (\Exception $e) {
 			$view = new View();
 			$view->addHelper('html', new HtmlHelper());
+			$view->addHelper('asset', new AssetHelper());
 
 			$controller = new ErrorController($this->getRouter()->current()->getParams());
 			$controller->setView($view);
