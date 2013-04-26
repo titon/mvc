@@ -16,9 +16,10 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
-		"titon/common": "*",
+		"titon/view": "*",
+		"titon/controller": "*",
 		"titon/route": "*",
-		"titon/http": "*"
+		"titon/event": "*"
 	},
 	"require-dev": {
 		"titon/test": "*",

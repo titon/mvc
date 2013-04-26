@@ -1,1 +1,0 @@
-<error><?php echo $this->getContent(); ?></error>

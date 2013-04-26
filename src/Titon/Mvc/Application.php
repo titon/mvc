@@ -10,9 +10,11 @@ namespace Titon\Mvc;
 use Titon\Common\Registry;
 use Titon\Common\Traits\Instanceable;
 use Titon\Debug\Debugger;
-use Titon\Mvc\Controller\ErrorController;
-use Titon\Mvc\Helper\Html\AssetHelper;
-use Titon\Mvc\Helper\Html\HtmlHelper;
+use Titon\Controller\Controller\ErrorController;
+use Titon\Event\Scheduler;
+use Titon\View\View;
+use Titon\View\Helper\Html\AssetHelper;
+use Titon\View\Helper\Html\HtmlHelper;
 use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Dispatcher\FrontDispatcher;
@@ -163,6 +165,8 @@ class Application {
 			Debugger::logException($exception);
 		}
 
+		Scheduler::dispatch('app.preError', [$exception]);
+
 		try {
 			$controller = Registry::get('Titon.controller');
 
@@ -179,9 +183,11 @@ class Application {
 		$controller->setRequest($this->getRequest());
 		$controller->setResponse($this->getResponse());
 
-		$this->getResponse()
-			->body($controller->renderError($exception))
-			->respond();
+		$response = $controller->renderError($exception);
+
+		Scheduler::dispatch('app.postError', [$exception]);
+
+		$this->getResponse()->body($response)->respond();
 	}
 
 	/**
@@ -189,15 +195,19 @@ class Application {
 	 * to the module and controller that matches the current URL.
 	 */
 	public function run() {
+		Scheduler::dispatch('app.preDispatch');
+
 		$dispatcher = $this->getDispatcher();
 		$dispatcher->setApplication($this);
 		$dispatcher->setParams($this->getRouter()->current()->getParams());
 		$dispatcher->setRequest($this->getRequest());
 		$dispatcher->setResponse($this->getResponse());
 
-		$this->getResponse()
-			->body($dispatcher->dispatch())
-			->respond();
+		$response = $dispatcher->dispatch();
+
+		Scheduler::dispatch('app.postDispatch');
+
+		$this->getResponse()->body($response)->respond();
 	}
 
 	/**

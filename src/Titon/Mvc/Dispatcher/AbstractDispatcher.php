@@ -62,7 +62,7 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
 	/**
 	 * Return the controller instance.
 	 *
-	 * @return \Titon\Mvc\Controller
+	 * @return \Titon\Controller\Controller
 	 */
 	public function getController() {
 		$module = $this->getModule();
