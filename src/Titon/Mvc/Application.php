@@ -165,7 +165,7 @@ class Application {
 			Debugger::logException($exception);
 		}
 
-		Scheduler::dispatch('app.preError', [$exception]);
+		Scheduler::dispatch('mvc.preError', [$exception]);
 
 		try {
 			$controller = Registry::get('Titon.controller');
@@ -185,7 +185,7 @@ class Application {
 
 		$response = $controller->renderError($exception);
 
-		Scheduler::dispatch('app.postError', [$exception]);
+		Scheduler::dispatch('mvc.postError', [$exception]);
 
 		$this->getResponse()->body($response)->respond();
 	}
@@ -195,7 +195,7 @@ class Application {
 	 * to the module and controller that matches the current URL.
 	 */
 	public function run() {
-		Scheduler::dispatch('app.preDispatch');
+		Scheduler::dispatch('mvc.preRun');
 
 		$dispatcher = $this->getDispatcher();
 		$dispatcher->setApplication($this);
@@ -205,7 +205,7 @@ class Application {
 
 		$response = $dispatcher->dispatch();
 
-		Scheduler::dispatch('app.postDispatch');
+		Scheduler::dispatch('mvc.postRun');
 
 		$this->getResponse()->body($response)->respond();
 	}

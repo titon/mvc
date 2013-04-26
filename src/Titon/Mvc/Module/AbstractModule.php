@@ -7,6 +7,7 @@
 
 namespace Titon\Mvc\Module;
 
+use Titon\Event\Scheduler;
 use Titon\Mvc\Module;
 use Titon\Mvc\Exception;
 use Titon\Common\Base;
@@ -57,7 +58,7 @@ abstract class AbstractModule extends Base implements Module {
 	 * Bootstrap the module by triggering any routes or configuration.
 	 */
 	public function bootstrap() {
-		return;
+		Scheduler::dispatch('mvc.module.bootstrap', [$this]);
 	}
 
 	/**

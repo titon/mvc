@@ -7,6 +7,7 @@
 
 namespace Titon\Mvc\Dispatcher;
 
+use Titon\Event\Scheduler;
 use Titon\Mvc\Dispatcher\AbstractDispatcher;
 use \Exception;
 
@@ -22,18 +23,23 @@ class FrontDispatcher extends AbstractDispatcher {
 	 * @return string
 	 */
 	public function dispatch() {
+		Scheduler::dispatch('mvc.preDispatch', [$this]);
+
 		$controller = $this->getController();
-		$controller->preProcess();
 
 		try {
-			$controller->dispatchAction($this->getParam('action'), $this->getParam('args'));
+			$response = $controller->dispatchAction($this->getParam('action'), $this->getParam('args'));
+
+			if (empty($response)) {
+				$response =  $controller->renderView();
+			}
 		} catch (Exception $e) {
-			return $controller->renderError($e);
+			$response = $controller->renderError($e);
 		}
 
-		$controller->postProcess();
+		Scheduler::dispatch('mvc.postDispatch', [$this]);
 
-		return $controller->renderView();
+		return $response;
 	}
 
 }
