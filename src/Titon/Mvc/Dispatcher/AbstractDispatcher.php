@@ -56,6 +56,10 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
 	 * {@inheritdoc}
 	 */
 	public function getApplication() {
+		if (!$this->_app) {
+			throw new Exception('Application has not been initialized');
+		}
+
 		return $this->_app;
 	}
 

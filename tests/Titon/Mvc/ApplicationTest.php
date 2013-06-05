@@ -63,4 +63,19 @@ class ApplicationTest extends TestCase {
 		$this->assertInstanceOf('Titon\Test\Fixture\DispatcherFixture', $this->object->getDispatcher());
 	}
 
+	/**
+	 * Test that the request and response objects are created.
+	 */
+	public function testRequestResponse() {
+		$this->assertInstanceOf('Titon\Http\Request', $this->object->getRequest());
+		$this->assertInstanceOf('Titon\Http\Response', $this->object->getResponse());
+	}
+
+	/**
+	 * Test that the router object is created.
+	 */
+	public function testRouter() {
+		$this->assertInstanceOf('Titon\Route\Router', $this->object->getRouter());
+	}
+
 }

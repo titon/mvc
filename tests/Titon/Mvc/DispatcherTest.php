@@ -27,46 +27,102 @@ class DispatcherTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		$this->object = new DispatcherFixture();
+	}
+
+	/**
+	 * Test that getApplication() returns the app instance.
+	 */
+	public function testGetSetApplication() {
 		$module = new ModuleFixture('test-module', TEMP_DIR);
 		$module->setController('test-controller', 'Titon\Test\Fixture\ControllerFixture');
 
 		$app = Application::getInstance();
 		$app->addModule($module);
 
-		$this->object = new DispatcherFixture();
-		$this->object->setApplication($app);
-		$this->object->setRequest(new Request());
-		$this->object->setResponse(new Response());
-	}
+		try {
+			$this->object->getApplication();
+			$this->assertTrue(false);
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
 
-	/**
-	 * Test that getApplication() returns the app instance.
-	 */
-	public function testGetApplication() {
+		$this->object->setApplication($app);
+
 		$this->assertInstanceOf('Titon\Mvc\Application', $this->object->getApplication());
 	}
 
 	/**
 	 * Test that getRequest() returns the HTTP request instance.
 	 */
-	public function testGetRequest() {
+	public function testGetSetRequest() {
+		$this->assertEquals(null, $this->object->getRequest());
+
+		$this->object->setRequest(new Request());
+
 		$this->assertInstanceOf('Titon\Http\Request', $this->object->getRequest());
 	}
 
 	/**
 	 * Test that getResponse() returns the HTTP response instance.
 	 */
-	public function testGetResponse() {
+	public function testGetSetResponse() {
+		$this->assertEquals(null, $this->object->getResponse());
+
+		$this->object->setResponse(new Response());
+
 		$this->assertInstanceOf('Titon\Http\Response', $this->object->getResponse());
 	}
 
 	/**
 	 * Test that getModule() returns the module instance based off the URL.
 	 */
-	public function testGetModule() {
+	public function testGetSetModule() {
+		// No application
+		try {
+			$this->object->getModule();
+			$this->assertTrue(false);
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
+
+		$module = new ModuleFixture('test-module', TEMP_DIR);
+		$module->setController('test-controller', 'Titon\Test\Fixture\ControllerFixture');
+
+		$app = Application::getInstance();
+		$app->addModule($module);
+
+		$this->object->setApplication($app);
 		$this->object->setParams(['module' => 'test-module']);
 
 		$this->assertInstanceOf('Titon\Test\Fixture\ModuleFixture', $this->object->getModule());
+
+		// Wrong module
+		try {
+			$this->object->setParams(['module' => 'foobar-module']);
+			$this->object->getModule();
+			$this->assertTrue(false);
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
+	}
+
+	/**
+	 * Test that getController() returns a controller instance.
+	 */
+	public function testGetController() {
+		$module = new ModuleFixture('test-module', TEMP_DIR);
+		$module->setController('test-controller', 'Titon\Test\Fixture\ControllerFixture');
+
+		$app = Application::getInstance();
+		$app->addModule($module);
+
+		$this->object->setApplication($app);
+		$this->object->setRequest(new Request());
+		$this->object->setResponse(new Response());
+		$this->object->setParams(['module' => 'test-module', 'controller' => 'test-controller']);
+
+		$this->assertInstanceOf('Titon\Test\Fixture\ControllerFixture', $this->object->getController());
 	}
 
 }
