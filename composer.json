@@ -1,10 +1,10 @@
 {
 	"name": "titon/mvc",
 	"type": "library",
-	"description": "The Titon MVC package adds support for the Model-View-Controller paradigm and running a full application.",
+	"description": "The Titon MVC package adds support for the Model-View-Controller paradigm by packaging the external Model, View, Controller and Route packages into a single package. This single MVC package has full application support.",
 	"keywords": [
-		"titon", "model", "view", "controller", "action", "helper", "engine", "template",
-		"application", "app", "dispatcher", "module", "request", "response", "cycle"
+		"titon", "model", "view", "controller", "route", "application", "app",
+		"dispatch", "dispatcher", "module", "request", "response", "cycle"
 	],
 	"homepage": "https://github.com/titon/MVC",
 	"license": "BSD-2",

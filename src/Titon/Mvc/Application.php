@@ -23,6 +23,8 @@ use Titon\Route\Router;
 /**
  * The Application object acts as the hub for the entire HTTP dispatch cycle and manages all available modules.
  * When triggered, it will dispatch the request to the correct module, controller and action.
+ *
+ * @package Titon\Mvc
  */
 class Application {
 	use Instanceable;
@@ -30,40 +32,43 @@ class Application {
 	/**
 	 * Dispatcher instance.
 	 *
-	 * @var \Titon\Mvc\Dispatcher
+	 * @type \Titon\Mvc\Dispatcher
 	 */
 	protected $_dispatcher;
 
 	/**
 	 * List of modules.
 	 *
-	 * @var \Titon\Mvc\Module[]
+	 * @type \Titon\Mvc\Module[]
 	 */
 	protected $_modules = [];
 
 	/**
 	 * Request instance.
 	 *
-	 * @var \Titon\Http\Request
+	 * @type \Titon\Http\Request
 	 */
 	protected $_request;
 
 	/**
 	 * Response instance.
 	 *
-	 * @var \Titon\Http\Response
+	 * @type \Titon\Http\Response
 	 */
 	protected $_response;
 
 	/**
 	 * Router instance.
 	 *
-	 * @var \Titon\Route\Router
+	 * @type \Titon\Route\Router
 	 */
 	protected $_router;
 
 	/**
 	 * Set the error handler if the debug package exists.
+	 *
+	 * @uses Titon\Common\Registry
+	 * @uses Titon\Debug\Debugger
 	 */
 	public function __construct() {
 		$this->_router = Registry::factory('Titon\Route\Router');
@@ -158,6 +163,9 @@ class Application {
 	 * Will fetch the current controller instance or instantiate an ErrorController.
 	 * The error view template will be rendered.
 	 *
+	 * @uses Titon\Debug\Debugger
+	 * @uses Titon\Event\Scheduler
+	 *
 	 * @param \Exception $exception
 	 */
 	public function handleError(\Exception $exception) {
@@ -193,6 +201,8 @@ class Application {
 	/**
 	 * Run the application by fetching the dispatcher and dispatching the request
 	 * to the module and controller that matches the current URL.
+	 *
+	 * @uses Titon\Event\Scheduler
 	 */
 	public function run() {
 		Scheduler::dispatch('mvc.preRun');

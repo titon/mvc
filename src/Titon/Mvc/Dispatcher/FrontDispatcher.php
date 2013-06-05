@@ -14,13 +14,15 @@ use \Exception;
 /**
  * The FrontDispatcher triggers all the necessary methods and callbacks
  * within the controller to generate the response output.
+ *
+ * @package Titon\Mvc\Dispatcher
  */
 class FrontDispatcher extends AbstractDispatcher {
 
 	/**
-	 * Dispatch the current request and generate a response.
+	 * {@inheritdoc}
 	 *
-	 * @return string
+	 * @uses Titon\Event\Scheduler
 	 */
 	public function dispatch() {
 		Scheduler::dispatch('mvc.preDispatch', [$this]);

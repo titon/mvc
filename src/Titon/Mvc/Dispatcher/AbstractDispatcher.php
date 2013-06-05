@@ -19,50 +19,50 @@ use Titon\Route\Router;
 /**
  * The Dispatcher handles the generation of the response output.
  * It must locate the correct module and controller, and pass the current request, response and parameters.
+ *
+ * @package Titon\Mvc\Dispatcher
  */
 abstract class AbstractDispatcher extends Base implements Dispatcher {
 
 	/**
 	 * Application instance.
 	 *
-	 * @var \Titon\Mvc\Application
+	 * @type \Titon\Mvc\Application
 	 */
 	protected $_app;
 
 	/**
 	 * Request parameters.
 	 *
-	 * @var array
+	 * @type array
 	 */
 	protected $_params;
 
 	/**
 	 * Request instance.
 	 *
-	 * @var \Titon\Http\Request
+	 * @type \Titon\Http\Request
 	 */
 	protected $_request;
 
 	/**
 	 * Response instance.
 	 *
-	 * @var \Titon\Http\Response
+	 * @type \Titon\Http\Response
 	 */
 	protected $_response;
 
 	/**
-	 * Get the application.
-	 *
-	 * @return \Titon\Mvc\Application
+	 * {@inheritdoc}
 	 */
 	public function getApplication() {
 		return $this->_app;
 	}
 
 	/**
-	 * Return the controller instance.
+	 * {@inheritdoc}
 	 *
-	 * @return \Titon\Controller\Controller
+	 * @uses Titon\Common\Registry
 	 */
 	public function getController() {
 		$module = $this->getModule();
@@ -81,20 +81,16 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
 	}
 
 	/**
-	 * Return the module instance.
-	 *
-	 * @return \Titon\Mvc\Module
+	 * {@inheritdoc}
 	 */
 	public function getModule() {
 		return $this->getApplication()->getModule($this->getParam('module'));
 	}
 
 	/**
-	 * Return a parameter by key.
+	 * {@inheritdoc}
 	 *
-	 * @param string $key
-	 * @return mixed
-	 * @throws \Titon\Mvc\Exception
+	 * @throws Titon\Mvc\Exception
 	 */
 	public function getParam($key) {
 		if (isset($this->_params[$key])) {
@@ -105,37 +101,28 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
 	}
 
 	/**
-	 * Return all parameters.
-	 *
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public function getParams() {
 		return $this->_params;
 	}
 
 	/**
-	 * Return the request object.
-	 *
-	 * @return \Titon\Http\Request
+	 * {@inheritdoc}
 	 */
 	public function getRequest() {
 		return $this->_request;
 	}
 
 	/**
-	 * Return the response object.
-	 *
-	 * @return \Titon\Http\Response
+	 * {@inheritdoc}
 	 */
 	public function getResponse() {
 		return $this->_response;
 	}
 
 	/**
-	 * Set the application.
-	 *
-	 * @param \Titon\Mvc\Application $app
-	 * @return \Titon\Mvc\Dispatcher
+	 * {@inheritdoc}
 	 */
 	public function setApplication(Application $app) {
 		$this->_app = $app;
@@ -144,10 +131,7 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
 	}
 
 	/**
-	 * Set parameters.
-	 *
-	 * @param array $params
-	 * @return \Titon\Mvc\Dispatcher
+	 * {@inheritdoc}
 	 */
 	public function setParams(array $params) {
 		$this->_params = $params;
@@ -156,10 +140,7 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
 	}
 
 	/**
-	 * Set the request object.
-	 *
-	 * @param \Titon\Http\Request $request
-	 * @return \Titon\Mvc\Dispatcher
+	 * {@inheritdoc}
 	 */
 	public function setRequest(Request $request) {
 		$this->_request = $request;
@@ -168,10 +149,7 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
 	}
 
 	/**
-	 * Set the response object.
-	 *
-	 * @param \Titon\Http\Response $response
-	 * @return \Titon\Mvc\Dispatcher
+	 * {@inheritdoc}
 	 */
 	public function setResponse(Response $response) {
 		$this->_response = $response;

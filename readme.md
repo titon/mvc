@@ -1,24 +1,19 @@
 # MVC [![Build Status](https://travis-ci.org/titon/MVC.png)](https://travis-ci.org/titon/MVC) #
 
-The Titon MVC package adds support for the Model-View-Controller paradigm and running a full application.
+The Titon MVC package adds support for the Model-View-Controller paradigm by packaging the external Model, View, Controller and Route packages into a single package. This single MVC package has full application support.
 
 ### Features ###
 
-* `Action` - Shared controller action logic
-* `Application` - Primary class to run the web app
-* `Controller` - HTTP request and response handler
+* `Application` - Primary class to run a web application
 * `Dispatcher` - HTTP dispatch cycle handler
-* `Engine` - Template rendering engine
-* `Helper` - Template helper classes
-* `Model` - Database entity schema
 * `Module` - Represents a packaged mini-app
-* `View` - Template management
 
 ### Dependencies ###
 
-* `Common`
+* `Model`
+* `View`
+* `Controller`
 * `Route`
-* `HTTP`
 
 ### Requirements ###
 

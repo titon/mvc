@@ -9,6 +9,8 @@ namespace Titon\Mvc;
 
 /**
  * Interface for the modules library.
+ *
+ * @package Titon\Mvc
  */
 interface Module {
 

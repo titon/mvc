@@ -15,6 +15,8 @@ use Titon\Http\Response;
 
 /**
  * Interface for the dispatchers library.
+ *
+ * @package Titon\Mvc
  */
 interface Dispatcher {
 

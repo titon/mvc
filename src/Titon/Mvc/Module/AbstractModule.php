@@ -17,27 +17,29 @@ use Titon\Common\Base;
  * or removed from an existing web application.
  *
  * It provides a mapping of all publicly accessible controllers and resources.
+ *
+ * @package Titon\Mvc\Module
  */
 abstract class AbstractModule extends Base implements Module {
 
 	/**
 	 * List of controller slugs to namespaces.
 	 *
-	 * @var array
+	 * @type array
 	 */
 	protected $_controllers = [];
 
 	/**
 	 * The module slug used in URLs.
 	 *
-	 * @var string
+	 * @type string
 	 */
 	protected $_key;
 
 	/**
 	 * The module file system location.
 	 *
-	 * @var string
+	 * @type string
 	 */
 	protected $_path;
 
@@ -55,17 +57,17 @@ abstract class AbstractModule extends Base implements Module {
 	}
 
 	/**
-	 * Bootstrap the module by triggering any routes or configuration.
+	 * {@inheritdoc}
+	 *
+	 * @uses Titon\Event\Scheduler
 	 */
 	public function bootstrap() {
 		Scheduler::dispatch('mvc.module.bootstrap', [$this]);
 	}
 
 	/**
-	 * Return a controller by key.
+	 * {@inheritdoc}
 	 *
-	 * @param string $key
-	 * @return string
 	 * @throws \Titon\Mvc\Exception
 	 */
 	public function getController($key) {
@@ -77,56 +79,42 @@ abstract class AbstractModule extends Base implements Module {
 	}
 
 	/**
-	 * Return all controllers.
-	 *
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	public function getControllers() {
 		return $this->_controllers;
 	}
 
 	/**
-	 * Return the module key.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function getKey() {
 		return $this->_key;
 	}
 
 	/**
-	 * Return the modules file system path.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function getPath() {
 		return $this->_path;
 	}
 
 	/**
-	 * Return the modules resource location.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function getResourcePath() {
 		return $this->getPath() . '/resources/';
 	}
 
 	/**
-	 * Return the modules views location.
-	 *
-	 * @return string
+	 * {@inheritdoc}
 	 */
 	public function getViewPath() {
 		return $this->getPath() . '/views/';
 	}
 
 	/**
-	 * Define a module controller.
-	 *
-	 * @param string $key
-	 * @param string $class
-	 * @return \Titon\Mvc\Module
+	 * {@inheritdoc}
 	 */
 	public function setController($key, $class) {
 		$this->_controllers[$key] = $class;
@@ -135,10 +123,7 @@ abstract class AbstractModule extends Base implements Module {
 	}
 
 	/**
-	 * Define multiple module controllers.
-	 *
-	 * @param array $controllers
-	 * @return \Titon\Mvc\Module
+	 * {@inheritdoc}
 	 */
 	public function setControllers(array $controllers) {
 		foreach ($controllers as $key => $class) {
