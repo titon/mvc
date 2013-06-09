@@ -87,9 +87,9 @@ class Application {
 	 * @return \Titon\Mvc\Module
 	 */
 	public function addModule(Module $module) {
-		$module->bootstrap();
-
 		$this->_modules[$module->getKey()] = $module;
+
+		$module->bootstrap($this);
 
 		return $module;
 	}

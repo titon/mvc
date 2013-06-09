@@ -7,6 +7,8 @@
 
 namespace Titon\Mvc;
 
+use Titon\Mvc\Application;
+
 /**
  * Interface for the modules library.
  *
@@ -16,8 +18,10 @@ interface Module {
 
 	/**
 	 * Bootstrap the module by triggering any routes or configuration.
+	 *
+	 * @param \Titon\Mvc\Application $app
 	 */
-	public function bootstrap();
+	public function bootstrap(Application $app);
 
 	/**
 	 * Return a controller by key.
