@@ -9,16 +9,18 @@ namespace Titon\Mvc;
 
 use Titon\Common\Registry;
 use Titon\Common\Traits\Instanceable;
-use Titon\Debug\Debugger;
 use Titon\Controller\Controller\ErrorController;
+use Titon\Debug\Debugger;
 use Titon\Event\Scheduler;
-use Titon\View\View;
-use Titon\View\Helper\Html\AssetHelper;
-use Titon\View\Helper\Html\HtmlHelper;
 use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Dispatcher\FrontDispatcher;
+use Titon\Mvc\Exception\MissingModuleException;
 use Titon\Route\Router;
+use Titon\View\View;
+use Titon\View\Helper\Html\AssetHelper;
+use Titon\View\Helper\Html\HtmlHelper;
+use \Exception;
 
 /**
  * The Application object acts as the hub for the entire HTTP dispatch cycle and manages all available modules.
@@ -112,14 +114,14 @@ class Application {
 	 *
 	 * @param string $key
 	 * @return \Titon\Mvc\Module
-	 * @throws \Titon\Mvc\Exception
+	 * @throws \Titon\Mvc\Exception\MissingModuleException
 	 */
 	public function getModule($key) {
 		if (isset($this->_modules[$key])) {
 			return $this->_modules[$key];
 		}
 
-		throw new Exception(sprintf('Could not locate %s module', $key));
+		throw new MissingModuleException(sprintf('Could not locate %s module', $key));
 	}
 
 	/**
@@ -168,7 +170,7 @@ class Application {
 	 *
 	 * @param \Exception $exception
 	 */
-	public function handleError(\Exception $exception) {
+	public function handleError(Exception $exception) {
 		if (class_exists('Titon\Debug\Debugger')) {
 			Debugger::logException($exception);
 		}
@@ -178,7 +180,7 @@ class Application {
 		try {
 			$controller = Registry::get('Titon.controller');
 
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			$view = new View();
 			$view->addHelper('html', new HtmlHelper());
 			$view->addHelper('asset', new AssetHelper());

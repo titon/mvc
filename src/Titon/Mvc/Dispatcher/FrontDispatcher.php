@@ -33,7 +33,7 @@ class FrontDispatcher extends AbstractDispatcher {
 			$response = $controller->dispatchAction($this->getParam('action'), $this->getParam('args'));
 
 			if (empty($response)) {
-				$response =  $controller->renderView();
+				$response = $controller->renderView();
 			}
 		} catch (Exception $e) {
 			$response = $controller->renderError($e);

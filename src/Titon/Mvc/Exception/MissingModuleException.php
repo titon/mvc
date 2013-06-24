@@ -5,13 +5,13 @@
  * @link		http://titon.io
  */
 
-namespace Titon\Mvc;
+namespace Titon\Mvc\Exception;
 
 /**
- * Exception for the MVC package.
+ * Exception thrown when a module is missing.
  *
- * @package Titon\Mvc
+ * @package Titon\Mvc\Exception
  */
-class Exception extends \Exception {
+class MissingModuleException extends \OutOfRangeException {
 
 }

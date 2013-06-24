@@ -7,13 +7,13 @@
 
 namespace Titon\Mvc\Dispatcher;
 
-use Titon\Mvc\Application;
-use Titon\Mvc\Dispatcher;
-use Titon\Mvc\Exception;
 use Titon\Common\Base;
 use Titon\Common\Registry;
 use Titon\Http\Request;
 use Titon\Http\Response;
+use Titon\Mvc\Application;
+use Titon\Mvc\Dispatcher;
+use Titon\Mvc\Exception\NoApplicationException;
 use Titon\Route\Router;
 
 /**
@@ -54,10 +54,12 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @throws \Titon\Mvc\Exception\NoApplicationException
 	 */
 	public function getApplication() {
 		if (!$this->_app) {
-			throw new Exception('Application has not been initialized');
+			throw new NoApplicationException('Application has not been initialized');
 		}
 
 		return $this->_app;
@@ -93,15 +95,9 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
 
 	/**
 	 * {@inheritdoc}
-	 *
-	 * @throws Titon\Mvc\Exception
 	 */
 	public function getParam($key) {
-		if (isset($this->_params[$key])) {
-			return $this->_params[$key];
-		}
-
-		throw new Exception(sprintf('Param %s does not exist', $key));
+		return isset($this->_params[$key]) ? $this->_params[$key] : null;
 	}
 
 	/**

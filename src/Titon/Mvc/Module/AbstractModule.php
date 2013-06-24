@@ -7,11 +7,11 @@
 
 namespace Titon\Mvc\Module;
 
+use Titon\Common\Base;
 use Titon\Event\Scheduler;
 use Titon\Mvc\Application;
 use Titon\Mvc\Module;
-use Titon\Mvc\Exception;
-use Titon\Common\Base;
+use Titon\Mvc\Exception\MissingControllerException;
 
 /**
  * A Module represents a self contained miniature application. A Module should easily be dropped into
@@ -69,14 +69,14 @@ abstract class AbstractModule extends Base implements Module {
 	/**
 	 * {@inheritdoc}
 	 *
-	 * @throws \Titon\Mvc\Exception
+	 * @throws \Titon\Mvc\Exception\MissingControllerException
 	 */
 	public function getController($key) {
 		if (isset($this->_controllers[$key])) {
 			return $this->_controllers[$key];
 		}
 
-		throw new Exception(sprintf('Controller %s does not exist', $key));
+		throw new MissingControllerException(sprintf('Controller %s does not exist', $key));
 	}
 
 	/**
