@@ -10,8 +10,7 @@ namespace Titon\Mvc\Dispatcher;
 use Titon\Mvc\Application;
 use Titon\Http\Request;
 use Titon\Http\Response;
-use Titon\Test\Fixture\DispatcherFixture;
-use Titon\Test\Fixture\ModuleFixture;
+use Titon\Test\Stub\ModuleStub;
 use Titon\Test\TestCase;
 use \Exception;
 
@@ -28,8 +27,8 @@ class FrontDispatcherTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$module = new ModuleFixture('test-module', TEMP_DIR);
-		$module->setController('test-controller', 'Titon\Test\Fixture\ControllerFixture');
+		$module = new ModuleStub('test-module', TEMP_DIR);
+		$module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
 		$app = Application::getInstance();
 		$app->addModule($module);

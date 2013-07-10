@@ -7,8 +7,8 @@
 
 namespace Titon\Mvc;
 
-use Titon\Test\Fixture\DispatcherFixture;
-use Titon\Test\Fixture\ModuleFixture;
+use Titon\Test\Stub\DispatcherStub;
+use Titon\Test\Stub\ModuleStub;
 use Titon\Test\TestCase;
 use \Exception;
 
@@ -42,7 +42,7 @@ class ApplicationTest extends TestCase {
 			$this->assertTrue(true);
 		}
 
-		$module = new ModuleFixture('test-module', TEMP_DIR);
+		$module = new ModuleStub('test-module', TEMP_DIR);
 
 		$this->object->addModule($module);
 
@@ -58,9 +58,9 @@ class ApplicationTest extends TestCase {
 	public function testDispatcher() {
 		$this->assertInstanceOf('Titon\Mvc\Dispatcher\FrontDispatcher', $this->object->getDispatcher());
 
-		$this->object->setDispatcher(new DispatcherFixture());
+		$this->object->setDispatcher(new DispatcherStub());
 
-		$this->assertInstanceOf('Titon\Test\Fixture\DispatcherFixture', $this->object->getDispatcher());
+		$this->assertInstanceOf('Titon\Test\Stub\DispatcherStub', $this->object->getDispatcher());
 	}
 
 	/**

@@ -16,6 +16,7 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
+		"titon/model": "*",
 		"titon/view": "*",
 		"titon/controller": "*",
 		"titon/route": "*"
@@ -25,7 +26,11 @@
 		"titon/debug": "*"
 	},
 	"suggest": {
-		"titon/debug": "Enable the Debugger for error and exception handling"
+		"titon/debug": "Enable the Debugger for error and exception handling",
+		"titon/model-mysql": "Enable MySQL database access",
+		"titon/model-sqlite": "Enable MySQL database access",
+		"titon/model-postgresql": "Enable MySQL database access",
+		"titon/model-mongodb": "Enable MongoDB database access"
 	},
 	"autoload": {
 		"psr-0": { "Titon\\Mvc": "src/" }

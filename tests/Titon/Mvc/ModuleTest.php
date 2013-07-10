@@ -7,8 +7,8 @@
 
 namespace Titon\Mvc;
 
+use Titon\Test\Stub\ModuleStub;
 use Titon\Test\TestCase;
-use Titon\Test\Fixture\ModuleFixture;
 use \Exception;
 
 /**
@@ -24,7 +24,7 @@ class ModuleTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->object = new ModuleFixture('test', TEMP_DIR);
+		$this->object = new ModuleStub('test', TEMP_DIR);
 	}
 
 	/**

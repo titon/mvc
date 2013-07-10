@@ -9,8 +9,8 @@ namespace Titon\Mvc;
 
 use Titon\Http\Request;
 use Titon\Http\Response;
-use Titon\Test\Fixture\DispatcherFixture;
-use Titon\Test\Fixture\ModuleFixture;
+use Titon\Test\Stub\DispatcherStub;
+use Titon\Test\Stub\ModuleStub;
 use Titon\Test\TestCase;
 use \Exception;
 
@@ -27,15 +27,15 @@ class DispatcherTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->object = new DispatcherFixture();
+		$this->object = new DispatcherStub();
 	}
 
 	/**
 	 * Test that getApplication() returns the app instance.
 	 */
 	public function testGetSetApplication() {
-		$module = new ModuleFixture('test-module', TEMP_DIR);
-		$module->setController('test-controller', 'Titon\Test\Fixture\ControllerFixture');
+		$module = new ModuleStub('test-module', TEMP_DIR);
+		$module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
 		$app = Application::getInstance();
 		$app->addModule($module);
@@ -86,8 +86,8 @@ class DispatcherTest extends TestCase {
 			$this->assertTrue(true);
 		}
 
-		$module = new ModuleFixture('test-module', TEMP_DIR);
-		$module->setController('test-controller', 'Titon\Test\Fixture\ControllerFixture');
+		$module = new ModuleStub('test-module', TEMP_DIR);
+		$module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
 		$app = Application::getInstance();
 		$app->addModule($module);
@@ -95,7 +95,7 @@ class DispatcherTest extends TestCase {
 		$this->object->setApplication($app);
 		$this->object->setParams(['module' => 'test-module']);
 
-		$this->assertInstanceOf('Titon\Test\Fixture\ModuleFixture', $this->object->getModule());
+		$this->assertInstanceOf('Titon\Test\Stub\ModuleStub', $this->object->getModule());
 
 		// Wrong module
 		try {
@@ -111,8 +111,8 @@ class DispatcherTest extends TestCase {
 	 * Test that getController() returns a controller instance.
 	 */
 	public function testGetController() {
-		$module = new ModuleFixture('test-module', TEMP_DIR);
-		$module->setController('test-controller', 'Titon\Test\Fixture\ControllerFixture');
+		$module = new ModuleStub('test-module', TEMP_DIR);
+		$module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
 		$app = Application::getInstance();
 		$app->addModule($module);
@@ -122,7 +122,7 @@ class DispatcherTest extends TestCase {
 		$this->object->setResponse(new Response());
 		$this->object->setParams(['module' => 'test-module', 'controller' => 'test-controller']);
 
-		$this->assertInstanceOf('Titon\Test\Fixture\ControllerFixture', $this->object->getController());
+		$this->assertInstanceOf('Titon\Test\Stub\ControllerStub', $this->object->getController());
 	}
 
 }
