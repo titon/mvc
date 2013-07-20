@@ -240,7 +240,7 @@ class Application {
 	 * @uses Titon\Event\Scheduler
 	 */
 	public function run() {
-		if (preg_match('/^\/(?<locale>[a-z]{2}(?:-[a-z]{2})?)?\/?(?<module>[\w-]+)\/(?<asset>css|js|img)\/(?<path>.*?)\/?$/', $_SERVER['REQUEST_URI'], $matches)) {
+		if (preg_match('/^\/(?<module>[\w-]+)\/(?<asset>css|js|img)\/(?<path>.*?)\/?$/', $_SERVER['REQUEST_URI'], $matches)) {
 			$this->handleAsset($matches);
 			return;
 		}
