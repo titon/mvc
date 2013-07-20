@@ -161,6 +161,37 @@ class Application {
 	}
 
 	/**
+	 * Handle a static asset by outputting the file contents and size to the browser.
+	 * If the asset does not exist, throw a 404 and exit.
+	 *
+	 * @param array $params
+	 */
+	public function handleAsset($params) {
+		$response = $this->getResponse();
+
+		try {
+			$module = $this->getModule($params['module']);
+			$path = implode('/', [$module->getPath(), 'web', $params['asset'], $params['path']]);
+
+			if (file_exists($path)) {
+				$response
+					->body(file_get_contents($path))
+					->cache()
+					->contentType(pathinfo($path, PATHINFO_EXTENSION))
+					->contentLength(filesize($path))
+					->lastModified(filemtime($path));
+			} else {
+				$response->statusCode(404);
+			}
+		} catch (Exception $e) {
+			$response->statusCode(404);
+		}
+
+		$response->respond();
+		exit();
+	}
+
+	/**
 	 * Default mechanism for handling uncaught exceptions.
 	 * Will fetch the current controller instance or instantiate an ErrorController.
 	 * The error view template will be rendered.
@@ -204,9 +235,16 @@ class Application {
 	 * Run the application by fetching the dispatcher and dispatching the request
 	 * to the module and controller that matches the current URL.
 	 *
+	 * If the requesting URL is a module asset, handle it and exit the dispatcher.
+	 *
 	 * @uses Titon\Event\Scheduler
 	 */
 	public function run() {
+		if (preg_match('/^\/(?<locale>[a-z]{2}(?:-[a-z]{2})?)?\/?(?<module>[\w-]+)\/(?<asset>css|js|img)\/(?<path>.*?)\/?$/', $_SERVER['REQUEST_URI'], $matches)) {
+			$this->handleAsset($matches);
+			return;
+		}
+
 		Scheduler::dispatch('mvc.preRun');
 
 		$dispatcher = $this->getDispatcher();
