@@ -11,7 +11,7 @@ use Titon\Common\Registry;
 use Titon\Common\Traits\Instanceable;
 use Titon\Controller\Controller\ErrorController;
 use Titon\Debug\Debugger;
-use Titon\Event\Scheduler;
+use Titon\Event\Traits\Emittable;
 use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Dispatcher\FrontDispatcher;
@@ -29,7 +29,7 @@ use \Exception;
  * @package Titon\Mvc
  */
 class Application {
-	use Instanceable;
+	use Instanceable, Emittable;
 
 	/**
 	 * Dispatcher instance.
@@ -169,6 +169,8 @@ class Application {
 	public function handleAsset($params) {
 		$response = $this->getResponse();
 
+		$this->emit('mvc.preAsset', [$this, $params]);
+
 		try {
 			$module = $this->getModule($params['module']);
 			$path = implode('/', [$module->getPath(), 'web', $params['asset'], $params['path']]);
@@ -187,6 +189,8 @@ class Application {
 			$response->statusCode(404);
 		}
 
+		$this->emit('mvc.postAsset', [$this, $params]);
+
 		$response->respond();
 		exit();
 	}
@@ -197,7 +201,6 @@ class Application {
 	 * The error view template will be rendered.
 	 *
 	 * @uses Titon\Debug\Debugger
-	 * @uses Titon\Event\Scheduler
 	 *
 	 * @param \Exception $exception
 	 */
@@ -206,7 +209,7 @@ class Application {
 			Debugger::logException($exception);
 		}
 
-		Scheduler::dispatch('mvc.preError', [$exception]);
+		$this->emit('mvc.preError', [$this, $exception]);
 
 		try {
 			$controller = Registry::get('Titon.controller');
@@ -226,7 +229,7 @@ class Application {
 
 		$response = $controller->renderError($exception);
 
-		Scheduler::dispatch('mvc.postError', [$exception]);
+		$this->emit('mvc.postError', [$this, $exception]);
 
 		$this->getResponse()->body($response)->respond();
 	}
@@ -236,8 +239,6 @@ class Application {
 	 * to the module and controller that matches the current URL.
 	 *
 	 * If the requesting URL is a module asset, handle it and exit the dispatcher.
-	 *
-	 * @uses Titon\Event\Scheduler
 	 */
 	public function run() {
 		if (preg_match('/^\/(?<module>[\w-]+)\/(?<asset>css|js|img)\/(?<path>.*?)\/?$/', $_SERVER['REQUEST_URI'], $matches)) {
@@ -245,7 +246,7 @@ class Application {
 			return;
 		}
 
-		Scheduler::dispatch('mvc.preRun');
+		$this->emit('mvc.preRun', [$this]);
 
 		$dispatcher = $this->getDispatcher();
 		$dispatcher->setApplication($this);
@@ -255,7 +256,7 @@ class Application {
 
 		$response = $dispatcher->dispatch();
 
-		Scheduler::dispatch('mvc.postRun');
+		$this->emit('mvc.postRun', [$this]);
 
 		$this->getResponse()->body($response)->respond();
 	}

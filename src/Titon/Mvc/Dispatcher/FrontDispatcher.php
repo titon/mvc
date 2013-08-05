@@ -7,7 +7,6 @@
 
 namespace Titon\Mvc\Dispatcher;
 
-use Titon\Event\Scheduler;
 use Titon\Mvc\Dispatcher\AbstractDispatcher;
 use \Exception;
 
@@ -21,11 +20,9 @@ class FrontDispatcher extends AbstractDispatcher {
 
 	/**
 	 * {@inheritdoc}
-	 *
-	 * @uses Titon\Event\Scheduler
 	 */
 	public function dispatch() {
-		Scheduler::dispatch('mvc.preDispatch', [$this]);
+		$this->getApplication()->emit('mvc.preDispatch', [$this]);
 
 		$controller = $this->getController();
 
@@ -39,7 +36,7 @@ class FrontDispatcher extends AbstractDispatcher {
 			$response = $controller->renderError($e);
 		}
 
-		Scheduler::dispatch('mvc.postDispatch', [$this]);
+		$this->getApplication()->emit('mvc.postDispatch', [$this]);
 
 		return $response;
 	}

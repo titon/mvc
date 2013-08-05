@@ -8,7 +8,6 @@
 namespace Titon\Mvc\Module;
 
 use Titon\Common\Base;
-use Titon\Event\Scheduler;
 use Titon\Mvc\Application;
 use Titon\Mvc\Module;
 use Titon\Mvc\Exception\MissingControllerException;
@@ -59,11 +58,9 @@ abstract class AbstractModule extends Base implements Module {
 
 	/**
 	 * {@inheritdoc}
-	 *
-	 * @uses Titon\Event\Scheduler
 	 */
 	public function bootstrap(Application $app) {
-		Scheduler::dispatch('mvc.module.bootstrap', [$this]);
+		$app->emit('mvc.module.bootstrap', [$this]);
 	}
 
 	/**
