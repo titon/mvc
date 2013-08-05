@@ -11,6 +11,7 @@ use Titon\Common\Registry;
 use Titon\Common\Traits\Instanceable;
 use Titon\Controller\Controller\ErrorController;
 use Titon\Debug\Debugger;
+use Titon\Event\Listener;
 use Titon\Event\Traits\Emittable;
 use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
@@ -93,6 +94,10 @@ class Application {
 
 		$module->bootstrap($this);
 
+		if ($module instanceof Listener) {
+			$this->on('mvc', $module);
+		}
+
 		return $module;
 	}
 
@@ -168,12 +173,13 @@ class Application {
 	 */
 	public function handleAsset($params) {
 		$response = $this->getResponse();
-
-		$this->emit('mvc.preAsset', [$this, $params]);
+		$path = null;
 
 		try {
 			$module = $this->getModule($params['module']);
 			$path = implode('/', [$module->getPath(), 'web', $params['asset'], $params['path']]);
+
+			$this->emit('mvc.preAsset', [&$path, $response]);
 
 			if (file_exists($path)) {
 				$response
@@ -189,7 +195,7 @@ class Application {
 			$response->statusCode(404);
 		}
 
-		$this->emit('mvc.postAsset', [$this, $params]);
+		$this->emit('mvc.postAsset', [$path, $response]);
 
 		$response->respond();
 		exit();
@@ -209,8 +215,6 @@ class Application {
 			Debugger::logException($exception);
 		}
 
-		$this->emit('mvc.preError', [$this, $exception]);
-
 		try {
 			$controller = Registry::get('Titon.controller');
 
@@ -224,12 +228,14 @@ class Application {
 			$controller->initialize();
 		}
 
+		$this->emit('mvc.preError', [$controller, $exception]);
+
 		$controller->setRequest($this->getRequest());
 		$controller->setResponse($this->getResponse());
 
 		$response = $controller->renderError($exception);
 
-		$this->emit('mvc.postError', [$this, $exception]);
+		$this->emit('mvc.postError', [$controller, $exception, &$response]);
 
 		$this->getResponse()->body($response)->respond();
 	}
