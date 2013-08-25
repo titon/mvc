@@ -41,6 +41,7 @@ class ModuleTest extends TestCase {
 		$this->assertEquals(TEMP_DIR, $this->object->getPath());
 		$this->assertEquals(TEMP_DIR . DS . 'resources' . DS, $this->object->getResourcePath());
 		$this->assertEquals(TEMP_DIR . DS . 'views' . DS, $this->object->getViewPath());
+		$this->assertEquals(TEMP_DIR . DS . 'temp' . DS, $this->object->getTempPath());
 	}
 
 	/**
