@@ -74,14 +74,18 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
 		$module = $this->getModule();
 		$namespace = $module->getController($this->getParam('controller'));
 
+		/** @type \Titon\Controller\Controller $controller */
 		$controller = new $namespace($this->getParams());
 		$controller->setRequest($this->getRequest());
 		$controller->setResponse($this->getResponse());
 		$controller->setModule($module);
-		$controller->initialize();
+
+		if (method_exists($controller, 'initialize')) {
+			$controller->initialize();
+		}
 
 		// Save the instance for later use
-		Registry::set($controller, 'Titon.controller');
+		Registry::set($controller, 'titon.controller');
 
 		return $controller;
 	}

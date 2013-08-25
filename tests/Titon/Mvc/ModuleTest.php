@@ -39,8 +39,8 @@ class ModuleTest extends TestCase {
 	 */
 	public function testGetPaths() {
 		$this->assertEquals(TEMP_DIR, $this->object->getPath());
-		$this->assertEquals(TEMP_DIR . '/resources/', $this->object->getResourcePath());
-		$this->assertEquals(TEMP_DIR . '/views/', $this->object->getViewPath());
+		$this->assertEquals(TEMP_DIR . DS . 'resources' . DS, $this->object->getResourcePath());
+		$this->assertEquals(TEMP_DIR . DS . 'views' . DS, $this->object->getViewPath());
 	}
 
 	/**

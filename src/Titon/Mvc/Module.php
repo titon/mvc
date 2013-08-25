@@ -60,6 +60,13 @@ interface Module {
 	public function getResourcePath();
 
 	/**
+	 * Return the modules temporary location.
+	 *
+	 * @return string
+	 */
+	public function getTempPath();
+
+	/**
 	 * Return the modules views location.
 	 *
 	 * @return string

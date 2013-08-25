@@ -216,7 +216,7 @@ class Application {
 		}
 
 		try {
-			$controller = Registry::get('Titon.controller');
+			$controller = Registry::get('titon.controller');
 
 		} catch (Exception $e) {
 			$view = new View();

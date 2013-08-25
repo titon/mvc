@@ -11,6 +11,7 @@ use Titon\Common\Base;
 use Titon\Mvc\Application;
 use Titon\Mvc\Module;
 use Titon\Mvc\Exception\MissingControllerException;
+use Titon\Utility\Path;
 
 /**
  * A Module represents a self contained miniature application. A Module should easily be dropped into
@@ -101,14 +102,21 @@ abstract class AbstractModule extends Base implements Module {
 	 * {@inheritdoc}
 	 */
 	public function getResourcePath() {
-		return $this->getPath() . '/resources/';
+		return $this->getPath() . Path::SEPARATOR . 'resources' . Path::SEPARATOR;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getTempPath() {
+		return $this->getPath() . Path::SEPARATOR . 'temp' . Path::SEPARATOR;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function getViewPath() {
-		return $this->getPath() . '/views/';
+		return $this->getPath() . Path::SEPARATOR . 'views' . Path::SEPARATOR;
 	}
 
 	/**

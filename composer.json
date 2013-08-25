@@ -6,7 +6,7 @@
 		"titon", "model", "view", "controller", "route", "application", "app",
 		"dispatch", "dispatcher", "module", "request", "response", "cycle"
 	],
-	"homepage": "https://github.com/titon/MVC",
+	"homepage": "http://titon.io",
 	"license": "BSD-2",
 	"authors": [
 		{
