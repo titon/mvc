@@ -13,11 +13,13 @@ use Titon\Controller\Controller\ErrorController;
 use Titon\Debug\Debugger;
 use Titon\Event\Listener;
 use Titon\Event\Traits\Emittable;
+use Titon\Mvc\Exception\AssetSymlinkException;
 use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Dispatcher\FrontDispatcher;
 use Titon\Mvc\Exception\MissingModuleException;
 use Titon\Route\Router;
+use Titon\Utility\Path;
 use Titon\View\View;
 use Titon\View\Helper\Html\AssetHelper;
 use Titon\View\Helper\Html\HtmlHelper;
@@ -102,6 +104,36 @@ class Application {
 	}
 
 	/**
+	 * Create symbolic links to the webroot folder within each module.
+	 * This allows for direct static asset handling.
+	 *
+	 * @param string $web
+	 * @throws \Titon\Mvc\Exception\AssetSymlinkException
+	 */
+	public function createLinks($web) {
+		$web = Path::ds($web, true);
+
+		foreach ($this->getModules() as $key => $module) {
+			$moduleWeb = $module->getPath() . 'web' . Path::SEPARATOR;
+
+			if (!file_exists($moduleWeb)) {
+				continue;
+			}
+
+			$targetLink = $web . $key . Path::SEPARATOR;
+
+			// Create symlink if folder doesn't exist
+			if (!file_exists($targetLink)) {
+				symlink($moduleWeb, $targetLink);
+
+			// Throw an error if file exists but is not a symlink
+			} else if (is_file($targetLink) && !is_link($targetLink)) {
+				throw new AssetSymlinkException(sprintf('Webroot folder %s must not exist so that static assets can be symlinked', $key));
+			}
+		}
+	}
+
+	/**
 	 * Return the dispatcher instance. Use FrontDispatcher if none is set.
 	 *
 	 * @return \Titon\Mvc\Dispatcher
@@ -169,6 +201,9 @@ class Application {
 	 * Handle a static asset by outputting the file contents and size to the browser.
 	 * If the asset does not exist, throw a 404 and exit.
 	 *
+	 * This method has been deprecated in favor of asset symlinking.
+	 *
+	 * @deprecated
 	 * @param array $params
 	 */
 	public function handleAsset($params) {
@@ -244,13 +279,10 @@ class Application {
 	 * Run the application by fetching the dispatcher and dispatching the request
 	 * to the module and controller that matches the current URL.
 	 *
-	 * If the requesting URL is a module asset, handle it and exit the dispatcher.
+	 * @param string $webroot
 	 */
-	public function run() {
-		if (preg_match('/^\/(?<module>[\w-]+)\/(?<asset>css|js|img)\/(?<path>.*?)\/?$/', $_SERVER['REQUEST_URI'], $matches)) {
-			$this->handleAsset($matches);
-			return;
-		}
+	public function run($webroot) {
+		$this->createLinks($webroot);
 
 		$this->emit('mvc.preRun', [$this]);
 
@@ -265,6 +297,7 @@ class Application {
 		$this->emit('mvc.postRun', [$this]);
 
 		$this->getResponse()->body($response)->respond();
+		exit();
 	}
 
 	/**

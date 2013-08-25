@@ -38,7 +38,7 @@ class ModuleTest extends TestCase {
 	 * Test that getPath(), getResourcePath() and getViewPath() returns the file system paths.
 	 */
 	public function testGetPaths() {
-		$this->assertEquals(TEMP_DIR, $this->object->getPath());
+		$this->assertEquals(TEMP_DIR . DS, $this->object->getPath());
 		$this->assertEquals(TEMP_DIR . DS . 'resources' . DS, $this->object->getResourcePath());
 		$this->assertEquals(TEMP_DIR . DS . 'views' . DS, $this->object->getViewPath());
 		$this->assertEquals(TEMP_DIR . DS . 'temp' . DS, $this->object->getTempPath());

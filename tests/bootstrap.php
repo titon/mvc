@@ -7,10 +7,10 @@
 
 error_reporting(E_ALL | E_STRICT);
 
-define('TEST_DIR', __DIR__);
-define('TEMP_DIR', __DIR__ . '/tmp');
-define('VENDOR_DIR', dirname(TEST_DIR) . '/vendor');
 define('DS', DIRECTORY_SEPARATOR);
+define('TEST_DIR', __DIR__);
+define('TEMP_DIR', __DIR__ . DS . 'tmp');
+define('VENDOR_DIR', dirname(TEST_DIR) . '/vendor');
 
 if (!file_exists(VENDOR_DIR . '/autoload.php')) {
 	exit('Please install Composer in the root folder before running tests!');

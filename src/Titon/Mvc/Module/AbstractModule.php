@@ -52,7 +52,7 @@ abstract class AbstractModule extends Base implements Module {
 	 */
 	public function __construct($key, $path) {
 		$this->_key = $key;
-		$this->_path = $path;
+		$this->_path = Path::ds($path, true);
 
 		parent::__construct();
 	}
@@ -102,21 +102,21 @@ abstract class AbstractModule extends Base implements Module {
 	 * {@inheritdoc}
 	 */
 	public function getResourcePath() {
-		return $this->getPath() . Path::SEPARATOR . 'resources' . Path::SEPARATOR;
+		return $this->getPath() . 'resources' . Path::SEPARATOR;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function getTempPath() {
-		return $this->getPath() . Path::SEPARATOR . 'temp' . Path::SEPARATOR;
+		return $this->getPath() . 'temp' . Path::SEPARATOR;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function getViewPath() {
-		return $this->getPath() . Path::SEPARATOR . 'views' . Path::SEPARATOR;
+		return $this->getPath() . 'views' . Path::SEPARATOR;
 	}
 
 	/**
