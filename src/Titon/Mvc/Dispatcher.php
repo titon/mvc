@@ -1,10 +1,8 @@
 <?php
 /**
- * Titon: A PHP 5.4 Modular Framework
- *
- * @copyright	Copyright 2010, Titon
- * @link		http://github.com/titon
- * @license		http://opensource.org/licenses/bsd-license.php (BSD License)
+ * @copyright   2010-2013, The Titon Project
+ * @license     http://opensource.org/licenses/bsd-license.php
+ * @link        http://titon.io
  */
 
 namespace Titon\Mvc;
@@ -20,93 +18,93 @@ use Titon\Http\Response;
  */
 interface Dispatcher {
 
-	/**
-	 * Get the application.
-	 *
-	 * @return \Titon\Mvc\Application
-	 */
-	public function getApplication();
+    /**
+     * Get the application.
+     *
+     * @return \Titon\Mvc\Application
+     */
+    public function getApplication();
 
-	/**
-	 * Return the controller instance.
-	 *
-	 * @return \Titon\Controller\Controller
-	 */
-	public function getController();
+    /**
+     * Return the controller instance.
+     *
+     * @return \Titon\Controller\Controller
+     */
+    public function getController();
 
-	/**
-	 * Return the module instance.
-	 *
-	 * @return \Titon\Mvc\Module
-	 */
-	public function getModule();
+    /**
+     * Return the module instance.
+     *
+     * @return \Titon\Mvc\Module
+     */
+    public function getModule();
 
-	/**
-	 * Return a parameter by key.
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function getParam($key);
+    /**
+     * Return a parameter by key.
+     *
+     * @param string $key
+     * @return mixed
+     */
+    public function getParam($key);
 
-	/**
-	 * Return all parameters.
-	 *
-	 * @return array
-	 */
-	public function getParams();
+    /**
+     * Return all parameters.
+     *
+     * @return array
+     */
+    public function getParams();
 
-	/**
-	 * Return the request object.
-	 *
-	 * @return \Titon\Http\Request
-	 */
-	public function getRequest();
+    /**
+     * Return the request object.
+     *
+     * @return \Titon\Http\Request
+     */
+    public function getRequest();
 
-	/**
-	 * Return the response object.
-	 *
-	 * @return \Titon\Http\Response
-	 */
-	public function getResponse();
+    /**
+     * Return the response object.
+     *
+     * @return \Titon\Http\Response
+     */
+    public function getResponse();
 
-	/**
-	 * Dispatch the current request and generate a response.
-	 *
-	 * @return string
-	 */
-	public function dispatch();
+    /**
+     * Dispatch the current request and generate a response.
+     *
+     * @return string
+     */
+    public function dispatch();
 
-	/**
-	 * Set the application.
-	 *
-	 * @param \Titon\Mvc\Application $app
-	 * @return \Titon\Mvc\Dispatcher
-	 */
-	public function setApplication(Application $app);
+    /**
+     * Set the application.
+     *
+     * @param \Titon\Mvc\Application $app
+     * @return \Titon\Mvc\Dispatcher
+     */
+    public function setApplication(Application $app);
 
-	/**
-	 * Set parameters.
-	 *
-	 * @param array $params
-	 * @return \Titon\Mvc\Dispatcher
-	 */
-	public function setParams(array $params);
+    /**
+     * Set parameters.
+     *
+     * @param array $params
+     * @return \Titon\Mvc\Dispatcher
+     */
+    public function setParams(array $params);
 
-	/**
-	 * Set the request object.
-	 *
-	 * @param \Titon\Http\Request $request
-	 * @return \Titon\Mvc\Dispatcher
-	 */
-	public function setRequest(Request $request);
+    /**
+     * Set the request object.
+     *
+     * @param \Titon\Http\Request $request
+     * @return \Titon\Mvc\Dispatcher
+     */
+    public function setRequest(Request $request);
 
-	/**
-	 * Set the response object.
-	 *
-	 * @param \Titon\Http\Response $response
-	 * @return \Titon\Mvc\Dispatcher
-	 */
-	public function setResponse(Response $response);
+    /**
+     * Set the response object.
+     *
+     * @param \Titon\Http\Response $response
+     * @return \Titon\Mvc\Dispatcher
+     */
+    public function setResponse(Response $response);
 
 }

@@ -1,8 +1,8 @@
 <?php
 /**
- * @copyright	Copyright 2010-2013, The Titon Project
- * @license		http://opensource.org/licenses/bsd-license.php
- * @link		http://titon.io
+ * @copyright   2010-2013, The Titon Project
+ * @license     http://opensource.org/licenses/bsd-license.php
+ * @link        http://titon.io
  */
 
 namespace Titon\Mvc;
@@ -21,108 +21,108 @@ use \Exception;
  */
 class DispatcherTest extends TestCase {
 
-	/**
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp() {
-		parent::setUp();
+    /**
+     * This method is called before a test is executed.
+     */
+    protected function setUp() {
+        parent::setUp();
 
-		$this->object = new DispatcherStub();
-	}
+        $this->object = new DispatcherStub();
+    }
 
-	/**
-	 * Test that getApplication() returns the app instance.
-	 */
-	public function testGetSetApplication() {
-		$module = new ModuleStub('test-module', TEMP_DIR);
-		$module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
+    /**
+     * Test that getApplication() returns the app instance.
+     */
+    public function testGetSetApplication() {
+        $module = new ModuleStub('test-module', TEMP_DIR);
+        $module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
-		$app = Application::getInstance();
-		$app->addModule($module);
+        $app = Application::getInstance();
+        $app->addModule($module);
 
-		try {
-			$this->object->getApplication();
-			$this->assertTrue(false);
-		} catch (Exception $e) {
-			$this->assertTrue(true);
-		}
+        try {
+            $this->object->getApplication();
+            $this->assertTrue(false);
+        } catch (Exception $e) {
+            $this->assertTrue(true);
+        }
 
-		$this->object->setApplication($app);
+        $this->object->setApplication($app);
 
-		$this->assertInstanceOf('Titon\Mvc\Application', $this->object->getApplication());
-	}
+        $this->assertInstanceOf('Titon\Mvc\Application', $this->object->getApplication());
+    }
 
-	/**
-	 * Test that getRequest() returns the HTTP request instance.
-	 */
-	public function testGetSetRequest() {
-		$this->assertEquals(null, $this->object->getRequest());
+    /**
+     * Test that getRequest() returns the HTTP request instance.
+     */
+    public function testGetSetRequest() {
+        $this->assertEquals(null, $this->object->getRequest());
 
-		$this->object->setRequest(new Request());
+        $this->object->setRequest(new Request());
 
-		$this->assertInstanceOf('Titon\Http\Request', $this->object->getRequest());
-	}
+        $this->assertInstanceOf('Titon\Http\Request', $this->object->getRequest());
+    }
 
-	/**
-	 * Test that getResponse() returns the HTTP response instance.
-	 */
-	public function testGetSetResponse() {
-		$this->assertEquals(null, $this->object->getResponse());
+    /**
+     * Test that getResponse() returns the HTTP response instance.
+     */
+    public function testGetSetResponse() {
+        $this->assertEquals(null, $this->object->getResponse());
 
-		$this->object->setResponse(new Response());
+        $this->object->setResponse(new Response());
 
-		$this->assertInstanceOf('Titon\Http\Response', $this->object->getResponse());
-	}
+        $this->assertInstanceOf('Titon\Http\Response', $this->object->getResponse());
+    }
 
-	/**
-	 * Test that getModule() returns the module instance based off the URL.
-	 */
-	public function testGetSetModule() {
-		// No application
-		try {
-			$this->object->getModule();
-			$this->assertTrue(false);
-		} catch (Exception $e) {
-			$this->assertTrue(true);
-		}
+    /**
+     * Test that getModule() returns the module instance based off the URL.
+     */
+    public function testGetSetModule() {
+        // No application
+        try {
+            $this->object->getModule();
+            $this->assertTrue(false);
+        } catch (Exception $e) {
+            $this->assertTrue(true);
+        }
 
-		$module = new ModuleStub('test-module', TEMP_DIR);
-		$module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
+        $module = new ModuleStub('test-module', TEMP_DIR);
+        $module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
-		$app = Application::getInstance();
-		$app->addModule($module);
+        $app = Application::getInstance();
+        $app->addModule($module);
 
-		$this->object->setApplication($app);
-		$this->object->setParams(['module' => 'test-module']);
+        $this->object->setApplication($app);
+        $this->object->setParams(['module' => 'test-module']);
 
-		$this->assertInstanceOf('Titon\Test\Stub\ModuleStub', $this->object->getModule());
+        $this->assertInstanceOf('Titon\Test\Stub\ModuleStub', $this->object->getModule());
 
-		// Wrong module
-		try {
-			$this->object->setParams(['module' => 'foobar-module']);
-			$this->object->getModule();
-			$this->assertTrue(false);
-		} catch (Exception $e) {
-			$this->assertTrue(true);
-		}
-	}
+        // Wrong module
+        try {
+            $this->object->setParams(['module' => 'foobar-module']);
+            $this->object->getModule();
+            $this->assertTrue(false);
+        } catch (Exception $e) {
+            $this->assertTrue(true);
+        }
+    }
 
-	/**
-	 * Test that getController() returns a controller instance.
-	 */
-	public function testGetController() {
-		$module = new ModuleStub('test-module', TEMP_DIR);
-		$module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
+    /**
+     * Test that getController() returns a controller instance.
+     */
+    public function testGetController() {
+        $module = new ModuleStub('test-module', TEMP_DIR);
+        $module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
-		$app = Application::getInstance();
-		$app->addModule($module);
+        $app = Application::getInstance();
+        $app->addModule($module);
 
-		$this->object->setApplication($app);
-		$this->object->setRequest(new Request());
-		$this->object->setResponse(new Response());
-		$this->object->setParams(['module' => 'test-module', 'controller' => 'test-controller']);
+        $this->object->setApplication($app);
+        $this->object->setRequest(new Request());
+        $this->object->setResponse(new Response());
+        $this->object->setParams(['module' => 'test-module', 'controller' => 'test-controller']);
 
-		$this->assertInstanceOf('Titon\Test\Stub\ControllerStub', $this->object->getController());
-	}
+        $this->assertInstanceOf('Titon\Test\Stub\ControllerStub', $this->object->getController());
+    }
 
 }

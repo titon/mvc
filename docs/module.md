@@ -8,18 +8,19 @@ Each module is wrapped within a folder and should contain a class extended from 
 namespace Forum;
 
 use Titon\Common\Config;
+use Titon\Mvc\Application;
 use Titon\Mvc\Module\AbstractModule;
 
 class ForumModule extends AbstractModule {
-	public function bootstrap() {
-		$router = Registry::factory('Titon\Route\Router');
-		// Add routes
+    public function bootstrap(Application $app) {
+        $router = $app->getRouter();
+        // Add routes
 
-		Config::set('Forum', array());
-		// Add config
+        Config::set('Forum', array());
+        // Add config
 
-		// Do anything else
-	}
+        // Do anything else
+    }
 }
 ```
 
@@ -27,21 +28,20 @@ A typical module folder structure is as follows. Each library should be placed i
 
 ```
 Forum/
-	Action/
-	Controller/
-	Engine/
-	Helper/
-	Model/
-		Entity/
-	resources/
-		configs/
-		messages/
-	views/
-		public/
-		private/
-	web/
-		css/
-		img/
-		js/
-	ForumModule.php
+    Action/
+    Controller/
+    Engine/
+    Helper/
+    Model/
+        Entity/
+    resources/
+        messages/
+    views/
+        public/
+        private/
+    web/
+        css/
+        img/
+        js/
+    ForumModule.php
 ```

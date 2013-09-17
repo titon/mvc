@@ -1,8 +1,8 @@
 <?php
 /**
- * @copyright	Copyright 2010-2013, The Titon Project
- * @license		http://opensource.org/licenses/bsd-license.php
- * @link		http://titon.io
+ * @copyright   2010-2013, The Titon Project
+ * @license     http://opensource.org/licenses/bsd-license.php
+ * @link        http://titon.io
  */
 
 namespace Titon\Mvc\Dispatcher;
@@ -21,35 +21,35 @@ use \Exception;
  */
 class FrontDispatcherTest extends TestCase {
 
-	/**
-	 * This method is called before a test is executed.
-	 */
-	protected function setUp() {
-		parent::setUp();
+    /**
+     * This method is called before a test is executed.
+     */
+    protected function setUp() {
+        parent::setUp();
 
-		$module = new ModuleStub('test-module', TEMP_DIR);
-		$module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
+        $module = new ModuleStub('test-module', TEMP_DIR);
+        $module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
-		$app = Application::getInstance();
-		$app->addModule($module);
+        $app = Application::getInstance();
+        $app->addModule($module);
 
-		$this->object = new FrontDispatcher();
-		$this->object->setApplication($app);
-		$this->object->setRequest(new Request());
-		$this->object->setResponse(new Response());
-		$this->object->setParams([
-			'module' => 'test-module',
-			'controller' => 'test-controller',
-			'action' => 'actionNoArgs',
-			'args' => []
-		]);
-	}
+        $this->object = new FrontDispatcher();
+        $this->object->setApplication($app);
+        $this->object->setRequest(new Request());
+        $this->object->setResponse(new Response());
+        $this->object->setParams([
+            'module' => 'test-module',
+            'controller' => 'test-controller',
+            'action' => 'actionNoArgs',
+            'args' => []
+        ]);
+    }
 
-	/**
-	 * Test that dispatch() returns the Controllers action output.
-	 */
-	public function testDispatch() {
-		$this->assertEquals('actionNoArgs', $this->object->dispatch());
-	}
+    /**
+     * Test that dispatch() returns the Controllers action output.
+     */
+    public function testDispatch() {
+        $this->assertEquals('actionNoArgs', $this->object->dispatch());
+    }
 
 }

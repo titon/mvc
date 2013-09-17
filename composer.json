@@ -1,34 +1,34 @@
 {
-	"name": "titon/mvc",
-	"type": "library",
-	"description": "The Titon MVC package adds support for the Model-View-Controller paradigm by packaging the external Model, View, Controller and Route packages into a single package. This single MVC package has full application support.",
-	"keywords": [
-		"titon", "model", "view", "controller", "route", "application", "app",
-		"dispatch", "dispatcher", "module", "request", "response", "cycle"
-	],
-	"homepage": "http://titon.io",
-	"license": "BSD-2",
-	"authors": [
-		{
-			"name": "Miles Johnson",
-			"homepage": "http://milesj.me"
-		}
-	],
-	"require": {
-		"php": ">=5.4.0",
-		"titon/model": "*",
-		"titon/view": "*",
-		"titon/controller": "*",
-		"titon/route": "*"
-	},
-	"require-dev": {
-		"titon/test": "*",
-		"titon/debug": "*"
-	},
-	"suggest": {
-		"titon/debug": "Enable the Debugger for error and exception handling"
-	},
-	"autoload": {
-		"psr-0": { "Titon\\Mvc": "src/" }
-	}
+    "name": "titon/mvc",
+    "type": "library",
+    "description": "The Titon MVC package adds support for the Model-View-Controller paradigm by packaging the external Model, View, Controller and Route packages into a single package. This single MVC package has full application support.",
+    "keywords": [
+        "titon", "model", "view", "controller", "route", "application", "app",
+        "dispatch", "dispatcher", "module", "request", "response", "cycle"
+    ],
+    "homepage": "http://titon.io",
+    "license": "BSD-2",
+    "authors": [
+        {
+            "name": "Miles Johnson",
+            "homepage": "http://milesj.me"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "titon/model": "*",
+        "titon/view": "*",
+        "titon/controller": "*",
+        "titon/route": "*"
+    },
+    "require-dev": {
+        "titon/test": "*",
+        "titon/debug": "*"
+    },
+    "suggest": {
+        "titon/debug": "Enable the Debugger for error and exception handling"
+    },
+    "autoload": {
+        "psr-0": { "Titon\\Mvc": "src/" }
+    }
 }

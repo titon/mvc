@@ -6,9 +6,9 @@ To define a custom dispatcher, extend the `AbstractDispatcher` and implement the
 
 ```php
 class CustomDispatcher extends \Titon\Mvc\Dispatcher\AbstractDispatcher {
-	public function dispatch() {
-		// Handle cycle
-	}
+    public function dispatch() {
+        // Handle cycle
+    }
 }
 ```
 

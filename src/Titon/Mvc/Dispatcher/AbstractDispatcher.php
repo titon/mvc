@@ -1,8 +1,8 @@
 <?php
 /**
- * @copyright	Copyright 2010-2013, The Titon Project
- * @license		http://opensource.org/licenses/bsd-license.php
- * @link		http://titon.io
+ * @copyright   2010-2013, The Titon Project
+ * @license     http://opensource.org/licenses/bsd-license.php
+ * @link        http://titon.io
  */
 
 namespace Titon\Mvc\Dispatcher;
@@ -24,141 +24,141 @@ use Titon\Route\Router;
  */
 abstract class AbstractDispatcher extends Base implements Dispatcher {
 
-	/**
-	 * Application instance.
-	 *
-	 * @type \Titon\Mvc\Application
-	 */
-	protected $_app;
+    /**
+     * Application instance.
+     *
+     * @type \Titon\Mvc\Application
+     */
+    protected $_app;
 
-	/**
-	 * Request parameters.
-	 *
-	 * @type array
-	 */
-	protected $_params;
+    /**
+     * Request parameters.
+     *
+     * @type array
+     */
+    protected $_params;
 
-	/**
-	 * Request instance.
-	 *
-	 * @type \Titon\Http\Request
-	 */
-	protected $_request;
+    /**
+     * Request instance.
+     *
+     * @type \Titon\Http\Request
+     */
+    protected $_request;
 
-	/**
-	 * Response instance.
-	 *
-	 * @type \Titon\Http\Response
-	 */
-	protected $_response;
+    /**
+     * Response instance.
+     *
+     * @type \Titon\Http\Response
+     */
+    protected $_response;
 
-	/**
-	 * {@inheritdoc}
-	 *
-	 * @throws \Titon\Mvc\Exception\NoApplicationException
-	 */
-	public function getApplication() {
-		if (!$this->_app) {
-			throw new NoApplicationException('Application has not been initialized');
-		}
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \Titon\Mvc\Exception\NoApplicationException
+     */
+    public function getApplication() {
+        if (!$this->_app) {
+            throw new NoApplicationException('Application has not been initialized');
+        }
 
-		return $this->_app;
-	}
+        return $this->_app;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 *
-	 * @uses Titon\Common\Registry
-	 */
-	public function getController() {
-		$module = $this->getModule();
-		$namespace = $module->getController($this->getParam('controller'));
+    /**
+     * {@inheritdoc}
+     *
+     * @uses Titon\Common\Registry
+     */
+    public function getController() {
+        $module = $this->getModule();
+        $namespace = $module->getController($this->getParam('controller'));
 
-		/** @type \Titon\Controller\Controller $controller */
-		$controller = new $namespace($this->getParams());
-		$controller->setRequest($this->getRequest());
-		$controller->setResponse($this->getResponse());
-		$controller->setModule($module);
+        /** @type \Titon\Controller\Controller $controller */
+        $controller = new $namespace($this->getParams());
+        $controller->setRequest($this->getRequest());
+        $controller->setResponse($this->getResponse());
+        $controller->setModule($module);
 
-		if (method_exists($controller, 'initialize')) {
-			$controller->initialize();
-		}
+        if (method_exists($controller, 'initialize')) {
+            $controller->initialize();
+        }
 
-		// Save the instance for later use
-		Registry::set($controller, 'titon.controller');
+        // Save the instance for later use
+        Registry::set($controller, 'titon.controller');
 
-		return $controller;
-	}
+        return $controller;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getModule() {
-		return $this->getApplication()->getModule($this->getParam('module'));
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getModule() {
+        return $this->getApplication()->getModule($this->getParam('module'));
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getParam($key) {
-		return isset($this->_params[$key]) ? $this->_params[$key] : null;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getParam($key) {
+        return isset($this->_params[$key]) ? $this->_params[$key] : null;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getParams() {
-		return $this->_params;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getParams() {
+        return $this->_params;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getRequest() {
-		return $this->_request;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getRequest() {
+        return $this->_request;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getResponse() {
-		return $this->_response;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getResponse() {
+        return $this->_response;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setApplication(Application $app) {
-		$this->_app = $app;
+    /**
+     * {@inheritdoc}
+     */
+    public function setApplication(Application $app) {
+        $this->_app = $app;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setParams(array $params) {
-		$this->_params = $params;
+    /**
+     * {@inheritdoc}
+     */
+    public function setParams(array $params) {
+        $this->_params = $params;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setRequest(Request $request) {
-		$this->_request = $request;
+    /**
+     * {@inheritdoc}
+     */
+    public function setRequest(Request $request) {
+        $this->_request = $request;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setResponse(Response $response) {
-		$this->_response = $response;
+    /**
+     * {@inheritdoc}
+     */
+    public function setResponse(Response $response) {
+        $this->_response = $response;
 
-		return $this;
-	}
+        return $this;
+    }
 
 }
