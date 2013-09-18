@@ -30,6 +30,13 @@ use \Exception;
  * When triggered, it will dispatch the request to the correct module, controller and action.
  *
  * @package Titon\Mvc
+ * @events
+ *      mvc.preRun(Application $app)
+ *      mvc.postRun(Application $app)
+ *      mvc.preError(Application $app, Controller $con, Exception $exc)
+ *      mvc.postError(Application $app, Controller $con, Exception $exc, $response)
+ *      mvc.preAsset(Application $app, $path, $response)
+ *      mvc.postAsset(Application $app, $path, $response)
  */
 class Application {
     use Instanceable, Emittable;
@@ -214,7 +221,7 @@ class Application {
             $module = $this->getModule($params['module']);
             $path = implode('/', [$module->getPath(), 'web', $params['asset'], $params['path']]);
 
-            $this->emit('mvc.preAsset', [&$path, $response]);
+            $this->emit('mvc.preAsset', [$this, &$path, $response]);
 
             if (file_exists($path)) {
                 $response
@@ -230,7 +237,7 @@ class Application {
             $response->statusCode(404);
         }
 
-        $this->emit('mvc.postAsset', [$path, $response]);
+        $this->emit('mvc.postAsset', [$this, $path, $response]);
 
         $response->respond();
         exit();
@@ -263,14 +270,14 @@ class Application {
             $controller->initialize();
         }
 
-        $this->emit('mvc.preError', [$controller, $exception]);
+        $this->emit('mvc.preError', [$this, $controller, $exception]);
 
         $controller->setRequest($this->getRequest());
         $controller->setResponse($this->getResponse());
 
         $response = $controller->renderError($exception);
 
-        $this->emit('mvc.postError', [$controller, $exception, &$response]);
+        $this->emit('mvc.postError', [$this, $controller, $exception, &$response]);
 
         $this->getResponse()->body($response)->respond();
     }
