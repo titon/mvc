@@ -14,6 +14,7 @@ use Titon\Debug\Debugger;
 use Titon\Event\Listener;
 use Titon\Event\Traits\Emittable;
 use Titon\Mvc\Exception\AssetSymlinkException;
+use Titon\Mvc\Exception\MissingComponentException;
 use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Dispatcher\FrontDispatcher;
@@ -37,9 +38,17 @@ use \Exception;
  *      mvc.postError(Application $app, Controller $con, Exception $exc, $response)
  *      mvc.preAsset(Application $app, $path, $response)
  *      mvc.postAsset(Application $app, $path, $response)
+ *      mvc.onShutdown(Application $app)
  */
 class Application {
     use Instanceable, Emittable;
+
+    /**
+     * List of manually installed components.
+     *
+     * @type object[]
+     */
+    protected $_components = [];
 
     /**
      * Dispatcher instance.
@@ -138,6 +147,21 @@ class Application {
                 throw new AssetSymlinkException(sprintf('Webroot folder %s must not exist so that static assets can be symlinked', $key));
             }
         }
+    }
+
+    /**
+     * Return a component by key.
+     *
+     * @param string $key
+     * @return object
+     * @throws \Titon\Mvc\Exception\MissingComponentException
+     */
+    public function get($key) {
+        if (isset($this->_components[$key])) {
+            return $this->_components[$key];
+        }
+
+        throw new MissingComponentException(sprintf('Application component %s does not exist', $key));
     }
 
     /**
@@ -280,6 +304,9 @@ class Application {
         $this->emit('mvc.postError', [$this, $controller, $exception, &$response]);
 
         $this->getResponse()->body($response)->respond();
+
+        $this->emit('mvc.onShutdown', [$this]);
+        exit();
     }
 
     /**
@@ -304,7 +331,22 @@ class Application {
         $this->emit('mvc.postRun', [$this]);
 
         $this->getResponse()->body($response)->respond();
+
+        $this->emit('mvc.onShutdown', [$this]);
         exit();
+    }
+
+    /**
+     * Set an object to use throughout the application.
+     *
+     * @param string $key
+     * @param object $object
+     * @return \Titon\Mvc\Application
+     */
+    public function set($key, $object) {
+        $this->_components[$key] = $object;
+
+        return $this;
     }
 
     /**
