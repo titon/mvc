@@ -13,6 +13,8 @@ use Titon\Controller\Controller\ErrorController;
 use Titon\Debug\Debugger;
 use Titon\Event\Listener;
 use Titon\Event\Traits\Emittable;
+use Titon\Http\Request;
+use Titon\Http\Response;
 use Titon\Mvc\Exception\AssetSymlinkException;
 use Titon\Mvc\Exception\MissingComponentException;
 use Titon\Mvc\Module;
@@ -86,6 +88,13 @@ class Application {
     protected $_router;
 
     /**
+     * Path to webroot folder.
+     *
+     * @type string
+     */
+    protected $_webroot;
+
+    /**
      * Set the error handler if the debug package exists.
      *
      * @uses Titon\Common\Registry
@@ -93,8 +102,6 @@ class Application {
      */
     public function __construct() {
         $this->_router = Registry::factory('Titon\Route\Router');
-        $this->_request = Registry::factory('Titon\Http\Request');
-        $this->_response = Registry::factory('Titon\Http\Response');
 
         if (class_exists('Titon\Debug\Debugger')) {
             Debugger::setHandler([$this, 'handleError']);
@@ -229,6 +236,15 @@ class Application {
     }
 
     /**
+     * Return the webroot path.
+     *
+     * @return string
+     */
+    public function getWebroot() {
+        return $this->_webroot;
+    }
+
+    /**
      * Handle a static asset by outputting the file contents and size to the browser.
      * If the asset does not exist, throw a 404 and exit.
      *
@@ -314,8 +330,14 @@ class Application {
      * to the module and controller that matches the current URL.
      *
      * @param string $webroot
+     * @param \Titon\Http\Request $request
+     * @param \Titon\Http\Response $response
      */
-    public function run($webroot) {
+    public function run($webroot, Request $request, Response $response) {
+        $this->_webroot = $webroot;
+        $this->_request = $request;
+        $this->_response = $response;
+
         $this->createLinks($webroot);
 
         $this->emit('mvc.preRun', [$this]);
