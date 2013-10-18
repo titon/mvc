@@ -117,6 +117,7 @@ class Application {
     public function addModule(Module $module) {
         $this->_modules[$module->getKey()] = $module;
 
+        $module->setApplication($this);
         $module->bootstrap($this);
 
         if ($module instanceof Listener) {

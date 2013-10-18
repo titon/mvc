@@ -24,6 +24,13 @@ interface Module {
     public function bootstrap(Application $app);
 
     /**
+     * Get the application.
+     *
+     * @return \Titon\Mvc\Application
+     */
+    public function getApplication();
+
+    /**
      * Return a controller by key.
      *
      * @param string $key
@@ -72,6 +79,14 @@ interface Module {
      * @return string
      */
     public function getViewPath();
+
+    /**
+     * Set the application.
+     *
+     * @param \Titon\Mvc\Application $app
+     * @return \Titon\Mvc\Module
+     */
+    public function setApplication(Application $app);
 
     /**
      * Define a module controller.
