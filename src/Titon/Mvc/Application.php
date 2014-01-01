@@ -21,7 +21,6 @@ use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Dispatcher\FrontDispatcher;
 use Titon\Mvc\Exception\MissingModuleException;
-use Titon\Route\Router;
 use Titon\Utility\Path;
 use Titon\View\View;
 use Titon\View\Helper\Html\AssetHelper;
@@ -102,6 +101,7 @@ class Application {
      */
     public function __construct() {
         $this->_router = Registry::factory('Titon\Route\Router');
+        $this->set('router', $this->_router);
 
         if (class_exists('Titon\Debug\Debugger')) {
             Debugger::setHandler([$this, 'handleError']);
@@ -324,6 +324,16 @@ class Application {
 
         $this->emit('mvc.onShutdown', [$this]);
         exit();
+    }
+
+    /**
+     * Check if a component exists.
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function has($key) {
+        return isset($this->_components[$key]);
     }
 
     /**
