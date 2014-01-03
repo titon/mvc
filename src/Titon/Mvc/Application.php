@@ -101,11 +101,8 @@ class Application {
      */
     public function __construct() {
         $this->_router = Registry::factory('Titon\Route\Router');
-        $this->set('router', $this->_router);
 
-        if (class_exists('Titon\Debug\Debugger')) {
-            Debugger::setHandler([$this, 'handleError']);
-        }
+        $this->set('router', $this->_router);
     }
 
     /**
