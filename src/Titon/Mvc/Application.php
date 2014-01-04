@@ -21,6 +21,7 @@ use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Dispatcher\FrontDispatcher;
 use Titon\Mvc\Exception\MissingModuleException;
+use Titon\Route\Router;
 use Titon\Utility\Path;
 use Titon\View\View;
 use Titon\View\Helper\Html\AssetHelper;
@@ -100,9 +101,9 @@ class Application {
      * @uses Titon\Debug\Debugger
      */
     public function __construct() {
-        $this->_router = Registry::factory('Titon\Route\Router');
+        $this->set('router', new Router());
 
-        $this->set('router', $this->_router);
+        $this->_router = $this->get('router');
     }
 
     /**
@@ -342,12 +343,20 @@ class Application {
      * @param \Titon\Http\Response $response
      */
     public function run($webroot, Request $request, Response $response) {
+        $request->set('webroot', $webroot);
+
+        // Store variables
+        $this->set('request', $request);
+        $this->set('response', $response);
+
         $this->_webroot = $webroot;
         $this->_request = $request;
         $this->_response = $response;
 
+        // Create symlinks
         $this->createLinks($webroot);
 
+        // Dispatch request
         $this->emit('mvc.preRun', [$this]);
 
         $dispatcher = $this->getDispatcher();
@@ -360,6 +369,7 @@ class Application {
 
         $this->emit('mvc.postRun', [$this]);
 
+        // Output response
         $this->getResponse()->body($response)->respond();
 
         $this->emit('mvc.onShutdown', [$this]);
@@ -374,7 +384,7 @@ class Application {
      * @return \Titon\Mvc\Application
      */
     public function set($key, $object) {
-        $this->_components[$key] = $object;
+        $this->_components[$key] = Registry::set($object);
 
         return $this;
     }
