@@ -7,8 +7,6 @@
 
 namespace Titon\Mvc;
 
-use Titon\Mvc\Application;
-
 /**
  * Interface for the modules library.
  *

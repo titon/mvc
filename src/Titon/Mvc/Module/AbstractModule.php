@@ -9,9 +9,9 @@ namespace Titon\Mvc\Module;
 
 use Titon\Common\Base;
 use Titon\Mvc\Application;
-use Titon\Mvc\Exception\NoApplicationException;
 use Titon\Mvc\Module;
 use Titon\Mvc\Exception\MissingControllerException;
+use Titon\Mvc\Traits\AppAware;
 use Titon\Utility\Path;
 
 /**
@@ -23,13 +23,7 @@ use Titon\Utility\Path;
  * @package Titon\Mvc\Module
  */
 abstract class AbstractModule extends Base implements Module {
-
-    /**
-     * Application instance.
-     *
-     * @type \Titon\Mvc\Application
-     */
-    protected $_app;
+    use AppAware;
 
     /**
      * List of controller slugs to namespaces.
@@ -70,19 +64,6 @@ abstract class AbstractModule extends Base implements Module {
      */
     public function bootstrap(Application $app) {
         $app->emit('mvc.module.bootstrap', [$this]);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Titon\Mvc\Exception\NoApplicationException
-     */
-    public function getApplication() {
-        if (!$this->_app) {
-            throw new NoApplicationException('Application has not been initialized');
-        }
-
-        return $this->_app;
     }
 
     /**
@@ -138,15 +119,6 @@ abstract class AbstractModule extends Base implements Module {
      */
     public function getViewPath() {
         return $this->getPath() . 'views' . Path::SEPARATOR;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setApplication(Application $app) {
-        $this->_app = $app;
-
-        return $this;
     }
 
     /**

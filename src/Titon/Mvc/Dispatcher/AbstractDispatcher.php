@@ -11,9 +11,12 @@ use Titon\Common\Base;
 use Titon\Common\Registry;
 use Titon\Http\Request;
 use Titon\Http\Response;
+use Titon\Http\Traits\RequestAware;
+use Titon\Http\Traits\ResponseAware;
 use Titon\Mvc\Application;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Exception\NoApplicationException;
+use Titon\Mvc\Traits\AppAware;
 use Titon\Route\Router;
 
 /**
@@ -23,13 +26,7 @@ use Titon\Route\Router;
  * @package Titon\Mvc\Dispatcher
  */
 abstract class AbstractDispatcher extends Base implements Dispatcher {
-
-    /**
-     * Application instance.
-     *
-     * @type \Titon\Mvc\Application
-     */
-    protected $_app;
+    use AppAware, RequestAware, ResponseAware;
 
     /**
      * Request parameters.
@@ -37,33 +34,6 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
      * @type array
      */
     protected $_params;
-
-    /**
-     * Request instance.
-     *
-     * @type \Titon\Http\Request
-     */
-    protected $_request;
-
-    /**
-     * Response instance.
-     *
-     * @type \Titon\Http\Response
-     */
-    protected $_response;
-
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Titon\Mvc\Exception\NoApplicationException
-     */
-    public function getApplication() {
-        if (!$this->_app) {
-            throw new NoApplicationException('Application has not been initialized');
-        }
-
-        return $this->_app;
-    }
 
     /**
      * {@inheritdoc}
@@ -78,7 +48,14 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
         $controller = new $namespace($this->getParams());
         $controller->setRequest($this->getRequest());
         $controller->setResponse($this->getResponse());
-        $controller->setModule($module);
+
+        if (method_exists($controller, 'setApplication')) {
+            $controller->setApplication($this->getApplication());
+        }
+
+        if (method_exists($controller, 'setModule')) {
+            $controller->setModule($module);
+        }
 
         if (method_exists($controller, 'initialize')) {
             $controller->initialize();
@@ -114,49 +91,8 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
     /**
      * {@inheritdoc}
      */
-    public function getRequest() {
-        return $this->_request;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getResponse() {
-        return $this->_response;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setApplication(Application $app) {
-        $this->_app = $app;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setParams(array $params) {
         $this->_params = $params;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRequest(Request $request) {
-        $this->_request = $request;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setResponse(Response $response) {
-        $this->_response = $response;
 
         return $this;
     }

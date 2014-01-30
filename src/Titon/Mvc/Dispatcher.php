@@ -7,7 +7,6 @@
 
 namespace Titon\Mvc;
 
-use Titon\Mvc\Application;
 use Titon\Http\Request;
 use Titon\Http\Response;
 
