@@ -41,7 +41,7 @@ trait AppAware {
      * Set the application.
      *
      * @param \Titon\Mvc\Application $app
-     * @return \Titon\Mvc\Dispatcher
+     * @return $this
      */
     public function setApplication(Application $app) {
         $this->_app = $app;

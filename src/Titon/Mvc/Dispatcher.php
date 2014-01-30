@@ -78,7 +78,7 @@ interface Dispatcher {
      * Set the application.
      *
      * @param \Titon\Mvc\Application $app
-     * @return \Titon\Mvc\Dispatcher
+     * @return $this
      */
     public function setApplication(Application $app);
 
@@ -86,7 +86,7 @@ interface Dispatcher {
      * Set parameters.
      *
      * @param array $params
-     * @return \Titon\Mvc\Dispatcher
+     * @return $this
      */
     public function setParams(array $params);
 
@@ -94,7 +94,7 @@ interface Dispatcher {
      * Set the request object.
      *
      * @param \Titon\Http\Request $request
-     * @return \Titon\Mvc\Dispatcher
+     * @return $this
      */
     public function setRequest(Request $request);
 
@@ -102,7 +102,7 @@ interface Dispatcher {
      * Set the response object.
      *
      * @param \Titon\Http\Response $response
-     * @return \Titon\Mvc\Dispatcher
+     * @return $this
      */
     public function setResponse(Response $response);
 

@@ -82,7 +82,7 @@ interface Module {
      * Set the application.
      *
      * @param \Titon\Mvc\Application $app
-     * @return \Titon\Mvc\Module
+     * @return $this
      */
     public function setApplication(Application $app);
 
@@ -91,7 +91,7 @@ interface Module {
      *
      * @param string $key
      * @param string $class
-     * @return \Titon\Mvc\Module
+     * @return $this
      */
     public function setController($key, $class);
 
@@ -99,7 +99,7 @@ interface Module {
      * Define multiple module controllers.
      *
      * @param array $controllers
-     * @return \Titon\Mvc\Module
+     * @return $this
      */
     public function setControllers(array $controllers);
 

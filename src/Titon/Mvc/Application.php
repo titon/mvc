@@ -95,15 +95,14 @@ class Application {
     protected $_webroot;
 
     /**
-     * Set the error handler if the debug package exists.
+     * Set the router if one has been passed.
      *
-     * @uses Titon\Common\Registry
-     * @uses Titon\Debug\Debugger
+     * @param \Titon\Route\Router $router
      */
-    public function __construct() {
-        $this->set('router', new Router());
-
-        $this->_router = $this->get('router');
+    public function __construct(Router $router = null) {
+        if ($router) {
+            $this->setRouter($router);
+        }
     }
 
     /**
@@ -213,6 +212,10 @@ class Application {
      * @return \Titon\Route\Router
      */
     public function getRouter() {
+        if (!$this->_router) {
+            $this->setRouter(new Router());
+        }
+
         return $this->_router;
     }
 
@@ -381,7 +384,7 @@ class Application {
      *
      * @param string $key
      * @param object $object
-     * @return \Titon\Mvc\Application
+     * @return $this
      */
     public function set($key, $object) {
         $this->_components[$key] = Registry::set($object);
@@ -399,6 +402,20 @@ class Application {
         $this->_dispatcher = $dispatcher;
 
         return $dispatcher;
+    }
+
+    /**
+     * Set the router.
+     *
+     * @param \Titon\Route\Router $router
+     * @return $this
+     */
+    public function setRouter(Router $router) {
+        $this->set('router', $router);
+
+        $this->_router = $this->get('router');
+
+        return $this;
     }
 
 }

@@ -22,7 +22,7 @@
         "titon/route": "*"
     },
     "require-dev": {
-        "titon/test": "*",
+        "titon/test": "dev-master",
         "titon/debug": "*"
     },
     "suggest": {
