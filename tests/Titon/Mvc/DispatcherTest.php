@@ -37,7 +37,7 @@ class DispatcherTest extends TestCase {
         $module = new ModuleStub('test-module', TEMP_DIR);
         $module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
-        $app = Application::getInstance();
+        $app = new Application(new Request(), new Response());
         $app->addModule($module);
 
         try {
@@ -89,7 +89,7 @@ class DispatcherTest extends TestCase {
         $module = new ModuleStub('test-module', TEMP_DIR);
         $module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
-        $app = Application::getInstance();
+        $app = new Application(new Request(), new Response());
         $app->addModule($module);
 
         $this->object->setApplication($app);
@@ -114,7 +114,7 @@ class DispatcherTest extends TestCase {
         $module = new ModuleStub('test-module', TEMP_DIR);
         $module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
-        $app = Application::getInstance();
+        $app = new Application(new Request(), new Response());
         $app->addModule($module);
 
         $this->object->setApplication($app);

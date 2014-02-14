@@ -7,6 +7,8 @@
 
 namespace Titon\Mvc;
 
+use Titon\Http\Request;
+use Titon\Http\Response;
 use Titon\Test\Stub\DispatcherStub;
 use Titon\Test\Stub\ModuleStub;
 use Titon\Test\TestCase;
@@ -25,7 +27,7 @@ class ApplicationTest extends TestCase {
     protected function setUp() {
         parent::setUp();
 
-        $this->object = Application::getInstance();
+        $this->object = new Application(new Request(), new Response());
     }
 
     /**

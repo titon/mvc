@@ -15,6 +15,8 @@ use Titon\Event\Listener;
 use Titon\Event\Traits\Emittable;
 use Titon\Http\Request;
 use Titon\Http\Response;
+use Titon\Http\Traits\RequestAware;
+use Titon\Http\Traits\ResponseAware;
 use Titon\Mvc\Exception\AssetSymlinkException;
 use Titon\Mvc\Exception\MissingComponentException;
 use Titon\Mvc\Module;
@@ -43,7 +45,7 @@ use \Exception;
  *      mvc.onShutdown(Application $app)
  */
 class Application {
-    use Instanceable, Emittable;
+    use Instanceable, Emittable, RequestAware, ResponseAware;
 
     /**
      * List of manually installed components.
@@ -67,20 +69,6 @@ class Application {
     protected $_modules = [];
 
     /**
-     * Request instance.
-     *
-     * @type \Titon\Http\Request
-     */
-    protected $_request;
-
-    /**
-     * Response instance.
-     *
-     * @type \Titon\Http\Response
-     */
-    protected $_response;
-
-    /**
      * Router instance.
      *
      * @type \Titon\Route\Router
@@ -95,14 +83,16 @@ class Application {
     protected $_webroot;
 
     /**
-     * Set the router if one has been passed.
+     * Store the request and response.
      *
-     * @param \Titon\Route\Router $router
+     * @param \Titon\Http\Request $request
+     * @param \Titon\Http\Response $response
      */
-    public function __construct(Router $router = null) {
-        if ($router) {
-            $this->setRouter($router);
-        }
+    public function __construct(Request $request, Response $response) {
+        $this->setRequest($request);
+        $this->setResponse($response);
+        $this->set('request', $request);
+        $this->set('response', $response);
     }
 
     /**
@@ -220,24 +210,6 @@ class Application {
     }
 
     /**
-     * Return the request object.
-     *
-     * @return \Titon\Http\Request
-     */
-    public function getRequest() {
-        return $this->_request;
-    }
-
-    /**
-     * Return the response object.
-     *
-     * @return \Titon\Http\Response
-     */
-    public function getResponse() {
-        return $this->_response;
-    }
-
-    /**
      * Return the webroot path.
      *
      * @return string
@@ -307,7 +279,7 @@ class Application {
             $view->addHelper('html', new HtmlHelper());
             $view->addHelper('asset', new AssetHelper());
 
-            $controller = new ErrorController($this->getRouter()->current()->getParams());
+            $controller = new ErrorController();
             $controller->setView($view);
             $controller->initialize();
         }
@@ -342,19 +314,10 @@ class Application {
      * to the module and controller that matches the current URL.
      *
      * @param string $webroot
-     * @param \Titon\Http\Request $request
-     * @param \Titon\Http\Response $response
      */
-    public function run($webroot, Request $request, Response $response) {
-        $request->set('webroot', $webroot);
-
-        // Store variables
-        $this->set('request', $request);
-        $this->set('response', $response);
-
+    public function run($webroot) {
         $this->_webroot = $webroot;
-        $this->_request = $request;
-        $this->_response = $response;
+        $this->getRequest()->set('webroot', $webroot);
 
         // Create symlinks
         $this->createLinks($webroot);
@@ -419,6 +382,3 @@ class Application {
     }
 
 }
-
-// Define as singleton
-Application::$singleton = true;
