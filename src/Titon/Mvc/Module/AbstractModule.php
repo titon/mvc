@@ -33,13 +33,6 @@ abstract class AbstractModule extends Base implements Module {
     protected $_controllers = [];
 
     /**
-     * The module slug used in URLs.
-     *
-     * @type string
-     */
-    protected $_key;
-
-    /**
      * The module file system location.
      *
      * @type string
@@ -49,11 +42,9 @@ abstract class AbstractModule extends Base implements Module {
     /**
      * Store the module key and path.
      *
-     * @param string $key
      * @param string $path
      */
-    public function __construct($key, $path) {
-        $this->_key = $key;
+    public function __construct($path) {
         $this->_path = Path::ds($path, true);
 
         parent::__construct();
@@ -84,13 +75,6 @@ abstract class AbstractModule extends Base implements Module {
      */
     public function getControllers() {
         return $this->_controllers;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getKey() {
-        return $this->_key;
     }
 
     /**

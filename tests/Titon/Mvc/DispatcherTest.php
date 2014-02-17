@@ -34,11 +34,11 @@ class DispatcherTest extends TestCase {
      * Test that getApplication() returns the app instance.
      */
     public function testGetSetApplication() {
-        $module = new ModuleStub('test-module', TEMP_DIR);
+        $module = new ModuleStub(TEMP_DIR);
         $module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
         $app = new Application(new Request(), new Response());
-        $app->addModule($module);
+        $app->addModule('test-module', $module);
 
         try {
             $this->object->getApplication();
@@ -86,11 +86,11 @@ class DispatcherTest extends TestCase {
             $this->assertTrue(true);
         }
 
-        $module = new ModuleStub('test-module', TEMP_DIR);
+        $module = new ModuleStub(TEMP_DIR);
         $module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
         $app = new Application(new Request(), new Response());
-        $app->addModule($module);
+        $app->addModule('test-module', $module);
 
         $this->object->setApplication($app);
         $this->object->setParams(['module' => 'test-module']);
@@ -111,11 +111,11 @@ class DispatcherTest extends TestCase {
      * Test that getController() returns a controller instance.
      */
     public function testGetController() {
-        $module = new ModuleStub('test-module', TEMP_DIR);
+        $module = new ModuleStub(TEMP_DIR);
         $module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
         $app = new Application(new Request(), new Response());
-        $app->addModule($module);
+        $app->addModule('test-module', $module);
 
         $this->object->setApplication($app);
         $this->object->setRequest(new Request());

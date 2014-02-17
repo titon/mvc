@@ -24,14 +24,7 @@ class ModuleTest extends TestCase {
     protected function setUp() {
         parent::setUp();
 
-        $this->object = new ModuleStub('test', TEMP_DIR);
-    }
-
-    /**
-     * Test that getKey() returns the URL key.
-     */
-    public function testGetKey() {
-        $this->assertEquals('test', $this->object->getKey());
+        $this->object = new ModuleStub(TEMP_DIR);
     }
 
     /**

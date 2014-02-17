@@ -44,9 +44,9 @@ class ApplicationTest extends TestCase {
             $this->assertTrue(true);
         }
 
-        $module = new ModuleStub('test-module', TEMP_DIR);
+        $module = new ModuleStub(TEMP_DIR);
 
-        $this->object->addModule($module);
+        $this->object->addModule('test-module', $module);
 
         $this->assertEquals($module, $this->object->getModule('test-module'));
         $this->assertEquals([

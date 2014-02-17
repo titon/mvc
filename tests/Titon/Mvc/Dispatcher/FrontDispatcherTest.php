@@ -27,11 +27,11 @@ class FrontDispatcherTest extends TestCase {
     protected function setUp() {
         parent::setUp();
 
-        $module = new ModuleStub('test-module', TEMP_DIR);
+        $module = new ModuleStub(TEMP_DIR);
         $module->setController('test-controller', 'Titon\Test\Stub\ControllerStub');
 
         $app = new Application(new Request(), new Response());
-        $app->addModule($module);
+        $app->addModule('test-module', $module);
 
         $this->object = new FrontDispatcher();
         $this->object->setApplication($app);

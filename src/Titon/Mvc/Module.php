@@ -44,13 +44,6 @@ interface Module {
     public function getControllers();
 
     /**
-     * Return the module key.
-     *
-     * @return string
-     */
-    public function getKey();
-
-    /**
      * Return the modules file system path.
      *
      * @return string

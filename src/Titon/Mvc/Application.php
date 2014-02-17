@@ -98,11 +98,12 @@ class Application {
     /**
      * Add a module into the application.
      *
+     * @param string $key
      * @param \Titon\Mvc\Module $module
      * @return \Titon\Mvc\Module
      */
-    public function addModule(Module $module) {
-        $this->_modules[$module->getKey()] = $module;
+    public function addModule($key, Module $module) {
+        $this->_modules[$key] = $module;
 
         $module->setApplication($this);
         $module->bootstrap($this);
