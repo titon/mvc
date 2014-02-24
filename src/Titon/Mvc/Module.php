@@ -7,12 +7,14 @@
 
 namespace Titon\Mvc;
 
+use Titon\Mvc\Contract\UseApplication;
+
 /**
  * Interface for the modules library.
  *
  * @package Titon\Mvc
  */
-interface Module {
+interface Module extends UseApplication {
 
     /**
      * Bootstrap the module by triggering any routes or configuration.
@@ -20,13 +22,6 @@ interface Module {
      * @param \Titon\Mvc\Application $app
      */
     public function bootstrap(Application $app);
-
-    /**
-     * Get the application.
-     *
-     * @return \Titon\Mvc\Application
-     */
-    public function getApplication();
 
     /**
      * Return a controller by key.
@@ -70,14 +65,6 @@ interface Module {
      * @return string
      */
     public function getViewPath();
-
-    /**
-     * Set the application.
-     *
-     * @param \Titon\Mvc\Application $app
-     * @return $this
-     */
-    public function setApplication(Application $app);
 
     /**
      * Define a module controller.

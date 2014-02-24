@@ -9,15 +9,12 @@ namespace Titon\Mvc\Dispatcher;
 
 use Titon\Common\Base;
 use Titon\Common\Registry;
-use Titon\Http\Request;
-use Titon\Http\Response;
 use Titon\Http\Traits\RequestAware;
 use Titon\Http\Traits\ResponseAware;
-use Titon\Mvc\Application;
+use Titon\Mvc\Contract\UseApplication;
+use Titon\Mvc\Contract\UseModule;
 use Titon\Mvc\Dispatcher;
-use Titon\Mvc\Exception\NoApplicationException;
 use Titon\Mvc\Traits\AppAware;
-use Titon\Route\Router;
 
 /**
  * The Dispatcher handles the generation of the response output.
@@ -49,11 +46,11 @@ abstract class AbstractDispatcher extends Base implements Dispatcher {
         $controller->setRequest($this->getRequest());
         $controller->setResponse($this->getResponse());
 
-        if (method_exists($controller, 'setApplication')) {
+        if ($controller instanceof UseApplication) {
             $controller->setApplication($this->getApplication());
         }
 
-        if (method_exists($controller, 'setModule')) {
+        if ($controller instanceof UseModule) {
             $controller->setModule($module);
         }
 

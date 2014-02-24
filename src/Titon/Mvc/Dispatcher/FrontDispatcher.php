@@ -7,7 +7,6 @@
 
 namespace Titon\Mvc\Dispatcher;
 
-use Titon\Mvc\Dispatcher\AbstractDispatcher;
 use \Exception;
 
 /**

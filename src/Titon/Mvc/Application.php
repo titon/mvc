@@ -25,7 +25,7 @@ use Titon\Mvc\Dispatcher\FrontDispatcher;
 use Titon\Mvc\Exception\MissingModuleException;
 use Titon\Route\Router;
 use Titon\Utility\Path;
-use Titon\View\View;
+use Titon\View\Helper\BlockHelper;
 use Titon\View\Helper\Html\AssetHelper;
 use Titon\View\Helper\Html\HtmlHelper;
 use \Exception;
@@ -279,6 +279,7 @@ class Application {
             $view = new View();
             $view->addHelper('html', new HtmlHelper());
             $view->addHelper('asset', new AssetHelper());
+            $view->addHelper('block', new BlockHelper());
 
             $controller = new ErrorController();
             $controller->setView($view);

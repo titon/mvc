@@ -9,20 +9,14 @@ namespace Titon\Mvc;
 
 use Titon\Http\Request;
 use Titon\Http\Response;
+use Titon\Mvc\Contract\UseApplication;
 
 /**
  * Interface for the dispatchers library.
  *
  * @package Titon\Mvc
  */
-interface Dispatcher {
-
-    /**
-     * Get the application.
-     *
-     * @return \Titon\Mvc\Application
-     */
-    public function getApplication();
+interface Dispatcher extends UseApplication {
 
     /**
      * Return the controller instance.
@@ -73,14 +67,6 @@ interface Dispatcher {
      * @return string
      */
     public function dispatch();
-
-    /**
-     * Set the application.
-     *
-     * @param \Titon\Mvc\Application $app
-     * @return $this
-     */
-    public function setApplication(Application $app);
 
     /**
      * Set parameters.

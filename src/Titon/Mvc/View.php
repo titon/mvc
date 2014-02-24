@@ -12,6 +12,6 @@ namespace Titon\Mvc;
  *
  * @package Titon\Mvc
  */
-class View extends \Titon\View\View {
+class View extends \Titon\View\View\TemplateView {
 
 }

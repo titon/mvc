@@ -8,6 +8,8 @@
 namespace Titon\Mvc;
 
 use Titon\Controller\Controller\AbstractController;
+use Titon\Mvc\Contract\UseApplication;
+use Titon\Mvc\Contract\UseModule;
 use Titon\Mvc\Traits\AppAware;
 use Titon\Mvc\Traits\ModuleAware;
 
@@ -17,6 +19,6 @@ use Titon\Mvc\Traits\ModuleAware;
  *
  * @package Titon\Mvc
  */
-class Controller extends AbstractController {
+class Controller extends AbstractController implements UseApplication, UseModule {
     use AppAware, ModuleAware;
 }
