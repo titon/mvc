@@ -10,6 +10,7 @@ namespace Titon\Mvc;
 use Titon\Common\Registry;
 use Titon\Common\Traits\Instanceable;
 use Titon\Controller\Controller\ErrorController;
+use Titon\Controller\Controller;
 use Titon\Debug\Debugger;
 use Titon\Event\Listener;
 use Titon\Event\Traits\Emittable;
@@ -19,6 +20,8 @@ use Titon\Http\Traits\RequestAware;
 use Titon\Http\Traits\ResponseAware;
 use Titon\Mvc\Exception\AssetSymlinkException;
 use Titon\Mvc\Exception\MissingComponentException;
+use Titon\Mvc\Exception\MissingControllerException;
+use Titon\Mvc\Exception\MissingViewException;
 use Titon\Mvc\Module;
 use Titon\Mvc\Dispatcher;
 use Titon\Mvc\Dispatcher\FrontDispatcher;
@@ -28,6 +31,7 @@ use Titon\Utility\Path;
 use Titon\View\Helper\BlockHelper;
 use Titon\View\Helper\Html\AssetHelper;
 use Titon\View\Helper\Html\HtmlHelper;
+use Titon\View\View as ViewInterface;
 use \Exception;
 
 /**
@@ -272,24 +276,37 @@ class Application {
             Debugger::logException($exception);
         }
 
+        // Get the controller
         try {
             $controller = Registry::get('titon.controller');
 
+            if (!($controller instanceof Controller)) {
+                throw new MissingControllerException();
+            }
         } catch (Exception $e) {
-            $view = new View();
-            $view->addHelper('html', new HtmlHelper());
-            $view->addHelper('asset', new AssetHelper());
-            $view->addHelper('block', new BlockHelper());
-
             $controller = new ErrorController();
-            $controller->setView($view);
             $controller->initialize();
         }
 
-        $this->emit('mvc.preError', [$this, $controller, $exception]);
+        // And the view
+        try {
+            $view = Registry::get('titon.view');
 
+            if (!($view instanceof ViewInterface)) {
+                throw new MissingViewException();
+            }
+        } catch (Exception $e) {
+            $view = new View();
+            $view->addHelper('html', new HtmlHelper());
+            $view->addHelper('block', new BlockHelper());
+            $view->addHelper('asset', new AssetHelper(['webroot' => $this->getWebroot()]));
+        }
+
+        $controller->setView($view);
         $controller->setRequest($this->getRequest());
         $controller->setResponse($this->getResponse());
+
+        $this->emit('mvc.preError', [$this, $controller, $exception]);
 
         $response = $controller->renderError($exception);
 
