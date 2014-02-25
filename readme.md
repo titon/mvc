@@ -1,4 +1,4 @@
-# MVC v0.11.0 [![Build Status](https://travis-ci.org/titon/mvc.png)](https://travis-ci.org/titon/mvc) #
+# MVC v0.11.1 [![Build Status](https://travis-ci.org/titon/mvc.png)](https://travis-ci.org/titon/mvc) #
 
 The Titon MVC package adds support for the Model-View-Controller paradigm by packaging the external Model, View, Controller and Route packages into a single package. This single MVC package has full application support.
 
